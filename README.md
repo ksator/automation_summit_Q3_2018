@@ -1,6 +1,6 @@
 # About this project
 
-Labs guide for automation summit July 2018. 
+Lab guide for Juniper automation summit (session July 2018). 
 
 # About the labs
 
@@ -46,12 +46,14 @@ Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_6
 
 ### Install Docker on ubuntu host minion1
 
-#### Check if Docker is already installed on ubuntu host minion1
+#### Check first if Docker is already installed on ubuntu host minion1
 ```
 $ docker --version
 ```
 
-#### If Docker was not already installed on ubuntu host minion1, then run these commands to install it 
+#### If Docker was not already installed on ubuntu host minion1 
+
+##### then install it on ubuntu host minion1 
 ```
 $ sudo apt-get update
 ```
@@ -87,7 +89,7 @@ $ sudo groupadd docker
 $ sudo usermod -aG docker $USER
 ```
 
-#### Verify you installed properly Docker on ubuntu host minion1
+##### and verify you installed it properly on ubuntu host minion1 
 exit the ssh session to minion1 and open an new ssh session to minion1 and run these commands: 
 ```
 $ docker run hello-world

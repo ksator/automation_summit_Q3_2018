@@ -161,10 +161,11 @@ The default ```root``` user password is ```password```
 
 # Configure Gitlab 
 
-Wait for Gitlab container status to be ```healthy```
+Wait for Gitlab container status to be ```healthy```.  
 ```
 $ docker ps
 ```
+It takes about 5 mns.  
 ```
 $ watch -n 10 'docker ps'
 ```

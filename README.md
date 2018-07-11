@@ -321,42 +321,36 @@ Host *
 Port 22
 ```
 
+#### Configure your Git client
+on ubuntu host ```master1```
+```
+$ sudo -s
+# git config --global user.email "you@example.com"
+# git config --global user.name "Your Name"
+```
+
 #### Verify
 on ubuntu host ```master1```
 ```
 $ sudo -s
+# git clone git@:100.123.35.0:automation_demo/network_model.git
+# git clone git@:100.123.35.0:automation_demo/network_parameters.git
+# git clone git@:100.123.35.0:automation_demo/junos_backup.git
+# git clone git@:100.123.35.0:automation_demo/data_collection.git
+# cd network_model
+# git remote -v
+# git branch 
+# ls
+# vi README.md
+# git status
+# git diff README.md
+# git add README.md
+# git status
+# git commit -m 'first commit'
+# git log --oneline
+# git log
+# git push origin master
 ```
-```
-```
-git 
-root@ubuntu:~# git clone git@100.123.35.0:summit/network_parameters.git
-
-
-
-git config --global user.email "you@example.com"
-git config --global user.name "Your Name"
-
-git clone http://66.129.235.2:80/summit/network_model
-cd network_model
-touch readme.md
-vi readme.md
-git add readme.md
-git commit -m 'first commit'
-git log --oneline
-git log
-git push origin master
-cd
-
-git clone http://66.129.235.2:80/summit/network_parameters
-cd network_parameters
-touch readme.md
-vi readme.md
-git add readme.md
-git commit -m 'first commit'
-git log --oneline
-git log
-git push origin master
-cd
 
 ## SaltStack 
 

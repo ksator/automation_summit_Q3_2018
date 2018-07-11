@@ -36,20 +36,22 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 # Labs instructions
 
-We will install the labs components (docker, SaltStack ....) on Ubuntu VMs 
+Here's some system information from the Ubuntu hosts we will use: 
 ```
 $ uname -a
 Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-## Install Docker
+## Docker
 
-Check if Docker is already installed 
+### Install Docker on ubuntu host minion1
+
+#### Check if Docker is already installed on ubuntu host minion1
 ```
 $ docker --version
 ```
 
-if not, install it: 
+#### If Docker was not already installed on ubuntu host minion1, then run these commands to install it 
 ```
 $ sudo apt-get update
 ```
@@ -84,7 +86,9 @@ $ sudo groupadd docker
 ```
 $ sudo usermod -aG docker $USER
 ```
-exit the ssh session to your Ubuntu and open an new ssh session to your Ubuntu: 
+
+#### Verify you installed properly Docker on ubuntu host minion1
+exit the ssh session to minion1 and open an new ssh session to minion1 and run these commands: 
 ```
 $ docker run hello-world
 
@@ -116,10 +120,11 @@ Docker version 18.03.1-ce, build 9ee9f40
 
 ## Request Tracker
 
-### Pull a Docker image
-
 There is a Request Tracker docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
-Check if you already have them locally: 
+
+### Pull a Request Tracker Docker image on ubuntu host minion1
+
+Check if you already have it locally: 
 ```
 $ docker images
 ```
@@ -135,7 +140,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
-### Instanciate a Docker container 
+### Instanciate a Request Tracker Docker container on ubuntu host minion1
 
 ```
 $ docker run -d --rm --name rt -p 9081:80 netsandbox/request-tracker
@@ -147,20 +152,9 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 0945209bfe14        netsandbox/request-tracker   "/usr/sbin/apache2 -…"   26 hours ago        Up 26 hours             0.0.0.0:9081->80/tcp                                  rt
 ```
 
-### Verify RT GUI
+### Verify you can access to RT GUI
 
-```
-$ ifconfig eth0
-eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
-          inet addr:100.123.35.0  Bcast:100.123.255.255  Mask:255.255.0.0
-          inet6 addr: fe80::250:56ff:fe01:2300/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:627787 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:163340 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000
-          RX bytes:847678387 (847.6 MB)  TX bytes:25823336 (25.8 MB)
-```
-Access RT GUI with ```http://100.123.35.0:9081``` in a browser.  
+Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
 ### Python libraries for RT 
@@ -170,15 +164,16 @@ There are python libraries that provide an easy programming interface for dealin
 - [python-rtkit](https://github.com/z4r/python-rtkit)
 - [rt](https://github.com/CZ-NIC/python-rt) 
 
-Install the ```rt``` library
+### Install the ```rt``` library on ubuntu host minion1
+
 ```
 $ sudo -s
 ```
 ```
-# sudo apt-get install python-pip
+# apt-get install python-pip
 ```
 ```
-# pip install -r requests nose six rt
+# pip install requests nose six rt
 ```
 Verify
 ```
@@ -219,10 +214,11 @@ True
 
 ## Gitlab
 
+There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
+
 ### Pull a Docker image 
 
-There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
-Check if you already have them locally: 
+Check if you already have it locally: 
 ```
 $ docker images
 ```

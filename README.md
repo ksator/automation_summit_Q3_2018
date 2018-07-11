@@ -203,9 +203,9 @@ create new projects:
 - ```junos_backup``` (public)
 - ```data_collection``` (public)
 
-# Gitlab SSH 
+### Gitlab SSH 
 
-## Generate ssh keys
+#### Generate ssh keys
 ```
 $ sudo -s
 ```
@@ -216,7 +216,7 @@ $ sudo -s
 # ls /root/.ssh/
 id_rsa  id_rsa.pub  known_hosts
 ```
-## Add the public key to Gitlab
+#### Add the public key to Gitlab
 Copy the public key
 ```
 more /root/.ssh/id_rsa.pub
@@ -224,7 +224,7 @@ more /root/.ssh/id_rsa.pub
 Access Gitlab GUI with ```http://localhost:9080``` or ```http://host-ip:9080``` in a browser.  
 And add the public key to ```User Settings``` > ```SSH Keys```
 
-## Update your ssh configuration
+#### Update your ssh configuration
 ```
 $ ifconfig eth0
 eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
@@ -255,7 +255,8 @@ Port 3022
 Host *
 Port 22
 ```
-## Verify
+
+#### Verify
 ```
 $ sudo -s
 ```
@@ -263,6 +264,7 @@ $ sudo -s
 ```
 git 
 root@ubuntu:~# git clone git@100.123.35.0:summit/network_parameters.git
+
 
 
 git config --global user.email "you@example.com"

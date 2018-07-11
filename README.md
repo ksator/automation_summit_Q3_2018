@@ -2,16 +2,16 @@
 
 Labs guide for automation summit July 2018. 
 
-## Labs building blocks:  
+# About the labs
+
+## Building blocks:  
 - Junos devices
 - SaltStack
 - Docker
 - Gitlab
 - RT (Request Tracker)
 
-## About the labs
-
-###  Automated Junos configuration backup on Git
+##  Automated Junos configuration backup on Git
 
 At each junos commit, SaltStack automatically collects the new junos configuration file and archives it to a git server: 
 - When a Junos commit is completed, the Junos device send a syslog message ```UI_COMMIT_COMPLETED```.  
@@ -21,7 +21,7 @@ JUNOS device that send this commit syslog message, and SaltStack automatically a
 
 ![continous_backup.png](continous_backup.png)  
 
-### Automated tickets management
+## Automated tickets management
 
 Junos automation demo using SaltStack and a ticketing system (Request Tracker):  
 - Junos devices send syslog messages to SaltStack.  
@@ -31,16 +31,19 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 ![RT.png](RT.png)  
 
+# Lab guide
 
-# Get an Ubuntu VM
+## Ubuntu
+
+We will install the labs components (docker, SaltStack ....) on Ubuntu VMs 
 ```
 $ uname -a
 Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-# Install Docker
+## Install Docker
 
-Check if Docker is already installed
+Check if Docker is already installed 
 ```
 $ docker --version
 ```
@@ -83,6 +86,27 @@ $ sudo usermod -aG docker $USER
 exit the ssh session to your Ubuntu and open an new ssh session to your Ubuntu: 
 ```
 $ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
 ```
 ```
 $ docker --version
@@ -108,6 +132,9 @@ $ docker pull netsandbox/request-tracker
 Verify: 
 ```
 $ docker images
+REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
+gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
+netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
 # Instanciate Docker containers 
@@ -121,11 +148,14 @@ $ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce
 Verify: 
 ```
 $ docker ps
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                  PORTS                                                 NAMES
+eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        26 hours ago        Up 26 hours (healthy)   443/tcp, 0.0.0.0:3022->22/tcp, 0.0.0.0:9080->80/tcp   gitlab
+0945209bfe14        netsandbox/request-tracker   "/usr/sbin/apache2 -…"   26 hours ago        Up 26 hours             0.0.0.0:9081->80/tcp                                  rt
 ```
 
 # Verify RT GUI
 
-Access RT GUI with ```http://localhost:9081``` or ```http://host-ip:9081``` in a browser.
+Access RT GUI with ```http://localhost:9081``` or ```http://host-ip:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
 # Configure Gitlab 
@@ -153,16 +183,24 @@ create new projects:
 ## ssh keys
 
 ### generate ssh keys
-
 ```
-ssh-keygen -t rsa -C "your.email@example.com" -b 4096
+$ sudo -s
+```
+```
+# ssh-keygen -t rsa -C "your.email@example.com" -b 4096
+```
+```
+# ls /root/.ssh/
+id_rsa  id_rsa.pub  known_hosts
+```
+### add the public key to Gitlab
+Copy the public key
+```
 more /root/.ssh/id_rsa.pub
 ```
-### add the ssh keys to gitlab/settings/ssh keys
-gitlab/settings/ssh keys
-```
-add it to gitlab/settings/ssh keys
-```
+Access Gitlab GUI with ```http://localhost:9080``` or ```http://host-ip:9080``` in a browser.  
+And add the public key to ```User Settings``` > ```SSH Keys```
+
 # update your ssh configuration
 ```
 # ls /root/.ssh/

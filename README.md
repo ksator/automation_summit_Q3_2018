@@ -1171,3 +1171,6 @@ auto_accept: True
 nodegroups:
  vmxlab: 'L@vMX-1,vMX-2'
 ```
+```
+salt vMX-1 state.apply collect_data_and_archive_to_git
+```

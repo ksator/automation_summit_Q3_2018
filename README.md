@@ -267,33 +267,46 @@ git log
 git push origin master
 cd
 
-## Install SaltStack master
+## SaltStack 
+
+### Install SaltStack master
 ```
 sudo -s
 ```
 ```
 wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
 ```
-vi /etc/apt/sources.list.d/saltstack.list
+```
+more /etc/apt/sources.list.d/saltstack.list
 deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main
+```
 ```
 sudo apt-get update
 ```
 ```
 sudo apt-get install salt-master
 ```
+### Verify
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
 ```
 ```
-# salt-key -L
-Accepted Keys:
-Denied Keys:
-Unaccepted Keys:
-Rejected Keys:
+# salt-master --version
+salt-master 2018.3.2 (Oxygen)
 ```
-## Configure SaltStack master file
+### Configure SaltStack master
+```
+$ ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
+          inet addr:100.123.35.0  Bcast:100.123.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::250:56ff:fe01:2300/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:627787 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:163340 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:847678387 (847.6 MB)  TX bytes:25823336 (25.8 MB)
+```
 ```
 # more /etc/salt/master
 
@@ -319,36 +332,70 @@ file_roots:
   base:
     - /srv/salt
 auto_accept: True
-
 ```
-ps -ef | grep salt
+
 service salt-master stop
 service salt-master start
 service salt-master stop
 salt-master -d
-salt-key -L
 
 
-minion
-sudo apt-get install salt-minion
+```
+# salt-key -L
+Accepted Keys:
+Denied Keys:
+Unaccepted Keys:
+Rejected Keys:
+```
+```
+# ps -ef | grep salt
+```
 
-nano /etc/salt/minion
-root@ubuntu:~# more /etc/salt/minion
+### Troubleshoot SaltStack master. 
+```
+# more /var/log/salt/master 
+```
+```
+# tail -f /var/log/salt/master
+```
+
+
+### Install SaltStack minion
+```
+$ sudo apt-get install salt-minion
+```
+```
+# salt-minion --version
+salt-minion 2018.3.2 (Oxygen)
+```
+### Configure SaltStack minion
+
+```
+# more /etc/salt/minion
 master: 100.123.35.0
 id: minion_1
-
+```
+```
 ps -ef | grep salt
+```
 service salt-minion force-reload
 
 salt-minion -l debug
 if you prefer to run the salt-minion as a daemon, use this command:
 salt-minion -d
 
-root@ubuntu:~# salt minion_2 test.ping
+### Verify master <-> minion communication 
+
+On the master: 
+```
+# salt minion_2 test.ping
 minion_2:
     True
-
-salt "minion_2" cmd.run "pwd"
+```
+```
+# salt "minion_2" cmd.run "pwd"
+```
+### SaltStack proxy
 
 apt install python-pip
 sudo python -m easy_install --upgrade pyOpenSSL

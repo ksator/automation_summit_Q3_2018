@@ -64,9 +64,9 @@ Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_6
 
 ## Docker
 
-### Install Docker on ubuntu host ```minion1```
+### Install Docker on the ubuntu host ```minion1```
 
-Check if Docker is already installed on ubuntu host ```minion1```
+Check if Docker is already installed on the ubuntu host ```minion1```
 ```
 $ docker --version
 ```
@@ -141,7 +141,7 @@ Docker version 18.03.1-ce, build 9ee9f40
 
 There is a Request Tracker docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
 
-### Pull a Request Tracker Docker image on ubuntu host ```minion1```
+### Pull a Request Tracker Docker image on the ubuntu host ```minion1```
 
 Check if you already have it locally: 
 ```
@@ -159,7 +159,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
-### Instanciate a Request Tracker container on ubuntu host ```minion1```
+### Instanciate a Request Tracker container on the ubuntu host ```minion1```
 
 ```
 $ docker run -d --rm --name rt -p 9081:80 netsandbox/request-tracker
@@ -183,7 +183,7 @@ There are python libraries that provide an easy programming interface for dealin
 - [python-rtkit](https://github.com/z4r/python-rtkit)
 - [rt](https://github.com/CZ-NIC/python-rt) 
 
-### Install the ```rt``` library on ubuntu host ```master1```
+### Install the ```rt``` library on the ubuntu host ```master1```
 
 ```
 $ sudo -s
@@ -199,8 +199,8 @@ Verify
 # pip list
 ```
 
-### Verify you can use ```rt``` Python library
-Python interactive session on ubuntu host ```master1```: 
+### Verify you can use ```rt``` Python library on the ubuntu host ```master1```
+Python interactive session on the ubuntu host ```master1```: 
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -235,7 +235,7 @@ True
 
 There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
 
-### Pull a Gitlab Docker image on ubuntu host ```minion1```
+### Pull a Gitlab Docker image on the ubuntu host ```minion1```
 
 Check if you already have it locally: 
 ```
@@ -253,7 +253,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
 ```
 
-### Instanciate a Gitlab container on ubuntu host ```minion1```
+### Instanciate a Gitlab container on the ubuntu host ```minion1```
 
 ```
 $ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce
@@ -272,18 +272,16 @@ It takes about 5 mns.
 ```
 $ watch -n 10 'docker ps'
 ```
-Then, access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser.  
-Gitlab user is ```root```.  
-
-
-create a password ```password```
-sign it
-create a new group ```automation_demo``` (public).
-create new projects: 
-- ```network_model``` (public, include a readme file)
-- ```network_parameters``` (public, include a readme file)
-- ```junos_backup``` (public, include a readme file)
-- ```data_collection``` (public, include a readme file)
+Then, access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser. 
+Gitlab user is ```root```    
+- Create a password ```password```  
+- Sign in with ```root``` and ```password```  
+- Create a group ```automation_demo``` (Public).
+- Create new projects in the group ```automation_demo```: 
+  - ```network_model``` (Public, add Readme)
+  - ```network_parameters``` (Public, add Readme)
+  - ```junos_backup``` (Public, add Readme)
+  - ```data_collection``` (Public, add Readme)
 
 ### Gitlab SSH 
 
@@ -302,7 +300,7 @@ id_rsa  id_rsa.pub  known_hosts
 #### Add the public key to Gitlab
 on ubuntu host ```master1```, copy the public key:
 ```
-more /root/.ssh/id_rsa.pub
+# more /root/.ssh/id_rsa.pub
 ```
 Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key to ```User Settings``` > ```SSH Keys```
 

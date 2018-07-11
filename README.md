@@ -48,11 +48,11 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 # Lab instructions
 
 ## Overview 
-- Docker will be installed on ubuntu host ```minion1```.
-- Gitlab and Request Tracker will be on ubuntu host ```minion1``` (containers).
-- SaltStack master will be installed on ubuntu host ```master1```.
-- SaltStack minion will be installed on ubuntu host ```minion1```.
-- SaltStack Junos proxy will be installed on ubuntu host ```master1```.
+- Docker will be installed on the ubuntu host ```minion1```.
+- Gitlab and Request Tracker will run on the ubuntu host ```minion1``` (containers).
+- SaltStack master will be installed on the ubuntu host ```master1```.
+- SaltStack minion will be installed on the ubuntu host ```minion1```.
+- SaltStack Junos proxy will be installed on the  ubuntu host ```master1```.
 
 ## Ubuntu
 

@@ -842,7 +842,7 @@ salt vMX1 state.apply collect_show_commands_example_2
 ls /tmp/
 more /tmp/show_chassis_hardware.txt
 
-### Configure syslog Junos devices 
+### Configure syslog on Junos devices 
 ```
 # more /srv/salt/syslog.sls
 configure_syslog:
@@ -866,6 +866,13 @@ system {
 }
 ```
 ```
+# salt 'vMX-1' pillar.item syslog_host
+vMX-1:
+    ----------
+    syslog_host:
+        100.123.35.0
+```
+```
 # salt vMX-1 state.apply syslog
 ```
 ```
@@ -878,6 +885,7 @@ system {
 # salt vMX1 junos.cli "show configuration system syslog host 100.123.35.0"
 ```
 
+### Configure SaltStack for automated tickets management
 
 root@ubuntu:~# mkdir /srv/runners
 root@ubuntu:~# nano /srv/runners/request_tracker_saltstack_runner.py

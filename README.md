@@ -1,6 +1,6 @@
 # About this project
 
-Lab guide for Juniper automation summit (July 2018 session - day 3). 
+Lab guide for Juniper automation summit (July 2018 session - day 3 - Hands on Labs around Event Driven automation). 
 
 # About the lab
 
@@ -948,9 +948,146 @@ vMX-1:
 ```
 
 ### Configure SaltStack for automated tickets management
+on the master
+```
+# more /srv/runners/request_tracker_saltstack_runner.py
+import rt
+import salt.runner
+
+def get_rt_pillars():
+    opts = salt.config.master_config('/etc/salt/master')
+    runner = salt.runner.RunnerClient(opts)
+    pillar = runner.cmd('pillar.show_pillar')
+    return(pillar)
+
+def connect_to_rt():
+   rt_pillars=get_rt_pillars()
+   uri = rt_pillars['rt']['uri']
+   username = rt_pillars['rt']['username']
+   password = rt_pillars['rt']['password']
+   tracker = rt.Rt(uri, username, password)
+   tracker.login()
+   return tracker
+
+def check_if_a_ticket_already_exist(subject, tracker):
+   id=0
+   for item in tracker.search(Queue='General'):
+       if (item['Subject'] == subject) and (item['Status'] in ['open', 'new']):
+           id=str(item['id']).split('/')[-1]
+   return id
+
+def create_ticket(subject, text):
+    tracker=connect_to_rt()
+    if check_if_a_ticket_already_exist(subject, tracker) == 0:
+        ticket_id = tracker.create_ticket(Queue='General', Subject=subject, Text=text)
+    else:
+        ticket_id = check_if_a_ticket_already_exist(subject, tracker)
+        update_ticket(ticket_id, text, tracker)
+    tracker.logout()
+    return ticket_id
+
+def update_ticket(ticket_id, text, tracker):
+    tracker.reply(ticket_id, text=text)
+    return ticket_id
+
+def change_ticket_status_to_resolved(ticket_id):
+    tracker=connect_to_rt()
+    tracker.edit_ticket(ticket_id, Status="Resolved")
+    tracker.logout()
+    return ticket_id
+
+def attach_files_to_ticket(subject, device_directory):
+    rt_pillars=get_rt_pillars()
+    junos_commands = rt_pillars['data_collection']
+    tracker=connect_to_rt()
+    ticket_id = check_if_a_ticket_already_exist(subject, tracker)
+    for item in junos_commands:
+        file_to_attach='/tmp/' + device_directory + '/' + item['command'] + '.txt'
+        tracker.comment(ticket_id, text='file "' + item['command'] + '.txt" attached to RT using SaltStack', files=[(file_to_attach, open(file_to_attach, 'rb'))])
+    tracker.logout()
+    return ticket_id
+```
+```
+# more /etc/salt/master.d/reactor.conf
+reactor:
+   - 'jnpr/syslog/*/SNMP_TRAP_LINK_*':
+       - /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
+```
+```
+# more /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
+{% if data['data'] is defined %}
+{% set d = data['data'] %}
+{% else %}
+{% set d = data %}
+{% endif %}
+{% set interface = d['message'].split(' ')[-1] %}
+{% set interface = interface.split('.')[0] %}
+
+create_a_new_ticket_or_update_the_existing_one:
+  runner.request_tracker_saltstack_runner.create_ticket:
+    - args:
+        subject: "device {{ d['hostname'] }} had its interface {{ interface }} status that changed"
+        text: " {{ d['message'] }}"
 
 
 
+show_commands_output_collection:
+  local.state.apply:
+    - tgt: "{{ d['hostname'] }}"
+    - arg:
+      - collect_data_locally
+
+
+attach_files_to_a_ticket:
+  runner.request_tracker_saltstack_runner.attach_files_to_ticket:
+    - args:
+        subject: "device {{ d['hostname'] }} had its interface {{ interface }} status that changed"
+        device_directory: "{{ d['hostname'] }}"
+    - require:
+        - show_commands_output_collection
+        - create_a_new_ticket_or_update_the_existing_one
+
+```
+```
+# more /srv/salt/collect_data_locally.sls
+{% set device_directory = grains['id'] %}
+
+make sure the device directory is presents:
+  file.directory:
+    - name: /tmp/{{ device_directory }}
+
+{% for item in pillar['data_collection'] %}
+
+{{ item.command }}:
+  junos.cli:
+    - name: {{ item.command }}
+    - dest: /tmp/{{ device_directory }}/{{ item.command }}.txt
+    - format: text
+
+{% endfor %}
+```
+```
+# salt vMX-1 state.apply collect_data_locally
+```
+```
+# ls /tmp/vMX-1/
+show chassis hardware.txt  show interfaces.txt  show version.txt
+```
+```
+# more /tmp/vMX-1/show\ chassis\ hardware.txt
+
+Hardware inventory:
+Item             Version  Part number  Serial number     Description
+Chassis                                VM5AE25B176A      VMX
+Midplane
+Routing Engine 0                                         RE-VMX
+CB 0                                                     VMX SCB
+FPC 0                                                    Virtual FPC
+  CPU            Rev. 1.0 RIOT-LITE    BUILTIN
+  MIC 0                                                  Virtual
+    PIC 0                 BUILTIN      BUILTIN           Virtual
+
+```
 tcpdump -i eth0 port 516 -vv
 salt-run state.event pretty=True
 

@@ -237,7 +237,8 @@ Port 22
 $ sudo -s
 ```
 ```
-# git 
+```
+git 
 root@ubuntu:~# git clone git@100.123.35.0:summit/network_parameters.git
 
 
@@ -266,29 +267,35 @@ git log
 git push origin master
 cd
 
-# Install StalStack master
-
+## Install SaltStack master
+```
 sudo -s
+```
+```
 wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+```
 vi /etc/apt/sources.list.d/saltstack.list
 deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main
+```
 sudo apt-get update
+```
+```
 sudo apt-get install salt-master
-
-root@ubuntu:~# salt --version
+```
+```
+# salt --version
 salt 2018.3.2 (Oxygen)
-root@ubuntu:~#
-
-root@ubuntu:~# salt --version
-salt 2018.3.2 (Oxygen)
-root@ubuntu:~# salt-key -L
+```
+```
+# salt-key -L
 Accepted Keys:
 Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
-
-
-root@ubuntu:~# vi /etc/salt/master
+```
+## Configure SaltStack master file
+```
+# more /etc/salt/master
 
 runner_dirs:
   - /srv/runners
@@ -313,6 +320,7 @@ file_roots:
     - /srv/salt
 auto_accept: True
 
+```
 ps -ef | grep salt
 service salt-master stop
 service salt-master start

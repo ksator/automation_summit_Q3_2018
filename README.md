@@ -361,7 +361,7 @@ cd
 
 ## SaltStack 
 
-### SaltStack master Installation
+### Install SaltStack master 
 ```
 sudo -s
 ```
@@ -378,7 +378,7 @@ sudo apt-get update
 ```
 sudo apt-get install salt-master
 ```
-### SaltStack master installation verification
+### Verify SaltStack master installation 
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
@@ -387,7 +387,7 @@ salt 2018.3.2 (Oxygen)
 # salt-master --version
 salt-master 2018.3.2 (Oxygen)
 ```
-### SaltStack master configuration
+### Configure SaltStack master
 ```
 $ ifconfig eth0
 eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
@@ -426,7 +426,7 @@ file_roots:
 auto_accept: True
 ```
 
-### start the salt-master:
+### start the salt-master
 
 To start it manually with a debug log level, use this command:
 ```
@@ -442,11 +442,12 @@ Here's other usefull commands:
 force-reload  restart       start         status        stop
 ```
 ```
-# systemctl status salt-master
+# systemctl status salt-master.service
 ```
 ```
 # ps -ef | grep salt
 ```
+Once it is started you can list all public keys
 ```
 # salt-key -L
 Accepted Keys:
@@ -455,7 +456,7 @@ Unaccepted Keys:
 Rejected Keys:
 ```
 
-### SaltStack master troubleshooting 
+### SaltStack master log
 ```
 # more /var/log/salt/master 
 ```
@@ -463,31 +464,56 @@ Rejected Keys:
 # tail -f /var/log/salt/master
 ```
 
-### SaltStack minion installation
+### install SaltStack minion 
+On the minon: 
 ```
 $ sudo apt-get install salt-minion
 ```
-### SaltStack minion installation verification
-
+### verify SaltStack minion installation 
+On the minon: 
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
 ```
-### SaltStack minion configuration
-
+### configure SaltStack minion 
+On the minon: 
 ```
 # more /etc/salt/minion
 master: 100.123.35.0
 id: minion_1
 ```
-```
-ps -ef | grep salt
-```
-service salt-minion force-reload
 
-salt-minion -l debug
+### start the Salt-minion
+On the minon:  
+To start it manually with a debug log level, use this command:
+```
+# salt-minion -l debug
+```
 if you prefer to run the salt-minion as a daemon, use this command:
-salt-minion -d
+```
+# salt-minion -d
+```
+Here's other usefull commands:
+```
+# service salt-minion
+force-reload  restart       start         status        stop
+```
+```
+# systemctl status salt-minion.service
+```
+```
+# ps -ef | grep salt
+```
+Once it is started, on the master, you can list all public keys
+```
+# salt-key -L
+Accepted Keys:
+minion_1
+Denied Keys:
+Unaccepted Keys:
+Rejected Keys:
+```
+
 
 ### master <-> minion communication verification
 

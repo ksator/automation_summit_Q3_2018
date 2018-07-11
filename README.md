@@ -12,7 +12,13 @@ Lab guide for Juniper automation summit (session July 2018).
 - Gitlab
 - RT (Request Tracker)
 
-## Diagram
+## Management IP addresses
+| Name | Management IP address  |
+| ------------- | ------------- |
+| minion1    | 100.123.35.2    |  
+| master1    | 100.123.35.0    |  
+| vMX-1    | 100.123.1.1    |  
+| vMX-2    | 100.123.1.2    |  
 
 ##  Junos configuration automatic backup on Git
 
@@ -46,14 +52,12 @@ Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_6
 
 ### Install Docker on ubuntu host minion1
 
-#### Check first if Docker is already installed on ubuntu host minion1
+Check if Docker is already installed on ubuntu host minion1
 ```
 $ docker --version
 ```
 
-#### If Docker was not already installed on ubuntu host minion1 
-
-##### then install it on ubuntu host minion1 
+If it was not already installed, install it:
 ```
 $ sudo apt-get update
 ```
@@ -89,8 +93,7 @@ $ sudo groupadd docker
 $ sudo usermod -aG docker $USER
 ```
 
-##### and verify you installed it properly on ubuntu host minion1 
-exit the ssh session to minion1 and open an new ssh session to minion1 and run these commands: 
+Exit the ssh session to minion1 and open an new ssh session to minion1 and run these commands to verify you installed it properly:  
 ```
 $ docker run hello-world
 
@@ -218,7 +221,7 @@ True
 
 There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
 
-### Pull a Docker image 
+### Pull a Gitlab Docker image on ubuntu host minion1
 
 Check if you already have it locally: 
 ```
@@ -236,7 +239,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
 ```
 
-### Instanciate a Docker container 
+### Instanciate a Gitlab Docker container on ubuntu host minion1
 
 ```
 $ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce

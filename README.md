@@ -1116,3 +1116,48 @@ salt-run reactor.list
 mkdir /srv/reactor/
 nano /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
 
+
+
+salt-proxy -d --proxyid=vMX-2
+
+# more /srv/pillar/vMX-2-details.sls
+proxy:
+      proxytype: junos
+      host: 100.123.1.2
+      username: jcluser
+      port: 830
+      passwd: Juniper!1
+
+root@ubuntu:~# salt -N vmxlab test.ping
+vMX-2:
+    True
+vMX-1:
+    True
+root@ubuntu:~#
+
+
+ more /etc/salt/master
+runner_dirs:
+  - /srv/runners
+engines:
+  - junos_syslog:
+      port: 516
+  - webhook:
+      port: 5001
+pillar_roots:
+ base:
+  - /srv/pillar
+#ext_pillar:
+#  - git:
+#    - master git@100.123.35.0:summit/network_parameters.git
+fileserver_backend:
+#  - git
+  - roots
+#gitfs_remotes:
+#  - ssh://git@100.123.35.0/summit/network_model.git
+file_roots:
+  base:
+    - /srv/salt
+auto_accept: True
+nodegroups:
+ vmxlab: 'L@vMX-1,vMX-2'

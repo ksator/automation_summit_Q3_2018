@@ -42,9 +42,7 @@ $ uname -a
 Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-## Docker
-
-### Install Docker
+## Install Docker
 
 Check if Docker is already installed 
 ```
@@ -116,19 +114,17 @@ $ docker --version
 Docker version 18.03.1-ce, build 9ee9f40
 ```
 
-### Pull Docker images 
+## Request Tracker
 
-There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
+### Pull a Docker image
+
 There is a Request Tracker docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
 Check if you already have them locally: 
 ```
 $ docker images
 ```
 
-if not, pull the images:
-```
-$ docker pull gitlab/gitlab-ce
-```
+if not, pull the image:
 ```
 $ docker pull netsandbox/request-tracker
 ```
@@ -136,27 +132,20 @@ Verify:
 ```
 $ docker images
 REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
-gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
 netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
-### Instanciate Docker containers 
+### Instanciate a Docker container 
 
 ```
 $ docker run -d --rm --name rt -p 9081:80 netsandbox/request-tracker
-```
-```
-$ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce
 ```
 Verify: 
 ```
 $ docker ps
 CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                  PORTS                                                 NAMES
-eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        26 hours ago        Up 26 hours (healthy)   443/tcp, 0.0.0.0:3022->22/tcp, 0.0.0.0:9080->80/tcp   gitlab
 0945209bfe14        netsandbox/request-tracker   "/usr/sbin/apache2 -…"   26 hours ago        Up 26 hours             0.0.0.0:9081->80/tcp                                  rt
 ```
-
-## Request Tracker
 
 ### Verify RT GUI
 
@@ -181,6 +170,37 @@ Access RT GUI with ```http://100.123.35.0:9081``` in a browser.
 The default ```root``` user password is ```password```
 
 ## Gitlab
+
+### Pull a Docker image 
+
+There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
+Check if you already have them locally: 
+```
+$ docker images
+```
+
+if not, pull the images:
+```
+$ docker pull gitlab/gitlab-ce
+```
+Verify: 
+```
+$ docker images
+REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
+gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
+```
+
+### Instanciate a Docker containers 
+
+```
+$ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce
+```
+Verify: 
+```
+$ docker ps
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                  PORTS                                                 NAMES
+eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        26 hours ago        Up 26 hours (healthy)   443/tcp, 0.0.0.0:3022->22/tcp, 0.0.0.0:9080->80/tcp   gitlab
+```
 
 ### Configure Gitlab 
 

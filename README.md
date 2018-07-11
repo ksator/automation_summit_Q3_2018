@@ -294,9 +294,7 @@ cd
 
 ## SaltStack 
 
-### SaltStack master
- 
-#### Install SaltStack master
+### SaltStack master Installation
 ```
 sudo -s
 ```
@@ -313,7 +311,7 @@ sudo apt-get update
 ```
 sudo apt-get install salt-master
 ```
-#### Verify SaltStack master installation
+### SaltStack master installation verification
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
@@ -322,7 +320,7 @@ salt 2018.3.2 (Oxygen)
 # salt-master --version
 salt-master 2018.3.2 (Oxygen)
 ```
-#### Configure SaltStack master
+### SaltStack master configuration
 ```
 $ ifconfig eth0
 eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
@@ -378,7 +376,7 @@ Rejected Keys:
 # ps -ef | grep salt
 ```
 
-#### SaltStack master troubleshooting 
+### SaltStack master troubleshooting 
 ```
 # more /var/log/salt/master 
 ```
@@ -386,19 +384,17 @@ Rejected Keys:
 # tail -f /var/log/salt/master
 ```
 
-### SaltStack minion
-
-#### Install SaltStack minion
+### SaltStack minion installation
 ```
 $ sudo apt-get install salt-minion
 ```
-#### Verify SaltStack minion installation
+### SaltStack minion installation verification
 
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
 ```
-#### Configure SaltStack minion
+### SaltStack minion configuration
 
 ```
 # more /etc/salt/minion
@@ -414,7 +410,7 @@ salt-minion -l debug
 if you prefer to run the salt-minion as a daemon, use this command:
 salt-minion -d
 
-### Verify master <-> minion communication 
+### master <-> minion communication verification
 
 On the master: 
 ```
@@ -425,9 +421,10 @@ minion_2:
 ```
 # salt "minion_2" cmd.run "pwd"
 ```
-### SaltStack proxy for Junos
 
-#### Install dependencies for SaltStack Junos proxy
+### dependencies installation for SaltStack Junos proxy
+
+Run these commands on the host (master on minions) that will run a Junos proxy daemon:
 
 ```
 # apt install python-pip
@@ -438,7 +435,10 @@ sudo python -m easy_install --upgrade pyOpenSSL
 ```
 pip install junos-eznc jxmlease jsnapy
 ```
-#### Verify you can use junos-eznc 
+
+### junos-eznc test
+
+Verify you can use junos-eznc
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -453,7 +453,7 @@ Device(100.123.1.1)
 >>> dev.close()
 >>> exit()
 ```
-### Pillars 
+### Pillars configuration
 
 ```
 $ ls /srv/pillar/
@@ -479,10 +479,7 @@ proxy:
       passwd: Juniper!1
 ```
 ```
-$ sudo -s
-```
-```
-# more /srv/pillar/production.sls
+$ more /srv/pillar/production.sls
 syslog_host: 100.123.35.0
 rt:
    uri: 'http://100.123.35.0:9081/REST/1.0/'
@@ -492,6 +489,12 @@ data_collection:
    - command: show interfaces
    - command: show chassis hardware
    - command: show version
+```
+
+### Pillars configuration verification
+```
+$ sudo -s
+```
 ```
 root@ubuntu:~# salt-run pillar.show_pillar
 data_collection:
@@ -567,25 +570,66 @@ root@ubuntu:~# more /etc/hosts
 127.0.1.1       ubuntu
 127.0.0.1       salt
 
+
+You need one salt proxy process per device.
+to start the proxy for vMX-1 with a debug log level, use this command:
+```
 sudo salt-proxy -l debug --proxyid=vMX-1
+```
+if you prefer to run it as a daemon, use this command:
+```
 sudo salt-proxy -d --proxyid=vMX-1
+```
+### SaltStack keys 
 
+By default, you need to accept the minions/proxies public public keys on the master.  
 
+To list all public keys:
+```
+# salt-key -L
+```
+To accept a specified public key:
+```
+# salt-key -a vMX-1 -y
+```
+Or, to accept all pending keys:
+```
+# salt-key -A -y
+```
+We changed the master configuration file to auto accept the keys: 
+```
+# more /etc/salt/master | grep auto_accept
+auto_accept: True
+```
+so the keys are automatically accepted: 
+```
+# salt-key -L
 Accepted Keys:
 minion_1
-minion_2
-vMX1
+vMX-1
 Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
+```
 
-root@ubuntu:~# salt 'vMX1' pillar.ls
+### 
+root@ubuntu:~# salt 'vMX1' test.ping
+vMX1:
+    True
+
+
+### Get the pillars for a minion/proxy
+
+```
+# salt 'vMX1' pillar.ls
 vMX1:
     - rt
     - syslog_host
     - data_collection
     - proxy
-root@ubuntu:~# salt 'vMX1' pillar.items
+```
+```
+# salt 'vMX1' pillar.items
 vMX1:
     ----------
     data_collection:
@@ -622,15 +666,10 @@ vMX1:
         username:
             root
     syslog_host:
-        100.123.35.2
+        100.123.35.0
+```
 
 
-salt-run pillar.show_pillar 'vMX1'
-[ERROR   ] Failed to checkout master from git_pillar remo
-
-root@ubuntu:~# salt 'vMX1' test.ping
-vMX1:
-    True
 
 doc
 salt 'vMX1' junos -d

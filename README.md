@@ -427,7 +427,7 @@ minion_2:
 ```
 ### SaltStack proxy for Junos
 
-#### Install SaltStack proxy for Junos
+#### Install dependencies for SaltStack Junos proxy
 
 ```
 # apt install python-pip
@@ -438,8 +438,9 @@ sudo python -m easy_install --upgrade pyOpenSSL
 ```
 pip install junos-eznc jxmlease jsnapy
 ```
-
-root@ubuntu:~# python
+#### Verify you can use junos-eznc 
+```
+# python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
 [GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
@@ -450,11 +451,16 @@ Device(100.123.1.1)
 >>> dev.facts['version']
 '17.4R1-S2.2'
 >>> dev.close()
->>>
+>>> exit()
+```
+### Pillars 
 
-root@ubuntu:~# ls /srv/pillar/
+```
+$ ls /srv/pillar/
 production.sls  top.sls  vMX-1-details.sls
-root@ubuntu:~# more /srv/pillar/top.sls
+```
+```
+$ more /srv/pillar/top.sls
 base:
     '*':
          - production
@@ -462,8 +468,22 @@ base:
          - vMX-1-details
     'vMX-2':
          - vMX-2-details
-root@ubuntu:~# more /srv/pillar/production.sls
-syslog_host: 100.123.35.2
+```
+``` 
+$ more /srv/pillar/vMX-1-details.sls
+proxy:
+      proxytype: junos
+      host: 100.123.1.1
+      username: jcluser
+      port: 830
+      passwd: Juniper!1
+```
+```
+$ sudo -s
+```
+```
+# more /srv/pillar/production.sls
+syslog_host: 100.123.35.0
 rt:
    uri: 'http://100.123.35.0:9081/REST/1.0/'
    username: root
@@ -472,17 +492,7 @@ data_collection:
    - command: show interfaces
    - command: show chassis hardware
    - command: show version
-
-root@ubuntu:~# more /srv/pillar/vMX-1-details.sls
-proxy:
-      proxytype: junos
-      host: 100.123.1.1
-      username: jcluser
-      port: 830
-      passwd: Juniper!1
-
-
-root@ubuntu:~#
+```
 root@ubuntu:~# salt-run pillar.show_pillar
 data_collection:
     |_
@@ -506,8 +516,10 @@ rt:
     password:
         password
 syslog_host:
-    100.123.35.2
-root@ubuntu:~# salt-run pillar.show_pillar vMX1
+    100.123.35.0
+```
+```
+# salt-run pillar.show_pillar vMX-1
 data_collection:
     |_
       ----------
@@ -542,27 +554,10 @@ rt:
     password:
         password
 syslog_host:
-    100.123.35.2
-root@ubuntu:~#
+    100.123.35.0
+```
 
-root@ubuntu:~# more /srv/pillar/vMX1-details.sls
-proxy:
-      proxytype: junos
-      host: 100.123.1.1
-      username: jcluser
-      port: 830
-      passwd: Juniper!1
 
-root@ubuntu:~# more /srv/pillar/production.sls
-syslog_host: 100.123.35.2
-rt:
-   uri: 'http://100.123.35.0:9081/REST/1.0/'
-   username: root
-   password: password
-data_collection:
-   - command: show interfaces
-   - command: show chassis hardware
-   - command: show version
 
 
 

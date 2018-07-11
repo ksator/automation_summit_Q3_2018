@@ -1088,6 +1088,13 @@ FPC 0                                                    Virtual FPC
     PIC 0                 BUILTIN      BUILTIN           Virtual
 
 ```
+```
+# salt-run request_tracker_saltstack_runner.create_ticket subject='test subject' text='test text'
+```
+```
+# salt-run request_tracker_saltstack_runner.change_ticket_status_to_resolved ticket_id=2
+```
+
 tcpdump -i eth0 port 516 -vv
 salt-run state.event pretty=True
 
@@ -1095,15 +1102,7 @@ salt-run state.event pretty=True
 service salt-master force-reload
 
 
-
-root@ubuntu:~# mkdir /srv/runners
 root@ubuntu:~# nano /srv/runners/request_tracker_saltstack_runner.py
-
-
-# salt-run request_tracker_saltstack_runner.create_ticket subject='test' text='test text'
-    |_
-# salt-run request_tracker_saltstack_runner.change_ticket_status_to_resolved ticket_id=2
-
 
 
 
@@ -1111,15 +1110,22 @@ service salt-master restart
 
 # ps -ef | grep salt
 
-salt-run reactor.list
 
+```
 mkdir /srv/reactor/
+```
+
 nano /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
 
 
+```
+salt-run reactor.list
+```
 
+```
 salt-proxy -d --proxyid=vMX-2
-
+```
+```
 # more /srv/pillar/vMX-2-details.sls
 proxy:
       proxytype: junos
@@ -1128,15 +1134,18 @@ proxy:
       port: 830
       passwd: Juniper!1
 
+```
+```
 root@ubuntu:~# salt -N vmxlab test.ping
 vMX-2:
     True
 vMX-1:
     True
 root@ubuntu:~#
+```
 
-
- more /etc/salt/master
+```
+# more /etc/salt/master
 runner_dirs:
   - /srv/runners
 engines:
@@ -1147,17 +1156,18 @@ engines:
 pillar_roots:
  base:
   - /srv/pillar
-#ext_pillar:
-#  - git:
-#    - master git@100.123.35.0:summit/network_parameters.git
+ext_pillar:
+  - git:
+    - master git@100.123.35.0:summit/network_parameters.git
 fileserver_backend:
-#  - git
+  - git
   - roots
-#gitfs_remotes:
-#  - ssh://git@100.123.35.0/summit/network_model.git
+gitfs_remotes:
+  - ssh://git@100.123.35.0/summit/network_model.git
 file_roots:
   base:
     - /srv/salt
 auto_accept: True
 nodegroups:
  vmxlab: 'L@vMX-1,vMX-2'
+```

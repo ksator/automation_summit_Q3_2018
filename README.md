@@ -4,7 +4,7 @@ Labs guide for automation summit July 2018.
 
 # About the labs
 
-## Building blocks:  
+## Building blocks 
 - Junos devices
 - Ubuntu VMs
 - SaltStack
@@ -12,7 +12,9 @@ Labs guide for automation summit July 2018.
 - Gitlab
 - RT (Request Tracker)
 
-##  Automated Junos configuration backup on Git
+## Diagram
+
+##  Junos configuration automatic backup on Git
 
 At each junos commit, SaltStack automatically collects the new junos configuration file and archives it to a git server: 
 - When a Junos commit is completed, the Junos device send a syslog message ```UI_COMMIT_COMPLETED```.  
@@ -33,8 +35,6 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 ![RT.png](RT.png)  
 
 # Labs instructions
-
-## Ubuntu
 
 We will install the labs components (docker, SaltStack ....) on Ubuntu VMs 
 ```
@@ -426,21 +426,33 @@ file_roots:
 auto_accept: True
 ```
 
-service salt-master stop
-service salt-master start
-service salt-master stop
-salt-master -d
+### start the salt-master:
 
-
+To start it manually with a debug log level, use this command:
+```
+# salt-master -l debug
+```
+if you prefer to run the salt-master as a daemon, use this command:
+```
+# salt-master -d
+```
+Here's other usefull commands:
+```
+# service salt-master
+force-reload  restart       start         status        stop
+```
+```
+# systemctl status salt-master
+```
+```
+# ps -ef | grep salt
+```
 ```
 # salt-key -L
 Accepted Keys:
 Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
-```
-```
-# ps -ef | grep salt
 ```
 
 ### SaltStack master troubleshooting 

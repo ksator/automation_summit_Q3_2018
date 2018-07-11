@@ -184,7 +184,9 @@ Verify
 ```
 # pip list
 ```
-Double check using a python interactive session: 
+
+### Verify RT with Python 
+Python interactive session: 
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -225,7 +227,7 @@ Check if you already have them locally:
 $ docker images
 ```
 
-if not, pull the images:
+if not, pull the image:
 ```
 $ docker pull gitlab/gitlab-ce
 ```
@@ -236,7 +238,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
 ```
 
-### Instanciate a Docker containers 
+### Instanciate a Docker container 
 
 ```
 $ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce
@@ -251,23 +253,22 @@ eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        26 hou
 ### Configure Gitlab 
 
 Wait for Gitlab container status to be ```healthy```.  
-```
-$ docker ps
-```
 It takes about 5 mns.  
 ```
 $ watch -n 10 'docker ps'
 ```
-Access Gitlab GUI with ```http://localhost:9080``` or ```http://host-ip:9080``` in a browser.
-gitlab user is ```root```
+Then, access Gitlab GUI with ```http://100.123.35.0:9080``` in a browser.  
+Gitlab user is ```root```.  
+
+
 create a password ```password```
 sign it
 create a new group ```automation_demo``` (public).
 create new projects: 
-- ```network_model``` (public)
-- ```network_parameters``` (public)
-- ```junos_backup``` (public)
-- ```data_collection``` (public)
+- ```network_model``` (public, include a readme file)
+- ```network_parameters``` (public, include a readme file)
+- ```junos_backup``` (public, include a readme file)
+- ```data_collection``` (public, include a readme file)
 
 ### Gitlab SSH 
 
@@ -750,19 +751,21 @@ vMX1:
         100.123.35.0
 ```
 
+### Junos execution modules documentation 
 
-
-doc
-salt 'vMX-1' junos -d
-root@ubuntu:~# salt 'vMX-1' junos.cli -d
-
-
-root@ubuntu:~# salt 'vMX-1' junos.cli "show version"
-vMX-1:
-    ----------
-    message:
-
-salt 'vMX1' junos.rpc get-software-information
+```
+# salt 'vMX-1' junos -d
+```
+```
+# salt 'vMX-1' junos.cli -d
+```
+### Junos execution modules examples 
+```
+# salt 'vMX-1' junos.cli "show version"
+```
+```
+# salt 'vMX1' junos.rpc get-software-information
+```
 
 ### grains
 
@@ -804,6 +807,11 @@ salt 'vMX-1' junos.rpc get-software-information --output=yaml
 salt 'vMX-1' junos.cli "show version" --output=json
 ```
 
+### junos syslog engine dependencies
+
+```
+# pip install pyparsing, twisted
+```
 
 
  mkdir /srv/salt
@@ -821,8 +829,8 @@ show_chassis_hardware:
     - format: text
 
 
-syslog
-pyparsing, twisted
+
+
 
 tcpdump -i eth0 port 516 -vv
 salt-run state.event pretty=True
@@ -834,20 +842,19 @@ salt vMX1 state.apply collect_show_commands_example_2
 ls /tmp/
 more /tmp/show_chassis_hardware.txt
 
-root@ubuntu:~# more /srv/salt/syslog.sls
+### Configure syslog Junos devices 
+```
+# more /srv/salt/syslog.sls
 configure_syslog:
     junos.install_config:
         - name: salt://syslog.conf
         - timeout: 20
         - replace: False
         - overwrite: False
-        - comment: "configured with SaltStack using the model syslog"
-root@ubuntu:~# more /srv/salt/syslog.set
-set system syslog host 100.123.35.2 any any
-set system syslog host 100.123.35.2 port 516
-set system syslog host 100.123.35.2 match "UI_COMMIT_COMPLETED|SNMP_TRAP_LINK_*"
-
-root@ubuntu:~# more /srv/salt/syslog.conf
+        - comment: "configured with SaltStack using the template syslog.conf"
+```
+```
+# more /srv/salt/syslog.conf
 system {
     syslog {
         host {{ pillar["syslog_host"] }} {
@@ -857,67 +864,19 @@ system {
         }
     }
 }
-
-root@ubuntu:~# salt vMX1 state.apply syslog
-
-
-system 
-    syslog {
-        host 100.123.35.2 {
-            any any;
-            match "UI_COMMIT_COMPLETED|SNMP_TRAP_LINK_*";
-            port 516;
-        }
-    }
-}
-    
-root@ubuntu:~# salt vMX1 junos.cli "show system commit"
-vMX1:
-    ----------
-    message:
-
-        0   2018-07-10 13:19:52 UTC by jcluser via netconf
-            configured with SaltStack using the model syslog
-        1   2018-07-10 13:07:17 UTC by jcluser via cli
-        2   2018-07-10 13:06:14 UTC by jcluser via cli
-        3   2018-07-10 13:01:38 UTC by jcluser via cli
-        4   2018-07-10 12:58:55 UTC by jcluser via cli
-        5   2018-07-10 12:57:43 UTC by jcluser via netconf
-            configured with SaltStack using the model syslog
-        6   2018-07-09 13:04:54 UTC by root via netconf
-        7   2018-04-27 00:17:08 UTC by root via cli
-        8   2018-04-26 23:20:07 UTC by root via cli
-        9   2018-04-26 23:19:25 UTC by root via cli
-        10  2018-04-26 23:15:39 UTC by root via cli
-        11  2018-04-26 23:14:34 UTC by root via cli
-        12  2018-04-26 23:05:01 UTC by root via other
-        13  2018-04-26 23:04:38 UTC by root via other
-    out:
-        True
-root@ubuntu:~# salt vMX1 junos.cli "show configuration | compare rollback 1"
-vMX1:
-    ----------
-    message:
-
-        [edit system syslog]
-        +    host 100.123.35.2 {
-        +        any any;
-        +        match "UI_COMMIT_COMPLETED|SNMP_TRAP_LINK_*";
-        +        port 516;
-        +    }
-    out:
-        True
-root@ubuntu:~# salt vMX1 junos.cli "show configuration system syslog host 100.123.35.2"
-vMX1:
-    ----------
-    message:
-
-        any any;
-        match "UI_COMMIT_COMPLETED|SNMP_TRAP_LINK_*";
-        port 516;
-    out:
-        True
-root@ubuntu:~#
+```
+```
+# salt vMX-1 state.apply syslog
+```
+```
+# salt vMX-1 junos.cli "show system commit"
+```
+```
+# salt vMX1 junos.cli "show configuration | compare rollback 1"
+```
+```
+# salt vMX1 junos.cli "show configuration system syslog host 100.123.35.0"
+```
 
 
 root@ubuntu:~# mkdir /srv/runners

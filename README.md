@@ -6,7 +6,7 @@ Labs guide for automation summit July 2018.
 
 ## Building blocks:  
 - Junos devices
-- Ubuntu
+- Ubuntu VMs
 - SaltStack
 - Docker
 - Gitlab

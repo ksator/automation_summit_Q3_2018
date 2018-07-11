@@ -42,7 +42,9 @@ $ uname -a
 Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-## Install Docker
+## Docker
+
+### Install Docker
 
 Check if Docker is already installed 
 ```
@@ -114,7 +116,7 @@ $ docker --version
 Docker version 18.03.1-ce, build 9ee9f40
 ```
 
-# Pull Docker images 
+### Pull Docker images 
 
 There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
 There is a Request Tracker docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
@@ -138,7 +140,7 @@ gitlab/gitlab-ce             latest              504ada597edc        6 days ago 
 netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
-# Instanciate Docker containers 
+### Instanciate Docker containers 
 
 ```
 $ docker run -d --rm --name rt -p 9081:80 netsandbox/request-tracker
@@ -154,12 +156,33 @@ eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        26 hou
 0945209bfe14        netsandbox/request-tracker   "/usr/sbin/apache2 -…"   26 hours ago        Up 26 hours             0.0.0.0:9081->80/tcp                                  rt
 ```
 
-# Verify RT GUI
+## Request Tracker
 
-Access RT GUI with ```http://localhost:9081``` or ```http://host-ip:9081``` in a browser.  
+### Verify RT GUI
+
+```
+$ ifconfig eth0
+eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
+          inet addr:100.123.35.0  Bcast:100.123.255.255  Mask:255.255.0.0
+          inet6 addr: fe80::250:56ff:fe01:2300/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:627787 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:163340 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:847678387 (847.6 MB)  TX bytes:25823336 (25.8 MB)
+```
+```
+$ docker ps
+CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                  PORTS                                                 NAMES
+0945209bfe14        netsandbox/request-tracker   "/usr/sbin/apache2 -…"   26 hours ago        Up 26 hours             0.0.0.0:9081->80/tcp                                  rt
+```
+
+Access RT GUI with ```http://100.123.35.0:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
-# Configure Gitlab 
+## Gitlab
+
+### Configure Gitlab 
 
 Wait for Gitlab container status to be ```healthy```.  
 ```

@@ -170,7 +170,13 @@ There are python libraries that provide an easy programming interface for dealin
 - [python-rtkit](https://github.com/z4r/python-rtkit)
 - [rt](https://github.com/CZ-NIC/python-rt) 
 
-Install the rt library
+Install the ```rt``` library
+```
+$ sudo -s
+```
+```
+# sudo apt-get install python-pip
+```
 ```
 # pip install -r requests nose six rt
 ```
@@ -178,8 +184,7 @@ Verify
 ```
 # pip list
 ```
-Double check using a python interactive session.  
-Example:  
+Double check using a python interactive session: 
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -194,13 +199,13 @@ True
 >>> tracker.search(Queue='General', Status='new')
 []
 >>> tracker.create_ticket(Queue='General', Subject='abc', Text='bla bla bla')
-
+1
 >>> tracker.edit_ticket(1, Priority=3)
 True
->>> tracker.reply(1, text='Write here the notes you want to add to the ticket')
+>>> tracker.reply(1, text='notes you want to add to the ticket 1')
 True
 >>> tracker.search(Queue='General')
-[{u'Status': u'open', u'Priority': u'3', u'Resolved': u'Not set', u'TimeLeft': u'0', u'Creator': u'root', u'Started': u'Tue Jul 10 09:53:20 2018', u'Starts': u'Not set', u'Created': u'Tue Jul 10 09:52:32 2018', u'Due': u'Not set', u'LastUpdated': u'Tue Jul 10 09:53:20 2018', u'FinalPriority': u'0', u'Queue': u'General', 'Requestors': [u''], u'Owner': u'Nobody', u'Told': u'Not set', u'TimeEstimated': u'0', u'InitialPriority': u'0', u'id': u'ticket/1', u'TimeWorked': u'0', u'Subject': u'abc'}]
+[{u'Status': u'open', u'Priority': u'3', u'Resolved': u'Not set', u'TimeLeft': u'0', u'Creator': u'root', u'Started': u'Wed Jul 11 09:30:57 2018', u'Starts': u'Not set', u'Created': u'Wed Jul 11 09:30:10 2018', u'Due': u'Not set', u'LastUpdated': u'Wed Jul 11 09:30:57 2018', u'FinalPriority': u'0', u'Queue': u'General', 'Requestors': [u''], u'Owner': u'Nobody', u'Told': u'Not set', u'TimeEstimated': u'0', u'InitialPriority': u'0', u'id': u'ticket/1', u'TimeWorked': u'0', u'Subject': u'abc'}]
 >>> for item in  tracker.search(Queue='General'):
 ...    print item['id']
 ...
@@ -208,8 +213,6 @@ ticket/1
 >>> tracker.logout()
 True
 >>> exit()
-root@ubuntu:~#
-
 ```
 
 ## Gitlab

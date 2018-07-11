@@ -32,7 +32,7 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 ![RT.png](RT.png)  
 
-# Labs intsructions
+# Labs instructions
 
 ## Ubuntu
 

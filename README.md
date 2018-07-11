@@ -1,6 +1,6 @@
 # About this project
 
-Lab guide for Juniper automation summit (July 2018 session). 
+Lab guide for Juniper automation summit (July 2018 session - day 3). 
 
 # About the lab
 
@@ -329,7 +329,7 @@ $ sudo -s
 # git config --global user.name "Your Name"
 ```
 
-#### Verify
+#### Verify you can use Git and Gitlab
 on ubuntu host ```master1```
 ```
 $ sudo -s
@@ -359,8 +359,7 @@ Let's install:
 - SaltStack minion on ubuntu host ```minion1```.
 - SaltStack Junos proxy on ubuntu host ```master1```.
 
-### Install SaltStack master on ubuntu host ```master1``` 
-on ubuntu host ```master1```
+### Install SaltStack master on the ubuntu host ```master1``` 
 ```
 sudo -s
 ```
@@ -378,7 +377,6 @@ sudo apt-get update
 sudo apt-get install salt-master
 ```
 ### Verify SaltStack master installation 
-on ubuntu host ```master1```
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
@@ -388,7 +386,6 @@ salt 2018.3.2 (Oxygen)
 salt-master 2018.3.2 (Oxygen)
 ```
 ### Configure SaltStack master
-on ubuntu host ```master1```
 ```
 # more /etc/salt/master
 
@@ -448,8 +445,7 @@ Rejected Keys:
 ```
 
 ### SaltStack master log
-Just in case you need to troubleshoot SaltStack issues. 
-on ubuntu host ```master1```
+Just in case you need to troubleshoot SaltStack issues, you can run these commands on the master: 
 ```
 # more /var/log/salt/master 
 ```
@@ -458,18 +454,16 @@ on ubuntu host ```master1```
 ```
 
 ### install SaltStack minion on ubuntu host ```minion1``` 
-On the ubuntu host ```minon1```: 
 ```
 $ sudo apt-get install salt-minion
 ```
 ### verify SaltStack minion installation 
-On the ubuntu host ```minon1```: 
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
 ```
 ### configure SaltStack minion 
-On the ubuntu host ```minon1```: 
+On the minion:
 ```
 # more /etc/salt/minion
 master: 100.123.35.0
@@ -477,7 +471,7 @@ id: minion1
 ```
 
 ### start the Salt-minion
-On the ubuntu host ```minon1```: 
+On the minion:
 To start it manually with a debug log level, use this command:
 ```
 # salt-minion -l debug
@@ -509,19 +503,19 @@ Rejected Keys:
 
 
 ### master <-> minion communication verification
-on master 
+on the master 
 ```
 # salt minion1 test.ping
-minion_2:
+minion1:
     True
 ```
 ```
 # salt "minion1" cmd.run "pwd"
 ```
 
-### dependencies installation for SaltStack Junos proxy
+### Install requirements for SaltStack Junos proxy
 
-Run these commands on the host (master on minions) that will run a Junos proxy daemon:
+Run these commands on the host that will run a Junos proxy daemon. Let's do it on the master.  
 
 ```
 # apt install python-pip
@@ -535,7 +529,7 @@ pip install junos-eznc jxmlease jsnapy
 
 ### junos-eznc test
 
-Verify you can use junos-eznc
+Verify you can use junos-eznc on the master
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -555,8 +549,7 @@ Device(100.123.1.1)
 Pillars are variables.  
 sls files.  
 yaml data structure.  
-There is a top file.  
-top.sls file map minions to sls files.
+There is a top file. top.sls file map minions to sls files.
 refer to the master configuration file to know the location for pillars. 
 
 ```
@@ -586,7 +579,7 @@ proxy:
 $ more /srv/pillar/production.sls
 syslog_host: 100.123.35.0
 rt:
-   uri: 'http://100.123.35.0:9081/REST/1.0/'
+   uri: 'http://100.123.35.2:9081/REST/1.0/'
    username: root
    password: password
 data_collection:
@@ -617,7 +610,7 @@ data_collection:
 rt:
     ----------
     uri:
-        http://100.123.35.0:9081/REST/1.0/
+        http://100.123.35.2:9081/REST/1.0/
     username:
         root
     password:
@@ -655,7 +648,7 @@ proxy:
 rt:
     ----------
     uri:
-        http://100.123.35.0:9081/REST/1.0/
+        http://100.123.35.2:9081/REST/1.0/
     username:
         root
     password:
@@ -667,12 +660,11 @@ syslog_host:
 
 
 
-
-
-root@ubuntu:~# more /etc/hosts
+**root@ubuntu:~# more /etc/hosts
 127.0.0.1       localhost
 127.0.1.1       ubuntu
 127.0.0.1       salt
+**
 
 ### Start SaltStack proxies 
 
@@ -726,8 +718,6 @@ On the master:
 
 ```
 # salt 'vMX-1' test.ping
-vMX1:
-    True
 ```
 
 ### Get the pillars for a minion/proxy
@@ -774,7 +764,7 @@ vMX1:
         password:
             password
         uri:
-            http://100.123.35.0:9081/REST/1.0/
+            http://100.123.35.2:9081/REST/1.0/
         username:
             root
     syslog_host:
@@ -825,9 +815,11 @@ Junos facts are stored in proxy grains
 
 ### flexible targeting system
 
+```
 salt 'vMX*' junos.cli "show version"
-salt -L 'vMX1,vMX2' junos.cli "show version"
+salt -L 'vMX-1,vMX-2' junos.cli "show version"
 salt -G 'junos_facts:model:vMX' junos.cli "show version"
+```
 
 ### various output formats
 ```
@@ -843,10 +835,17 @@ salt 'vMX-1' junos.cli "show version" --output=json
 # pip install pyparsing, twisted
 ```
 
+### Junos state modules examples 
 
- mkdir /srv/salt
-root@ubuntu:~# nano /srv/salt/collect_show_commands_example_2.sls
-
+On the master
+```
+# mkdir /srv/salt
+```
+```
+# vi /srv/salt/collect_show_commands_example.sls
+```
+```
+# more /srv/salt/collect_show_commands_example.sls
 show_version:
   junos.cli:
     - name: show version
@@ -857,20 +856,16 @@ show_chassis_hardware:
     - name: show chassis hardware
     - dest: /tmp/show_chassis_hardware.txt
     - format: text
-
-
-
-
-
-tcpdump -i eth0 port 516 -vv
-salt-run state.event pretty=True
-
-
-service salt-master force-reload
-
-salt vMX1 state.apply collect_show_commands_example_2
-ls /tmp/
-more /tmp/show_chassis_hardware.txt
+```
+```
+# salt vMX1 state.apply collect_show_commands_example
+```
+On the host that runs the Junos proxy daemon: 
+```
+# ls /tmp/
+# more /tmp/show_chassis_hardware.txt
+# more /tmp/show_version.txt
+```
 
 ### Configure syslog on Junos devices 
 ```
@@ -916,6 +911,16 @@ vMX-1:
 ```
 
 ### Configure SaltStack for automated tickets management
+
+
+
+tcpdump -i eth0 port 516 -vv
+salt-run state.event pretty=True
+
+
+service salt-master force-reload
+
+
 
 root@ubuntu:~# mkdir /srv/runners
 root@ubuntu:~# nano /srv/runners/request_tracker_saltstack_runner.py

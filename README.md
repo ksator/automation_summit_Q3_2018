@@ -107,7 +107,7 @@ $ sudo groupadd docker
 $ sudo usermod -aG docker $USER
 ```
 
-Exit the ssh session to ```minion1``` and open an new ssh session to ```minion1``` and run these commands to verify you installed it properly:  
+Exit the ssh session to ```minion1``` and open an new ssh session to ```minion1``` and run these commands to verify you installed Docker properly:  
 ```
 $ docker run hello-world
 
@@ -139,7 +139,7 @@ Docker version 18.03.1-ce, build 9ee9f40
 
 ## Request Tracker
 
-There is a Request Tracker docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
+There is a Request Tracker Docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
 
 ### Pull a Request Tracker Docker image on the ubuntu host ```minion1```
 
@@ -333,10 +333,10 @@ $ sudo -s
 on ubuntu host ```master1```
 ```
 $ sudo -s
-# git clone git@:100.123.35.0:automation_demo/network_model.git
-# git clone git@:100.123.35.0:automation_demo/network_parameters.git
-# git clone git@:100.123.35.0:automation_demo/junos_backup.git
-# git clone git@:100.123.35.0:automation_demo/data_collection.git
+# git clone git@:100.123.35.2:automation_demo/network_model.git
+# git clone git@:100.123.35.2:automation_demo/network_parameters.git
+# git clone git@:100.123.35.2:automation_demo/junos_backup.git
+# git clone git@:100.123.35.2:automation_demo/data_collection.git
 # cd network_model
 # git remote -v
 # git branch 
@@ -360,23 +360,35 @@ Let's install:
 - SaltStack Junos proxy on ubuntu host ```master1```.
 
 ### Install SaltStack master on the ubuntu host ```master1``` 
+Check if SaltStack master is already installed on the ubuntu host ```master1``` 
 ```
-sudo -s
-```
-```
-wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+$ sudo -s
 ```
 ```
-more /etc/apt/sources.list.d/saltstack.list
+# salt --version
+```
+```
+# salt-master --version
+```
+if SaltStack master was not already installed on the ubuntu host ```master1```, then install it: 
+```
+$ sudo -s
+```
+```
+# wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+```
+Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in file ```/etc/apt/sources.list.d/saltstack.list```
+```
+# more /etc/apt/sources.list.d/saltstack.list
 deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main
 ```
 ```
-sudo apt-get update
+# sudo apt-get update
 ```
 ```
-sudo apt-get install salt-master
+# sudo apt-get install salt-master
 ```
-### Verify SaltStack master installation 
+Verify you installed properly SaltStack master on the ubuntu host ```master1```
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
@@ -388,7 +400,6 @@ salt-master 2018.3.2 (Oxygen)
 ### Configure SaltStack master
 ```
 # more /etc/salt/master
-
 runner_dirs:
   - /srv/runners
 engines:
@@ -414,7 +425,6 @@ auto_accept: True
 ```
 
 ### start the salt-master
-on ubuntu host ```master1```  
 
 To start it manually with a debug log level, use this command:
 ```
@@ -454,14 +464,41 @@ Just in case you need to troubleshoot SaltStack issues, you can run these comman
 ```
 
 ### install SaltStack minion on ubuntu host ```minion1``` 
+Check if SaltStack minion is already installed on the ubuntu host ```minion1```  
+```
+# salt-minion --version
+```
+```
+# salt --version
+```
+
+if SaltStack minion was not already installed on the ubuntu host ```minion1```, then install it: 
+```
+$ sudo -s
+```
+```
+# wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
+```
+Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in file ```/etc/apt/sources.list.d/saltstack.list```
+```
+# more /etc/apt/sources.list.d/saltstack.list
+deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main
+```
+```
+# sudo apt-get update
+```
 ```
 $ sudo apt-get install salt-minion
 ```
-### verify SaltStack minion installation 
+And verify if salt-minion was installed properly installation 
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
 ```
+```
+# salt --version
+```
+
 ### configure SaltStack minion 
 On the minion:
 ```

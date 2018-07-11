@@ -1,6 +1,6 @@
 # About this project
 
-Lab guide for Juniper automation summit (session July 2018). 
+Lab guide for Juniper automation summit (July 2018 session). 
 
 # About the lab
 
@@ -288,14 +288,14 @@ $ sudo -s
 id_rsa  id_rsa.pub  known_hosts
 ```
 #### Add the public key to Gitlab
-on ubuntu host master1, copy the public key
+on ubuntu host master1, copy the public key:
 ```
 more /root/.ssh/id_rsa.pub
 ```
-Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser.  
-And add the public key to ```User Settings``` > ```SSH Keys```
+Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key to ```User Settings``` > ```SSH Keys```
 
 #### Update your ssh configuration on ubuntu host master1
+on ubuntu host master1
 ```
 $ sudo -s
 ```
@@ -305,7 +305,7 @@ config       id_rsa       id_rsa.pub   known_hosts
 ```
 ```
 # more /root/.ssh/config
-Host 100.123.35.0
+Host 100.123.35.2
 Port 3022
 Host *
 Port 22
@@ -349,7 +349,8 @@ cd
 
 ## SaltStack 
 
-### Install SaltStack master 
+### Install SaltStack master on ubuntu host master1 
+on ubuntu host master1
 ```
 sudo -s
 ```
@@ -367,6 +368,7 @@ sudo apt-get update
 sudo apt-get install salt-master
 ```
 ### Verify SaltStack master installation 
+on ubuntu host master1
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
@@ -376,17 +378,7 @@ salt 2018.3.2 (Oxygen)
 salt-master 2018.3.2 (Oxygen)
 ```
 ### Configure SaltStack master
-```
-$ ifconfig eth0
-eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
-          inet addr:100.123.35.0  Bcast:100.123.255.255  Mask:255.255.0.0
-          inet6 addr: fe80::250:56ff:fe01:2300/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:627787 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:163340 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000
-          RX bytes:847678387 (847.6 MB)  TX bytes:25823336 (25.8 MB)
-```
+on ubuntu host master1
 ```
 # more /etc/salt/master
 
@@ -402,12 +394,12 @@ pillar_roots:
   - /srv/pillar
 ext_pillar:
   - git:
-    - master git@100.123.35.0:summit/network_parameters.git
+    - master git@100.123.35.2:summit/network_parameters.git
 fileserver_backend:
   - git
   - roots
 gitfs_remotes:
-  - ssh://git@100.123.35.0/summit/network_model.git
+  - ssh://git@100.123.35.2/summit/network_model.git
 file_roots:
   base:
     - /srv/salt
@@ -415,6 +407,7 @@ auto_accept: True
 ```
 
 ### start the salt-master
+on ubuntu host master1  
 
 To start it manually with a debug log level, use this command:
 ```
@@ -445,6 +438,7 @@ Rejected Keys:
 ```
 
 ### SaltStack master log
+on ubuntu host master1
 ```
 # more /var/log/salt/master 
 ```
@@ -452,19 +446,19 @@ Rejected Keys:
 # tail -f /var/log/salt/master
 ```
 
-### install SaltStack minion 
-On the minon: 
+### install SaltStack minion on ubuntu host minion1 
+On the ubuntu host minon1: 
 ```
 $ sudo apt-get install salt-minion
 ```
 ### verify SaltStack minion installation 
-On the minon: 
+On the ubuntu host minon1: 
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
 ```
 ### configure SaltStack minion 
-On the minon: 
+On the ubuntu host minon1: 
 ```
 # more /etc/salt/minion
 master: 100.123.35.0
@@ -472,7 +466,7 @@ id: minion_1
 ```
 
 ### start the Salt-minion
-On the minon:  
+On the ubuntu host minon1: 
 To start it manually with a debug log level, use this command:
 ```
 # salt-minion -l debug
@@ -504,8 +498,7 @@ Rejected Keys:
 
 
 ### master <-> minion communication verification
-
-On the master: 
+on ubuntu host master1
 ```
 # salt minion_2 test.ping
 minion_2:

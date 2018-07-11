@@ -12,6 +12,8 @@ Lab guide for Juniper automation summit (July 2018 session).
 - Gitlab
 - RT (Request Tracker)
 
+## Diagram
+
 ## Management IP addresses
 | Name | Management IP address  |
 | ------------- | ------------- |
@@ -19,6 +21,7 @@ Lab guide for Juniper automation summit (July 2018 session).
 | master1    | 100.123.35.0    |  
 | vMX-1    | 100.123.1.1    |  
 | vMX-2    | 100.123.1.2    |  
+
 
 # Use cases
 
@@ -44,6 +47,15 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 # Lab instructions
 
+## Overview 
+- Docker will be installed on ubuntu host ```minion1```.
+- Gitlab and Request Tracker will be on ubuntu host ```minion1``` (containers).
+- SaltStack master will be installed on ubuntu host ```master1```.
+- SaltStack minion will be installed on ubuntu host ```minion1```.
+- SaltStack Junos proxy will be installed on ubuntu host ```master1```.
+
+## Ubuntu
+
 Here's some system information from the Ubuntu hosts we will use: 
 ```
 $ uname -a
@@ -52,9 +64,9 @@ Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_6
 
 ## Docker
 
-### Install Docker on ubuntu host minion1
+### Install Docker on ubuntu host ```minion1```
 
-Check if Docker is already installed on ubuntu host minion1
+Check if Docker is already installed on ubuntu host ```minion1```
 ```
 $ docker --version
 ```
@@ -95,7 +107,7 @@ $ sudo groupadd docker
 $ sudo usermod -aG docker $USER
 ```
 
-Exit the ssh session to minion1 and open an new ssh session to minion1 and run these commands to verify you installed it properly:  
+Exit the ssh session to ```minion1``` and open an new ssh session to ```minion1``` and run these commands to verify you installed it properly:  
 ```
 $ docker run hello-world
 
@@ -129,7 +141,7 @@ Docker version 18.03.1-ce, build 9ee9f40
 
 There is a Request Tracker docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
 
-### Pull a Request Tracker Docker image on ubuntu host minion1
+### Pull a Request Tracker Docker image on ubuntu host ```minion1```
 
 Check if you already have it locally: 
 ```
@@ -147,7 +159,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
-### Instanciate a Request Tracker container on ubuntu host minion1
+### Instanciate a Request Tracker container on ubuntu host ```minion1```
 
 ```
 $ docker run -d --rm --name rt -p 9081:80 netsandbox/request-tracker
@@ -171,7 +183,7 @@ There are python libraries that provide an easy programming interface for dealin
 - [python-rtkit](https://github.com/z4r/python-rtkit)
 - [rt](https://github.com/CZ-NIC/python-rt) 
 
-### Install the ```rt``` library on ubuntu host minion1
+### Install the ```rt``` library on ubuntu host ```master1```
 
 ```
 $ sudo -s
@@ -188,7 +200,7 @@ Verify
 ```
 
 ### Verify you can use ```rt``` Python library
-Python interactive session on ubuntu host minion1: 
+Python interactive session on ubuntu host ```master1```: 
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -223,7 +235,7 @@ True
 
 There is a Gitlab docker image available https://hub.docker.com/r/gitlab/gitlab-ce/  
 
-### Pull a Gitlab Docker image on ubuntu host minion1
+### Pull a Gitlab Docker image on ubuntu host ```minion1```
 
 Check if you already have it locally: 
 ```
@@ -241,7 +253,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
 ```
 
-### Instanciate a Gitlab container on ubuntu host minion1
+### Instanciate a Gitlab container on ubuntu host ```minion1```
 
 ```
 $ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce
@@ -275,7 +287,7 @@ create new projects:
 
 ### Gitlab SSH 
 
-#### Generate ssh keys on ubuntu host master1
+#### Generate ssh keys on ubuntu host ```master1```
 
 ```
 $ sudo -s
@@ -288,14 +300,14 @@ $ sudo -s
 id_rsa  id_rsa.pub  known_hosts
 ```
 #### Add the public key to Gitlab
-on ubuntu host master1, copy the public key:
+on ubuntu host ```master1```, copy the public key:
 ```
 more /root/.ssh/id_rsa.pub
 ```
 Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key to ```User Settings``` > ```SSH Keys```
 
-#### Update your ssh configuration on ubuntu host master1
-on ubuntu host master1
+#### Update your ssh configuration on ubuntu host ```master1```
+on ubuntu host ```master1```
 ```
 $ sudo -s
 ```
@@ -312,6 +324,7 @@ Port 22
 ```
 
 #### Verify
+on ubuntu host ```master1```
 ```
 $ sudo -s
 ```
@@ -349,8 +362,13 @@ cd
 
 ## SaltStack 
 
-### Install SaltStack master on ubuntu host master1 
-on ubuntu host master1
+Let's install: 
+- SaltStack master on ubuntu host ```master1```.
+- SaltStack minion on ubuntu host ```minion1```.
+- SaltStack Junos proxy on ubuntu host ```master1```.
+
+### Install SaltStack master on ubuntu host ```master1``` 
+on ubuntu host ```master1```
 ```
 sudo -s
 ```
@@ -368,7 +386,7 @@ sudo apt-get update
 sudo apt-get install salt-master
 ```
 ### Verify SaltStack master installation 
-on ubuntu host master1
+on ubuntu host ```master1```
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
@@ -378,7 +396,7 @@ salt 2018.3.2 (Oxygen)
 salt-master 2018.3.2 (Oxygen)
 ```
 ### Configure SaltStack master
-on ubuntu host master1
+on ubuntu host ```master1```
 ```
 # more /etc/salt/master
 
@@ -407,7 +425,7 @@ auto_accept: True
 ```
 
 ### start the salt-master
-on ubuntu host master1  
+on ubuntu host ```master1```  
 
 To start it manually with a debug log level, use this command:
 ```
@@ -438,7 +456,8 @@ Rejected Keys:
 ```
 
 ### SaltStack master log
-on ubuntu host master1
+Just in case you need to troubleshoot SaltStack issues. 
+on ubuntu host ```master1```
 ```
 # more /var/log/salt/master 
 ```
@@ -446,27 +465,27 @@ on ubuntu host master1
 # tail -f /var/log/salt/master
 ```
 
-### install SaltStack minion on ubuntu host minion1 
-On the ubuntu host minon1: 
+### install SaltStack minion on ubuntu host ```minion1``` 
+On the ubuntu host ```minon1```: 
 ```
 $ sudo apt-get install salt-minion
 ```
 ### verify SaltStack minion installation 
-On the ubuntu host minon1: 
+On the ubuntu host ```minon1```: 
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
 ```
 ### configure SaltStack minion 
-On the ubuntu host minon1: 
+On the ubuntu host ```minon1```: 
 ```
 # more /etc/salt/minion
 master: 100.123.35.0
-id: minion_1
+id: minion1
 ```
 
 ### start the Salt-minion
-On the ubuntu host minon1: 
+On the ubuntu host ```minon1```: 
 To start it manually with a debug log level, use this command:
 ```
 # salt-minion -l debug
@@ -490,7 +509,7 @@ Once it is started, on the master, you can list all public keys
 ```
 # salt-key -L
 Accepted Keys:
-minion_1
+minion1
 Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
@@ -498,14 +517,14 @@ Rejected Keys:
 
 
 ### master <-> minion communication verification
-on ubuntu host master1
+on master 
 ```
-# salt minion_2 test.ping
+# salt minion1 test.ping
 minion_2:
     True
 ```
 ```
-# salt "minion_2" cmd.run "pwd"
+# salt "minion1" cmd.run "pwd"
 ```
 
 ### dependencies installation for SaltStack Junos proxy

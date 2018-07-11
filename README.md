@@ -570,6 +570,7 @@ root@ubuntu:~# more /etc/hosts
 127.0.1.1       ubuntu
 127.0.0.1       salt
 
+### Start SaltStack proxies 
 
 You need one salt proxy process per device.
 to start the proxy for vMX-1 with a debug log level, use this command:
@@ -579,6 +580,9 @@ sudo salt-proxy -l debug --proxyid=vMX-1
 if you prefer to run it as a daemon, use this command:
 ```
 sudo salt-proxy -d --proxyid=vMX-1
+```
+```
+ps -ef | grep salt
 ```
 ### SaltStack keys 
 
@@ -612,11 +616,15 @@ Unaccepted Keys:
 Rejected Keys:
 ```
 
-### 
-root@ubuntu:~# salt 'vMX1' test.ping
+### master <-> proxies communication verification
+
+On the master: 
+
+```
+# salt 'vMX1' test.ping
 vMX1:
     True
-
+```
 
 ### Get the pillars for a minion/proxy
 

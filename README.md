@@ -6,6 +6,7 @@ Labs guide for automation summit July 2018.
 
 ## Building blocks:  
 - Junos devices
+- Ubuntu
 - SaltStack
 - Docker
 - Gitlab
@@ -31,7 +32,7 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 ![RT.png](RT.png)  
 
-# Lab guide
+# Labs intsructions
 
 ## Ubuntu
 
@@ -180,9 +181,7 @@ create new projects:
 
 # Gitlab SSH 
 
-## ssh keys
-
-### generate ssh keys
+## Generate ssh keys
 ```
 $ sudo -s
 ```
@@ -193,7 +192,7 @@ $ sudo -s
 # ls /root/.ssh/
 id_rsa  id_rsa.pub  known_hosts
 ```
-### add the public key to Gitlab
+## Add the public key to Gitlab
 Copy the public key
 ```
 more /root/.ssh/id_rsa.pub
@@ -201,11 +200,7 @@ more /root/.ssh/id_rsa.pub
 Access Gitlab GUI with ```http://localhost:9080``` or ```http://host-ip:9080``` in a browser.  
 And add the public key to ```User Settings``` > ```SSH Keys```
 
-# update your ssh configuration
-```
-# ls /root/.ssh/
-config       id_rsa       id_rsa.pub   known_hosts
-```
+## Update your ssh configuration
 ```
 $ ifconfig eth0
 eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
@@ -223,14 +218,25 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        25 hours ago        Up 25 hours (healthy)   443/tcp, 0.0.0.0:3022->22/tcp, 0.0.0.0:9080->80/tcp   gitlab
 ```
 ```
+$ sudo -s
+```
+```
+# ls /root/.ssh/
+config       id_rsa       id_rsa.pub   known_hosts
+```
+```
 # more /root/.ssh/config
 Host 100.123.35.0
 Port 3022
 Host *
 Port 22
 ```
-
-
+## Verify
+```
+$ sudo -s
+```
+```
+# git 
 root@ubuntu:~# git clone git@100.123.35.0:summit/network_parameters.git
 
 

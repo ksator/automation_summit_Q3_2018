@@ -455,6 +455,13 @@ Device(100.123.1.1)
 ```
 ### Pillars configuration
 
+Pillars are variables.  
+sls files.  
+yaml data structure.  
+There is a top file.  
+top.sls file map minions to sls files.
+refer to the master configuration file to know the location for pillars. 
+
 ```
 $ ls /srv/pillar/
 production.sls  top.sls  vMX-1-details.sls
@@ -621,7 +628,7 @@ Rejected Keys:
 On the master: 
 
 ```
-# salt 'vMX1' test.ping
+# salt 'vMX-1' test.ping
 vMX1:
     True
 ```
@@ -629,7 +636,7 @@ vMX1:
 ### Get the pillars for a minion/proxy
 
 ```
-# salt 'vMX1' pillar.ls
+# salt 'vMX-1' pillar.ls
 vMX1:
     - rt
     - syslog_host
@@ -637,7 +644,7 @@ vMX1:
     - proxy
 ```
 ```
-# salt 'vMX1' pillar.items
+# salt 'vMX-1' pillar.items
 vMX1:
     ----------
     data_collection:
@@ -680,33 +687,56 @@ vMX1:
 
 
 doc
-salt 'vMX1' junos -d
-root@ubuntu:~# salt 'vMX1' junos.cli -d
+salt 'vMX-1' junos -d
+root@ubuntu:~# salt 'vMX-1' junos.cli -d
 
 
-root@ubuntu:~# salt 'vMX1' junos.cli "show version"
-vMX1:
+root@ubuntu:~# salt 'vMX-1' junos.cli "show version"
+vMX-1:
     ----------
     message:
 
 salt 'vMX1' junos.rpc get-software-information
 
+### grains
 
-salt 'vMX1' grains.ls
-salt 'vMX1' grains.items
-salt 'vMX1' grains.item junos_facts
-salt 'vMX1' junos.facts
+Grains are information collected from minions/proxies.  
 
-flexible targeting
+Available grains can be listed by using the 'grains.ls' module:  
+```
+# salt 'vMX-1' grains.ls
+```
+Return all grains:
+```
+# salt 'vMX-1' grains.items
+```
+Return one or more grains:
+```
+# salt 'vMX-1' grains.item os_family zmqversion
+```
+
+Displays the facts gathered during the connection:
+```
+# salt 'vMX-1' junos.facts
+```
+Junos facts are stored in proxy grains
+```
+# salt 'vMX-1' grains.item junos_facts
+```
+
+### flexible targeting system
+
 salt 'vMX*' junos.cli "show version"
 salt -L 'vMX1,vMX2' junos.cli "show version"
 salt -G 'junos_facts:model:vMX' junos.cli "show version"
 
-
-output
-salt 'vMX1' junos.rpc get-software-information --output=yaml
-salt 'vMX1' junos.cli "show version" --output=yaml
-salt 'vMX1' junos.cli "show version" --output=json
+### various output formats
+```
+salt 'vMX-1' junos.rpc get-software-information --output=yaml
+```
+```
+salt 'vMX-1' junos.cli "show version" --output=json
+```
 
 
 

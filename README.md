@@ -2,7 +2,7 @@
 
 Lab guide for Juniper automation summit (session July 2018). 
 
-# About the labs
+# About the lab
 
 ## Building blocks 
 - Junos devices
@@ -19,6 +19,8 @@ Lab guide for Juniper automation summit (session July 2018).
 | master1    | 100.123.35.0    |  
 | vMX-1    | 100.123.1.1    |  
 | vMX-2    | 100.123.1.2    |  
+
+# Use cases
 
 ##  Junos configuration automatic backup on Git
 
@@ -40,7 +42,7 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 ![RT.png](RT.png)  
 
-# Labs instructions
+# Lab instructions
 
 Here's some system information from the Ubuntu hosts we will use: 
 ```
@@ -145,7 +147,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
-### Instanciate a Request Tracker Docker container on ubuntu host minion1
+### Instanciate a Request Tracker container on ubuntu host minion1
 
 ```
 $ docker run -d --rm --name rt -p 9081:80 netsandbox/request-tracker
@@ -185,17 +187,17 @@ Verify
 # pip list
 ```
 
-### Verify RT with Python 
-Python interactive session: 
+### Verify you can use ```rt``` Python library
+Python interactive session on ubuntu host minion1: 
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
 [GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import rt
->>> tracker = rt.Rt('http://100.123.35.0:9081/REST/1.0/', 'root', 'password')
+>>> tracker = rt.Rt('http://100.123.35.2:9081/REST/1.0/', 'root', 'password')
 >>> tracker.url
-'http://100.123.35.0:9081/REST/1.0/'
+'http://100.123.35.2:9081/REST/1.0/'
 >>> tracker.login()
 True
 >>> tracker.search(Queue='General', Status='new')
@@ -239,7 +241,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 gitlab/gitlab-ce             latest              504ada597edc        6 days ago          1.46GB
 ```
 
-### Instanciate a Gitlab Docker container on ubuntu host minion1
+### Instanciate a Gitlab container on ubuntu host minion1
 
 ```
 $ docker run -d --name gitlab -p 3022:22 -p 9080:80 gitlab/gitlab-ce
@@ -258,7 +260,7 @@ It takes about 5 mns.
 ```
 $ watch -n 10 'docker ps'
 ```
-Then, access Gitlab GUI with ```http://100.123.35.0:9080``` in a browser.  
+Then, access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser.  
 Gitlab user is ```root```.  
 
 
@@ -273,7 +275,8 @@ create new projects:
 
 ### Gitlab SSH 
 
-#### Generate ssh keys
+#### Generate ssh keys on ubuntu host master1
+
 ```
 $ sudo -s
 ```
@@ -285,30 +288,14 @@ $ sudo -s
 id_rsa  id_rsa.pub  known_hosts
 ```
 #### Add the public key to Gitlab
-Copy the public key
+on ubuntu host master1, copy the public key
 ```
 more /root/.ssh/id_rsa.pub
 ```
-Access Gitlab GUI with ```http://localhost:9080``` or ```http://host-ip:9080``` in a browser.  
+Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser.  
 And add the public key to ```User Settings``` > ```SSH Keys```
 
-#### Update your ssh configuration
-```
-$ ifconfig eth0
-eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
-          inet addr:100.123.35.0  Bcast:100.123.255.255  Mask:255.255.0.0
-          inet6 addr: fe80::250:56ff:fe01:2300/64 Scope:Link
-          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-          RX packets:627787 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:163340 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:1000
-          RX bytes:847678387 (847.6 MB)  TX bytes:25823336 (25.8 MB)
-```
-```
-$ docker ps
-CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                  PORTS                                                 NAMES
-eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        25 hours ago        Up 25 hours (healthy)   443/tcp, 0.0.0.0:3022->22/tcp, 0.0.0.0:9080->80/tcp   gitlab
-```
+#### Update your ssh configuration on ubuntu host master1
 ```
 $ sudo -s
 ```

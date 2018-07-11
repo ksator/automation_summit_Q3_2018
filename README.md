@@ -1174,3 +1174,22 @@ nodegroups:
 ```
 salt vMX-1 state.apply collect_data_and_archive_to_git
 ```
+
+
+root@ubuntu:~# service salt-master restart
+root@ubuntu:~# salt-run reactor.list
+event:
+    ----------
+    _stamp:
+        2018-07-11T20:25:29.882661
+suffix:
+    salt/reactors/manage/list
+|_
+  ----------
+  jnpr/syslog/*/SNMP_TRAP_LINK_*:
+      - /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
+|_
+  ----------
+  jnpr/syslog/*/UI_COMMIT_COMPLETED:
+      - /srv/reactor/automate_show_commands.sls
+root@ubuntu:~#

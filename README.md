@@ -294,7 +294,9 @@ cd
 
 ## SaltStack 
 
-### Install SaltStack master
+### SaltStack master
+ 
+#### Install SaltStack master
 ```
 sudo -s
 ```
@@ -311,7 +313,7 @@ sudo apt-get update
 ```
 sudo apt-get install salt-master
 ```
-### Verify
+#### Verify SaltStack master installation
 ```
 # salt --version
 salt 2018.3.2 (Oxygen)
@@ -320,7 +322,7 @@ salt 2018.3.2 (Oxygen)
 # salt-master --version
 salt-master 2018.3.2 (Oxygen)
 ```
-### Configure SaltStack master
+#### Configure SaltStack master
 ```
 $ ifconfig eth0
 eth0      Link encap:Ethernet  HWaddr 00:50:56:01:23:00
@@ -376,7 +378,7 @@ Rejected Keys:
 # ps -ef | grep salt
 ```
 
-### Troubleshoot SaltStack master. 
+#### SaltStack master troubleshooting 
 ```
 # more /var/log/salt/master 
 ```
@@ -384,16 +386,19 @@ Rejected Keys:
 # tail -f /var/log/salt/master
 ```
 
+### SaltStack minion
 
-### Install SaltStack minion
+#### Install SaltStack minion
 ```
 $ sudo apt-get install salt-minion
 ```
+#### Verify SaltStack minion installation
+
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
 ```
-### Configure SaltStack minion
+#### Configure SaltStack minion
 
 ```
 # more /etc/salt/minion
@@ -420,12 +425,19 @@ minion_2:
 ```
 # salt "minion_2" cmd.run "pwd"
 ```
-### SaltStack proxy
+### SaltStack proxy for Junos
 
-apt install python-pip
+#### Install SaltStack proxy for Junos
+
+```
+# apt install python-pip
+```
+```
 sudo python -m easy_install --upgrade pyOpenSSL
+```
+```
 pip install junos-eznc jxmlease jsnapy
-
+```
 
 root@ubuntu:~# python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -962,31 +974,4 @@ FPC 0                                                    Virtual FPC
   MIC 0                                                  Virtual
     PIC 0                 BUILTIN      BUILTIN           Virtual
 root@ubuntu:~#
-
-
-66.129.235.2
-48010 
-jcluser
-Juniper!1 vMX1
-
-
-jcluser
-66.129.235.2 
-48025 
-Juniper!1
-
-
-
-jcluser
-66.129.235.2
-48001 
-Juniper!1 
-master2
-
-
-66.129.235.2	48023
-
-
-
-
 

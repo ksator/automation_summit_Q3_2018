@@ -564,9 +564,9 @@ Device(100.123.1.1)
 
 Pillars are variables (for templates, sls files ...).    
 They are defined in sls files, with a yaml data structure.  
-There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files.
-Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars. 
-Copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)
+There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files.  
+Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars.  
+Copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)  
 
 ### Pillars configuration verification
 ```
@@ -722,11 +722,23 @@ salt 'vMX-1' junos.rpc get-software-information --output=yaml
 salt 'vMX-1' junos.cli "show version" --output=json
 ```
 
+
 ### Install the junos syslog engine dependencies
 
 ```
 # pip install pyparsing, twisted
 ```
+
+### SaltStack files server
+
+Salt runs a file server to deliver files to minions and proxies.  
+The [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) indicates the location for the file servers.  
+We are using an external files servers (repository ```files_server``` in the organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
+
+### Junos configuration templates 
+
+Copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
+
 
 ### SaltStack state files
 
@@ -757,9 +769,11 @@ On that host, run these commands:
 
 ### Configure syslog on Junos devices 
 
-The [state file syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls)
+The state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) uses the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf).  
 
-To execute the [state file syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master:  
+You already copied both the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) and the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf) at the root of the SaltStack file servers (repository ```files_server``` in the organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
+
+To execute the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master:  
 ```
 # salt ''vMX-1' pillar.item syslog_host
 ```

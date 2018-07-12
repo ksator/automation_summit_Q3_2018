@@ -414,7 +414,7 @@ salt-master 2018.3.2 (Oxygen)
 ```
 ### Configure SaltStack master
 
-on the ubuntu host ```master1```, copy [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to file ```/etc/salt/master```
+on the ubuntu host ```master1```, copy this [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) in the file ```/etc/salt/master```
 
 ### start the salt-master
 
@@ -487,7 +487,7 @@ salt-minion 2018.3.2 (Oxygen)
 
 ### configure SaltStack minion 
 
-On the minion, copy the [minion configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/minion) to ```/etc/salt/minion```
+On the minion, copy this [minion configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/minion) in the file ```/etc/salt/minion```
 
 ### start the Salt-minion
 On the minion:
@@ -524,7 +524,7 @@ Unaccepted Keys:
 Rejected Keys:
 ```
 
-### master <-> minion communication verification
+### verify master <-> minion communication 
 on the master 
 ```
 # salt minion1 test.ping
@@ -535,7 +535,8 @@ on the master
 
 ### Install requirements for SaltStack Junos proxy
 
-Run these commands on the host that will run a Junos proxy daemon. Let's do it on the master.  
+Run these commands on the host that will run a Junos proxy daemon.  
+Let's do it on the master.  
 
 ```
 # apt install python-pip
@@ -566,115 +567,21 @@ Device(100.123.1.1)
 ```
 ### Pillars configuration
 
-Pillars are variables.  
-sls files.  
-yaml data structure.  
-There is a top file. top.sls file map minions to sls files.
-refer to the master configuration file to know the location for pillars. 
-
-```
-$ ls /srv/pillar/
-production.sls  top.sls  vMX-1-details.sls
-```
-```
-$ more /srv/pillar/top.sls
-base:
-    '*':
-         - production
-    'vMX-1':
-         - vMX-1-details
-    'vMX-2':
-         - vMX-2-details
-```
-``` 
-$ more /srv/pillar/vMX-1-details.sls
-proxy:
-      proxytype: junos
-      host: 100.123.1.1
-      username: jcluser
-      port: 830
-      passwd: Juniper!1
-```
-```
-$ more /srv/pillar/production.sls
-syslog_host: 100.123.35.0
-rt:
-   uri: 'http://100.123.35.2:9081/REST/1.0/'
-   username: root
-   password: password
-data_collection:
-   - command: show interfaces
-   - command: show chassis hardware
-   - command: show version
-```
+Pillars are variables (for templates, sls files ...).    
+They are defined in sls files, with a yaml data structure.  
+There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files.
+Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars. 
+Copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)
 
 ### Pillars configuration verification
 ```
 $ sudo -s
 ```
 ```
-root@ubuntu:~# salt-run pillar.show_pillar
-data_collection:
-    |_
-      ----------
-      command:
-          show interfaces
-    |_
-      ----------
-      command:
-          show chassis hardware
-    |_
-      ----------
-      command:
-          show version
-rt:
-    ----------
-    uri:
-        http://100.123.35.2:9081/REST/1.0/
-    username:
-        root
-    password:
-        password
-syslog_host:
-    100.123.35.0
+# salt-run pillar.show_pillar
 ```
 ```
 # salt-run pillar.show_pillar vMX-1
-data_collection:
-    |_
-      ----------
-      command:
-          show interfaces
-    |_
-      ----------
-      command:
-          show chassis hardware
-    |_
-      ----------
-      command:
-          show version
-proxy:
-    ----------
-    proxytype:
-        junos
-    host:
-        100.123.1.1
-    username:
-        jcluser
-    port:
-        830
-    passwd:
-        Juniper!1
-rt:
-    ----------
-    uri:
-        http://100.123.35.2:9081/REST/1.0/
-    username:
-        root
-    password:
-        password
-syslog_host:
-    100.123.35.0
 ```
 
 
@@ -689,16 +596,17 @@ syslog_host:
 ### Start SaltStack proxies 
 
 You need one salt proxy process per device.
-to start the proxy for vMX-1 with a debug log level, use this command:
+to start the proxy for the device ```vMX-1``` with a debug log level, use this command:
 ```
-sudo salt-proxy -l debug --proxyid=vMX-1
+# sudo salt-proxy -l debug --proxyid=vMX-1
 ```
 if you prefer to run it as a daemon, use this command:
 ```
-sudo salt-proxy -d --proxyid=vMX-1
+# sudo salt-proxy -d --proxyid=vMX-1
 ```
+To see the SaltStack processes, run this command: 
 ```
-ps -ef | grep salt
+# ps -ef | grep salt
 ```
 ### SaltStack keys 
 

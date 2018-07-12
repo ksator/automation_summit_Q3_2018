@@ -879,6 +879,13 @@ To execute the state file [syslog.sls](https://github.com/ksator/automation_summ
 ```
 # salt vMX1 junos.cli "show configuration system syslog host 100.123.35.0"
 ```
+
+#### Verify the salt master receives syslog messages from Junos devices
+On the master:
+```
+# tcpdump -i eth0 port 516 -vv
+```
+
 ### Reactor
 
 #### map some events to reactor sls files
@@ -901,9 +908,9 @@ mkdir /srv/reactor/
 and copy [these sls reactor files](https://github.com/ksator/automation_summit_july_18/tree/master/reactors) to the directory ```/srv/reactor/```
 
 ### Event bus
-
+Run this command on the master to watch the 0MQ event bus
 ```
-salt-run state.event pretty=True
+# salt-run state.event pretty=True
 ```
 
 ### Runners

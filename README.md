@@ -184,14 +184,14 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
-### Python libraries for RT 
+### Install the ```rt``` python library on the ubuntu host ```master1```
 
 There are python libraries that provide an easy programming interface for dealing with RT:  
 - [rtapi](https://github.com/Rickerd0613/rtapi) 
 - [python-rtkit](https://github.com/z4r/python-rtkit)
 - [rt](https://github.com/CZ-NIC/python-rt) 
 
-### Install the ```rt``` library on the ubuntu host ```master1```
+Install the ```rt``` library on the ubuntu host ```master1```
 
 ```
 $ sudo -s
@@ -273,29 +273,30 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        26 hours ago        Up 26 hours (healthy)   443/tcp, 0.0.0.0:3022->22/tcp, 0.0.0.0:9080->80/tcp   gitlab
 ```
 
-### Configure Gitlab 
-
 Wait for Gitlab container status to be ```healthy```.  
 It takes about 5 mns.  
 ```
 $ watch -n 10 'docker ps'
 ```
-Then, access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser. 
+
+### Verify you can access to Gitlab GUI
+
+Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser. 
 Gitlab user is ```root```    
-- Create a password ```password```  
-- Sign in with ```root``` and ```password```  
-- Create a group ```automation_demo``` (Public).
-- Create these new projects in the group ```automation_demo```: 
+Create a password ```password```  
+Sign in with ```root``` and ```password```  
+
+### Create a group ```automation_demo``` (Public)
+
+### Create these new projects in the group ```automation_demo``` 
   - ```variables``` (Public, add Readme)
   - ```files_server``` (Public, add Readme)
   - ```configuration_backup``` (Public, add Readme)
   - ```show_commands_collected``` (Public, add Readme)
 
+### Add your public key to Gitlab
 
-### Gitlab SSH 
-
-#### Generate ssh keys on ubuntu host ```master1```
-
+Generate ssh keys on ubuntu host ```master1```
 ```
 $ sudo -s
 ```
@@ -306,14 +307,14 @@ $ sudo -s
 # ls /root/.ssh/
 id_rsa  id_rsa.pub  known_hosts
 ```
-#### Add the public key to Gitlab
-on ubuntu host ```master1```, copy the public key:
+Add the public key to Gitlab.  
+On ubuntu host ```master1```, copy the public key:
 ```
 # more /root/.ssh/id_rsa.pub
 ```
 Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key to ```User Settings``` > ```SSH Keys```
 
-#### Update your ssh configuration on ubuntu host ```master1```
+### Update your ssh configuration on ubuntu host ```master1```
 on ubuntu host ```master1```
 ```
 $ sudo -s
@@ -330,7 +331,7 @@ Host *
 Port 22
 ```
 
-#### Configure your Git client
+### Configure your Git client
 on ubuntu host ```master1```
 ```
 $ sudo -s
@@ -338,7 +339,7 @@ $ sudo -s
 # git config --global user.name "Your Name"
 ```
 
-#### Verify you can use Git and Gitlab
+### Verify you can use Git and Gitlab
 on ubuntu host ```master1```
 ```
 $ sudo -s

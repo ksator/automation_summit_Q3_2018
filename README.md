@@ -824,16 +824,22 @@ On that host, run these commands:
 # ls -l /tmp/vMX-1/
 ```
 
-#### demo using the state file [collect_show_commands_and_archive_to_git](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git)
+#### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
 
-To execute the state file [collect_show_commands_and_archive_to_git](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git), run this command on the master: 
-  
-
+To execute the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls), run this command on the master: 
 ```
-salt vMX-1 state.apply collect_data_and_archive_to_git
+salt 'vMX*' state.apply collect_data_and_archive_to_git
 ```
+Verify on the repository ```configuration_backup``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
-#### demo using the state file
+
+#### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
+
+To execute the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls), run this command on the master: 
+```
+salt 'vMX*' state.apply collect_configuration_and_archive_to_git
+```
+Verify on the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
 ### junos syslog engine
 
@@ -917,4 +923,3 @@ Test your runner:
 ```
 # salt-run request_tracker.change_ticket_status_to_resolved ticket_id=2
 ```
-

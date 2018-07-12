@@ -16,12 +16,12 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 ## Diagram
 
 ## Management IP addresses
-| Name | Management IP address  | Username | Password|
-| ------------- | ------------- |------------- | ------------- |
-| minion1    | 100.123.35.2    | jcluser | Juniper!1 |
-| master1    | 100.123.35.0    | jcluser | Juniper!1 |
-| vMX-1    | 100.123.1.1    | jcluser | Juniper!1 |
-| vMX-2    | 100.123.1.2    | jcluser | Juniper!1 |
+| Name | Operating system | Management IP address  | Username | Password|
+| ------------- | ------------- | ------------- |------------- | ------------- |
+| minion1    | Ubuntu | 100.123.35.2    | jcluser | Juniper!1 |
+| master1    | Ubuntu | 100.123.35.0    | jcluser | Juniper!1 |
+| vMX-1    | Junos | 100.123.1.1    | jcluser | Juniper!1 |
+| vMX-2    | Junos | 100.123.1.2    | jcluser | Juniper!1 |
 
 
 

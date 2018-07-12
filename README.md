@@ -284,7 +284,7 @@ Gitlab user is ```root```
 - Create a password ```password```  
 - Sign in with ```root``` and ```password```  
 - Create a group ```automation_demo``` (Public).
-- Create new projects in the group ```automation_demo```: 
+- Create these new projects in the group ```automation_demo```: 
   - ```variables``` (Public, add Readme)
   - ```files_server``` (Public, add Readme)
   - ```configuration_backup``` (Public, add Readme)
@@ -341,11 +341,11 @@ $ sudo -s
 on ubuntu host ```master1```
 ```
 $ sudo -s
-# git clone git@:100.123.35.2:automation_demo/network_model.git
-# git clone git@:100.123.35.2:automation_demo/network_parameters.git
-# git clone git@:100.123.35.2:automation_demo/junos_backup.git
-# git clone git@:100.123.35.2:automation_demo/data_collection.git
-# cd network_model
+# git clone git@:100.123.35.2:automation_demo/variables.git
+# git clone git@:100.123.35.2:automation_demo/files_server.git
+# git clone git@:100.123.35.2:automation_demo/configuration_backup.git
+# git clone git@:100.123.35.2:automation_demo/show_commands_collected.git
+# cd variables
 # git remote -v
 # git branch 
 # ls

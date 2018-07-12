@@ -4,7 +4,7 @@
 {% set d = data %}
 {% endif %}
 
-automate_show_commands:
+automated_show_commands_collection:
     local.state.apply:
         - tgt: "{{ d['hostname'] }}"
         - arg:

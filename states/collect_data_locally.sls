@@ -4,7 +4,7 @@ make sure the device directory is presents:
     file.directory:
         - name: /tmp/{{ device_directory }}
 
-{% for item in pillar['data_collection'] %}
+{% for item in pillar['collect_show_commands'] %}
 
 {{ item.command }}:
     junos.cli:

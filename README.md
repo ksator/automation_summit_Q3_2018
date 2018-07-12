@@ -802,6 +802,21 @@ On that host, run these commands:
 # more /tmp/show_version.txt
 ```
 
+#### Salt demo using the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
+
+To execute the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls), run this command on the master: 
+```
+# salt vMX-1 state.apply collect_data_locally
+```
+Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
+```
+# salt vMX-1 grains.item nodename
+```
+On that host, run these commands:
+```
+# ls -l /tmp/vMX-1/
+```
+
 ### junos syslog engine
 
 Engines are executed in a separate process that is monitored by Salt. If a Salt engine stops, it is restarted automatically.  
@@ -846,4 +861,12 @@ To execute the state file [syslog.sls](https://github.com/ksator/automation_summ
 The runner directory is indicated in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)  
 
 On the master, add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
+
+Test your runner: 
+```
+# salt-run request_tracker.create_ticket subject='test subject' text='test text'
+```
+```
+# salt-run request_tracker.change_ticket_status_to_resolved ticket_id=2
+```
 

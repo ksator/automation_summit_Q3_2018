@@ -33,14 +33,14 @@ At each junos commit, SaltStack automatically collects the new junos configurati
 - Each time SaltStack receives this syslog message, SaltStack automatically collects the new junos configuration file from the
 JUNOS device that send this commit syslog message, and SaltStack automatically archives the new junos configuration file to a git server  
 
-![continous_backup.png](continous_backup.png)  
+![continous_backup.png](resources/continous_backup.png)  
 
 ## Automated Junos show commands collection
 Junos automation demo using SaltStack and Gitlab:
 - Junos devices send syslog messages to SaltStack.
 - Based on syslog messages received, SaltStack automatically collects junos "show commands" output from the JUNOS device that sent a syslog message, and SaltStack automatically archives the collected data on a Git server.
 
-![automated_junos_show_commands_collection_with_syslog_saltstack.png](automated_junos_show_commands_collection_with_syslog_saltstack.png)
+![automated_junos_show_commands_collection_with_syslog_saltstack.png](resources/automated_junos_show_commands_collection_with_syslog_saltstack.png)
 
 ## Automated tickets management
 
@@ -50,7 +50,7 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
   - SaltStack automatically creates a new RT (Request Tracker) ticket to track this issue. If there is already an existing ticket to track this issue, SaltStack updates the existing ticket instead of creating a new one. The syslog messages are added to the appropriate tickets.  
   - SaltStack automatically collects "show commands" output from junos devices and attach the devices output to the appropriate tickets. 
 
-![RT.png](RT.png)  
+![RT.png](resources/RT.png)  
 
 # Lab instructions
 
@@ -285,10 +285,11 @@ Gitlab user is ```root```
 - Sign in with ```root``` and ```password```  
 - Create a group ```automation_demo``` (Public).
 - Create new projects in the group ```automation_demo```: 
-  - ```network_model``` (Public, add Readme)
-  - ```network_parameters``` (Public, add Readme)
-  - ```junos_backup``` (Public, add Readme)
-  - ```data_collection``` (Public, add Readme)
+  - ```variables``` (Public, add Readme)
+  - ```files_server``` (Public, add Readme)
+  - ```configuration_backup``` (Public, add Readme)
+  - ```show_commands_collected``` (Public, add Readme)
+
 
 ### Gitlab SSH 
 

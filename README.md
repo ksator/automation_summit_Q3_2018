@@ -737,17 +737,24 @@ Junos facts gathered during the connection are stored in proxy grains:
 
 #### flexible targeting system
 
+regex
 ```
 # salt '*' test.ping
 ```
 ```
 # salt 'vMX*' junos.cli "show version"
 ```
+list
 ```
 # salt -L 'vMX-1,vMX-2' junos.cli "show version"
 ```
+grain
 ```
 # salt -G 'junos_facts:model:vMX' junos.cli "show version"
+```
+group configured in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)
+```
+# salt -N vmxlab test.ping
 ```
 
 #### various output formats
@@ -855,12 +862,42 @@ To execute the state file [syslog.sls](https://github.com/ksator/automation_summ
 ```
 # salt vMX1 junos.cli "show configuration system syslog host 100.123.35.0"
 ```
+### Reactor
+
+#### map some events to reactor sls files
+
+To map some events to reactor sls files, on the master, copy the [reactor configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/reactor.conf) to ```/etc/salt/master.d/reactor.conf```  
+
+Restart the master:
+```
+# service salt-master restart
+```
+Verify the reactor operationnal state: 
+```
+# salt-run reactor.list
+```
+#### add your reactor sls files to the master
+
+```
+mkdir /srv/reactor/
+```
+copy [these sls reactor files](https://github.com/ksator/automation_summit_july_18/tree/master/reactors) to the directory ```/srv/reactor/```
+
+### Event bus
+
+```
+salt-run state.event pretty=True
+```
 
 ### Runners
 
 The runner directory is indicated in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)  
 
-On the master, add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
+On the master, create the directory ```/srv/runners/```
+```
+# mkdir /srv/runners
+```
+and add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
 
 Test your runner: 
 ```

@@ -149,9 +149,9 @@ Docker version 18.03.1-ce, build 9ee9f40
 
 There is a Request Tracker Docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
 
-### Pull a Request Tracker Docker image on the ubuntu host ```minion1```
+### Pull a Request Tracker Docker image on the ubuntu host ```minion1```  
 
-Check if you already have it locally: 
+Check if you already have it locally:   
 ```
 $ docker images
 ```
@@ -167,8 +167,7 @@ REPOSITORY                   TAG                 IMAGE ID            CREATED    
 netsandbox/request-tracker   latest              b3843a7d4744        4 months ago        423MB
 ```
 
-### Instanciate a Request Tracker container on the ubuntu host ```minion1```
-
+### Instanciate a Request Tracker container on the ubuntu host ```minion1``` 
 ```
 $ docker run -d --rm --name rt -p 9081:80 netsandbox/request-tracker
 ```
@@ -286,9 +285,11 @@ Gitlab user is ```root```
 Create a password ```password```  
 Sign in with ```root``` and ```password```  
 
-### Create a group ```automation_demo``` (Public)
+### Create a group 
+Name it ```automation_demo``` (Public)
 
-### Create these new projects in the group ```automation_demo``` 
+### Create new projects
+Create these new projects in the group ```automation_demo``` 
   - ```variables``` (Public, add Readme)
   - ```files_server``` (Public, add Readme)
   - ```configuration_backup``` (Public, add Readme)
@@ -347,6 +348,7 @@ $ sudo -s
 # git clone git@:100.123.35.2:automation_demo/files_server.git
 # git clone git@:100.123.35.2:automation_demo/configuration_backup.git
 # git clone git@:100.123.35.2:automation_demo/show_commands_collected.git
+# ls
 # cd variables
 # git remote -v
 # git branch 

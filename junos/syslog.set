@@ -1,0 +1,3 @@
+set system syslog host 100.123.35.2 any any
+set system syslog host 100.123.35.2 port 516
+set system syslog host 100.123.35.2 match "UI_COMMIT_COMPLETED|SNMP_TRAP_LINK_*"

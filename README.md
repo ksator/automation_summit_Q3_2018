@@ -361,6 +361,8 @@ $ sudo -s
 # git log --oneline
 # git log
 # git push origin master
+# cd
+#
 ```
 
 ## SaltStack 
@@ -392,7 +394,7 @@ $ sudo -s
 ```
 # wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
 ```
-Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in file ```/etc/apt/sources.list.d/saltstack.list```
+Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in the file ```/etc/apt/sources.list.d/saltstack.list```
 ```
 # more /etc/apt/sources.list.d/saltstack.list
 deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main
@@ -467,7 +469,7 @@ $ sudo -s
 ```
 # wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
 ```
-Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in file ```/etc/apt/sources.list.d/saltstack.list```
+Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in the file ```/etc/apt/sources.list.d/saltstack.list```
 ```
 # more /etc/apt/sources.list.d/saltstack.list
 deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main
@@ -675,7 +677,7 @@ On the master:
 # salt 'vMX*' test.ping
 ```
 
-### Pillar module 
+### Pillar module usages
 
 Get the pillars for a minion/proxy
 
@@ -739,27 +741,21 @@ Junos facts are stored in proxy grains
 # salt '*' test.ping
 ```
 ```
-salt 'vMX*' junos.cli "show version"
+# salt 'vMX*' junos.cli "show version"
 ```
 ```
-salt -L 'vMX-1,vMX-2' junos.cli "show version"
+# salt -L 'vMX-1,vMX-2' junos.cli "show version"
 ```
 ```
-salt -G 'junos_facts:model:vMX' junos.cli "show version"
+# salt -G 'junos_facts:model:vMX' junos.cli "show version"
 ```
 
 ### various output formats
 ```
-salt 'vMX-1' junos.rpc get-software-information --output=yaml
+# salt 'vMX-1' junos.rpc get-software-information --output=yaml
 ```
 ```
-salt 'vMX-1' junos.cli "show version" --output=json
-```
-
-### Install the junos syslog engine dependencies
-In the master
-```
-# pip install pyparsing, twisted
+# salt 'vMX-1' junos.cli "show version" --output=json
 ```
 
 ### SaltStack files server
@@ -800,7 +796,23 @@ On that host, run these commands:
 # more /tmp/show_version.txt
 ```
 
-### Configure syslog on Junos devices 
+### junos syslog engine
+
+Engines are executed in a separate process that is monitored by Salt. If a Salt engine stops, it is restarted automatically.  
+Engines can run on both master and minion.  To start an engine, you need to specify engine information in master/minion config file depending on where you want to run the engine. Once the engine configuration is added, start the master and minion normally. The engine should start along with the salt master/minion.   
+Junos_syslog engine  listens to syslog messages from Junos devices, extracts event information and generates and pusblishes messages on SaltStack 0MQ bus.  
+
+#### Install the junos syslog engine dependencies
+In the master
+```
+# pip install pyparsing, twisted
+```
+
+#### junos syslog engine configuration
+
+We added the junos syslog engine configuration in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) so the junos device should send their syslog messages to the master ip address (100.123.35.0 port 516). 
+
+#### Configure syslog on Junos devices 
 
 The state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) uses the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf).  
 

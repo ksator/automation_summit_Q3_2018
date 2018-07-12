@@ -779,25 +779,22 @@ Copy these [Junos templates](https://github.com/ksator/automation_summit_july_18
 
 Copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
 
-
-### Junos state file demo
+### Junos state module
 
 Salt is a remote execution tool and configuration management system:
 - remote execution: run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands). 
 - configuration management: establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).
 
-#### demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)
-
-To execute the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls), run this command on the master: 
+#### demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
+This file collects show commands output from a Junos device.  
+To execute this file, run this command on the master: 
 ```
 # salt vMX-1 state.apply collect_show_commands_example
 ```
-
 Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
 ```
 # salt vMX-1 grains.item nodename
 ```
-
 On that host, run these commands:
 ```
 # ls /tmp/
@@ -810,36 +807,39 @@ On that host, run these commands:
 ```
 
 #### demo using the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
-
-To execute the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls), run this command on the master: 
+This file collects show commands output from Junos devices and save the output locally (on the salt component that runs the salt proxy daemon).    
+To execute this file, run this command on the master: 
 ```
-# salt vMX-1 state.apply collect_data_locally
+# salt 'vMX*' state.apply collect_data_locally
 ```
 Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
 ```
-# salt vMX-1 grains.item nodename
+# salt 'vMX*' grains.item nodename
 ```
 On that host, run these commands:
 ```
 # ls -l /tmp/vMX-1/
 ```
+```
+# ls -l /tmp/vMX-2/
+```
 
 #### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
-
-To execute the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls), run this command on the master: 
+This file collects show commands output from Junos devices and upload the output to a git server.      
+To execute this file, run this command on the master: 
 ```
 salt 'vMX*' state.apply collect_data_and_archive_to_git
 ```
-Verify on the repository ```configuration_backup``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
+Verify on the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
 
 #### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
-
-To execute the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls), run this command on the master: 
+This file collects junos configuration from Junos devices and upload the output to a git server.      
+To execute this file, run this command on the master: 
 ```
 salt 'vMX*' state.apply collect_configuration_and_archive_to_git
 ```
-Verify on the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
+Verify on the repository ```configuration_backup``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
 ### junos syslog engine
 

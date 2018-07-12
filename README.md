@@ -1,6 +1,7 @@
 # About this project
 
-Lab guide for Juniper automation summit (July 2018 session - day 3 - Hands on Labs around Event Driven automation). 
+Lab guide for Juniper automation summit  
+July 2018 session - day 3 - Hands on Labs around Event Driven automation. 
 
 # About the lab
 

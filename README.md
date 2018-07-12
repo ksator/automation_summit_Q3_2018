@@ -518,8 +518,6 @@ if you prefer to run the salt-minion as a daemon:
 # salt-minion -d
 ```
 
-### master <-> minion communication
-
 #### Verify the keys on the master 
 
 By default, you need to accept the minions/proxies public keys on the master.   
@@ -677,7 +675,11 @@ On the master:
 # salt 'vMX*' test.ping
 ```
 
-### Pillar module usages
+### SaltStack execution modules 
+
+Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules)
+
+#### Pillar module usages
 
 Get the pillars for a minion/proxy
 

@@ -764,16 +764,22 @@ Salt runs a file server to deliver files to minions and proxies.
 The [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) indicates the location for the file servers.  
 We are using an external files servers (repository ```files_server``` in the organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
 
-### Junos configuration templates 
+#### Junos configuration templates 
 
 Copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
 
-### SaltStack state files
+#### SaltStack state files
 
 Copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
 
 
 ### Junos state file demo
+
+Salt is a remote execution tool and configuration management system:
+- remote execution: run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands). 
+- configuration management: establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).
+
+#### Salt demo using a state file
 
 To execute [the syslog.sls state file](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master: 
 ```
@@ -841,202 +847,3 @@ The runner directory is indicated in the [master configuration file](https://git
 
 On the master, add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
 
-### Configure SaltStack for automated tickets management
-
-```
-# more /etc/salt/master.d/reactor.conf
-reactor:
-   - 'jnpr/syslog/*/SNMP_TRAP_LINK_*':
-       - /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
-```
-```
-# more /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
-{% if data['data'] is defined %}
-{% set d = data['data'] %}
-{% else %}
-{% set d = data %}
-{% endif %}
-{% set interface = d['message'].split(' ')[-1] %}
-{% set interface = interface.split('.')[0] %}
-
-create_a_new_ticket_or_update_the_existing_one:
-  runner.request_tracker_saltstack_runner.create_ticket:
-    - args:
-        subject: "device {{ d['hostname'] }} had its interface {{ interface }} status that changed"
-        text: " {{ d['message'] }}"
-
-
-
-show_commands_output_collection:
-  local.state.apply:
-    - tgt: "{{ d['hostname'] }}"
-    - arg:
-      - collect_data_locally
-
-
-attach_files_to_a_ticket:
-  runner.request_tracker_saltstack_runner.attach_files_to_ticket:
-    - args:
-        subject: "device {{ d['hostname'] }} had its interface {{ interface }} status that changed"
-        device_directory: "{{ d['hostname'] }}"
-    - require:
-        - show_commands_output_collection
-        - create_a_new_ticket_or_update_the_existing_one
-
-```
-```
-# more /srv/salt/collect_data_locally.sls
-{% set device_directory = grains['id'] %}
-
-make sure the device directory is presents:
-  file.directory:
-    - name: /tmp/{{ device_directory }}
-
-{% for item in pillar['data_collection'] %}
-
-{{ item.command }}:
-  junos.cli:
-    - name: {{ item.command }}
-    - dest: /tmp/{{ device_directory }}/{{ item.command }}.txt
-    - format: text
-
-{% endfor %}
-```
-```
-# salt vMX-1 state.apply collect_data_locally
-```
-```
-# ls /tmp/vMX-1/
-show chassis hardware.txt  show interfaces.txt  show version.txt
-```
-```
-# more /tmp/vMX-1/show\ chassis\ hardware.txt
-
-Hardware inventory:
-Item             Version  Part number  Serial number     Description
-Chassis                                VM5AE25B176A      VMX
-Midplane
-Routing Engine 0                                         RE-VMX
-CB 0                                                     VMX SCB
-FPC 0                                                    Virtual FPC
-  CPU            Rev. 1.0 RIOT-LITE    BUILTIN
-  MIC 0                                                  Virtual
-    PIC 0                 BUILTIN      BUILTIN           Virtual
-
-```
-```
-# salt-run request_tracker_saltstack_runner.create_ticket subject='test subject' text='test text'
-```
-```
-# salt-run request_tracker_saltstack_runner.change_ticket_status_to_resolved ticket_id=2
-```
-
-tcpdump -i eth0 port 516 -vv
-salt-run state.event pretty=True
-
-
-service salt-master force-reload
-
-
-root@ubuntu:~# nano /srv/runners/request_tracker_saltstack_runner.py
-
-
-
-service salt-master restart
-
-# ps -ef | grep salt
-
-
-```
-mkdir /srv/reactor/
-```
-
-nano /srv/reactor/show_commands_output_collection_and_attachment_to_RT.sls
-
-
-```
-salt-run reactor.list
-```
-
-```
-salt-proxy -d --proxyid=vMX-2
-```
-```
-# more /srv/pillar/vMX-2-details.sls
-proxy:
-      proxytype: junos
-      host: 100.123.1.2
-      username: jcluser
-      port: 830
-      passwd: Juniper!1
-
-```
-```
-root@ubuntu:~# salt -N vmxlab test.ping
-vMX-2:
-    True
-vMX-1:
-    True
-root@ubuntu:~#
-```
-
-```
-# more /etc/salt/master
-runner_dirs:
-  - /srv/runners
-engines:
-  - junos_syslog:
-      port: 516
-  - webhook:
-      port: 5001
-pillar_roots:
- base:
-  - /srv/pillar
-ext_pillar:
-  - git:
-    - master git@100.123.35.0:summit/network_parameters.git
-fileserver_backend:
-  - git
-  - roots
-gitfs_remotes:
-  - ssh://git@100.123.35.0/summit/network_model.git
-file_roots:
-  base:
-    - /srv/salt
-auto_accept: True
-nodegroups:
- vmxlab: 'L@vMX-1,vMX-2'
-```
-```
-salt vMX-1 state.apply collect_data_and_archive_to_git
-```
-```
- more /srv/reactor/automate_show_commands.sls
-{% if data['data'] is defined %}
-{% set d = data['data'] %}
-{% else %}
-{% set d = data %}
-{% endif %}
-
-automate_show_commands:
-  local.state.apply:
-    - tgt: "{{ d['hostname'] }}"
-    - arg:
-       - collect_data_and_archive_to_git
-
-root@ubuntu:~#
-```
-```
-root@ubuntu:~# service salt-master restart
-root@ubuntu:~# salt-run reactor.list
-```
-
-
-Once it is started you can list all public keys
-```
-# salt-key -L
-Accepted Keys:
-Denied Keys:
-Unaccepted Keys:
-Rejected Keys:
-```

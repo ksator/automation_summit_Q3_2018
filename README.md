@@ -677,9 +677,7 @@ On the master:
 
 ### SaltStack execution modules 
 
-Salt is a remote execution tool and configuration management system:
-- remote execution: run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands). 
-- configuration management: establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).
+Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands).
 
 #### Pillar execution module
 
@@ -694,6 +692,7 @@ Get the pillars for a minion/proxy
 
 #### Junos execution module
 
+Junos execution module provide many functions. 
 Junos execution module documentation 
 
 ```
@@ -702,14 +701,17 @@ Junos execution module documentation
 ```
 # salt 'vMX-1' junos.cli -d
 ```
-Junos execution module examples 
+```
+# salt 'vMX-1' junos.install_config -d
+```
+
+Junos execution module usage 
 ```
 # salt 'vMX-1' junos.cli "show version"
 ```
 ```
 # salt 'vMX1' junos.rpc get-software-information
 ```
-Displays the facts gathered during the connection:
 ```
 # salt 'vMX-1' junos.facts
 ```
@@ -777,13 +779,32 @@ Copy these [Junos templates](https://github.com/ksator/automation_summit_july_18
 
 #### SaltStack state files
 
+Salt establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).  
+
 Copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
 
 ### Junos state module
 
-Salt is a remote execution tool and configuration management system:
-- remote execution: run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands). 
-- configuration management: establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).
+Here's the list of functions available in the junos state module:  
+```
+# salt vMX-1 sys.list_state_functions junos
+vMX-1:
+    - junos.cli
+    - junos.commit
+    - junos.commit_check
+    - junos.diff
+    - junos.file_copy
+    - junos.install_config
+    - junos.install_os
+    - junos.load
+    - junos.lock
+    - junos.rollback
+    - junos.rpc
+    - junos.set_hostname
+    - junos.shutdown
+    - junos.unlock
+    - junos.zeroize
+```
 
 #### demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
 This file collects show commands output from a Junos device.  
@@ -859,7 +880,7 @@ We added the junos syslog engine configuration in the [master configuration file
 
 #### Configure syslog on Junos devices 
 
-The state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) uses the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf).  
+The state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) uses the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf) to generate and load Junos configuration to Junos devices.  
 
 You already copied both the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) and the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf) at the root of the SaltStack file servers (repository ```files_server``` in the organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
 

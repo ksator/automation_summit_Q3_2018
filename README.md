@@ -779,9 +779,9 @@ Salt is a remote execution tool and configuration management system:
 - remote execution: run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands). 
 - configuration management: establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).
 
-#### Salt demo using a state file
+#### Salt demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)
 
-To execute [the syslog.sls state file](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master: 
+To execute the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls), run this command on the master: 
 ```
 # salt vMX-1 state.apply collect_show_commands_example
 ```

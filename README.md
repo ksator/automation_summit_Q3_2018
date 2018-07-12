@@ -410,64 +410,35 @@ salt 2018.3.2 (Oxygen)
 salt-master 2018.3.2 (Oxygen)
 ```
 ### Configure SaltStack master
-```
-# more /etc/salt/master
-runner_dirs:
-  - /srv/runners
-engines:
-  - junos_syslog:
-      port: 516
-  - webhook:
-      port: 5001
-pillar_roots:
- base:
-  - /srv/pillar
-ext_pillar:
-  - git:
-    - master git@100.123.35.2:summit/network_parameters.git
-fileserver_backend:
-  - git
-  - roots
-gitfs_remotes:
-  - ssh://git@100.123.35.2/summit/network_model.git
-file_roots:
-  base:
-    - /srv/salt
-auto_accept: True
-```
+
+on the ubuntu host ```master1```, copy [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to file ```/etc/salt/master```
 
 ### start the salt-master
 
-To start it manually with a debug log level, use this command:
+To see the Salt processes: 
 ```
-# salt-master -l debug
+# ps -ef | grep salt
 ```
-if you prefer to run the salt-master as a daemon, use this command:
+To check the status: 
 ```
-# salt-master -d
+# systemctl status salt-master.service
 ```
-Here's other usefull commands:
+You can use the ```service salt-master``` command with these options: 
 ```
 # service salt-master
 force-reload  restart       start         status        stop
 ```
+To start it manually with a debug log level: 
 ```
-# systemctl status salt-master.service
+# salt-master -l debug
 ```
+if you prefer to run the salt-master as a daemon:
 ```
-# ps -ef | grep salt
-```
-Once it is started you can list all public keys
-```
-# salt-key -L
-Accepted Keys:
-Denied Keys:
-Unaccepted Keys:
-Rejected Keys:
+# salt-master -d
 ```
 
 ### SaltStack master log
-Just in case you need to troubleshoot SaltStack issues, you can run these commands on the master: 
+
 ```
 # more /var/log/salt/master 
 ```
@@ -521,26 +492,30 @@ id: minion1
 
 ### start the Salt-minion
 On the minion:
-To start it manually with a debug log level, use this command:
+
+To see the Salt processes: 
 ```
-# salt-minion -l debug
+# ps -ef | grep salt
 ```
-if you prefer to run the salt-minion as a daemon, use this command:
+To check the status: 
 ```
-# salt-minion -d
+# systemctl status salt-minion.service
 ```
-Here's other usefull commands:
+You can use the ```service salt-minion``` command with these options: 
 ```
 # service salt-minion
 force-reload  restart       start         status        stop
 ```
+To start it manually with a debug log level:
 ```
-# systemctl status salt-minion.service
+# salt-minion -l debug
 ```
+if you prefer to run the salt-minion as a daemon:
 ```
-# ps -ef | grep salt
+# salt-minion -d
 ```
-Once it is started, on the master, you can list all public keys
+### Verify the keys on the master 
+Once the minion is started,  list all public keys on the master. 
 ```
 # salt-key -L
 Accepted Keys:
@@ -549,7 +524,6 @@ Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
 ```
-
 
 ### master <-> minion communication verification
 on the master 
@@ -1205,4 +1179,14 @@ root@ubuntu:~#
 ```
 root@ubuntu:~# service salt-master restart
 root@ubuntu:~# salt-run reactor.list
+```
+
+
+Once it is started you can list all public keys
+```
+# salt-key -L
+Accepted Keys:
+Denied Keys:
+Unaccepted Keys:
+Rejected Keys:
 ```

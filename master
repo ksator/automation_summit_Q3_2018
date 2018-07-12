@@ -1,0 +1,24 @@
+runner_dirs:
+    - /srv/runners
+engines:
+    - junos_syslog:
+        port: 516
+    - webhook:
+        port: 5001
+pillar_roots:
+    base:
+        - /srv/pillar
+ext_pillar:
+    - git:
+        - master git@100.123.35.2:automation_demo/variables.git
+fileserver_backend:
+    - git
+    - roots
+gitfs_remotes:
+    - ssh://git@100.123.35.2/automation_demo/files_server.git
+file_roots:
+    base:
+        - /srv/salt
+auto_accept: True
+nodegroups:
+    vmxlab: 'L@vMX-1,vMX-2'

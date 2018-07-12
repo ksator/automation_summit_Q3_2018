@@ -40,7 +40,7 @@ Junos automation demo using SaltStack and Gitlab:
 - Junos devices send syslog messages to SaltStack.
 - Based on syslog messages received, SaltStack automatically collects junos "show commands" output from the JUNOS device that sent a syslog message, and SaltStack automatically archives the collected data on a Git server.
 
-![continous_backup.png](continous_backup.png)  
+![automated_junos_show_commands_collection_with_syslog_saltstack.png](automated_junos_show_commands_collection_with_syslog_saltstack.png)
 
 ## Automated tickets management
 

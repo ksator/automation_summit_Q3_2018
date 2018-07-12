@@ -59,6 +59,7 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 - SaltStack master will be installed on the ubuntu host ```master1```.
 - SaltStack minion will be installed on the ubuntu host ```minion1```.
 - SaltStack Junos proxy will be installed on the  ubuntu host ```master1```.
+- SaltStack will be configured for the above use cases.
 
 ## Ubuntu
 
@@ -367,9 +368,13 @@ $ sudo -s
 Let's install: 
 - SaltStack master on ubuntu host ```master1```.
 - SaltStack minion on ubuntu host ```minion1```.
-- SaltStack Junos proxy on ubuntu host ```master1```.
+- SaltStack Junos proxy on ubuntu host ```master1```.  
 
-### Install SaltStack master on the ubuntu host ```master1``` 
+Then let's configure SaltStack for the various demo.   
+
+### Master
+
+#### Install SaltStack master on the ubuntu host ```master1``` 
 Check if SaltStack master is already installed on the ubuntu host ```master1``` 
 ```
 $ sudo -s
@@ -407,11 +412,11 @@ salt 2018.3.2 (Oxygen)
 # salt-master --version
 salt-master 2018.3.2 (Oxygen)
 ```
-### Configure SaltStack master
+#### Configure SaltStack master
 
 on the ubuntu host ```master1```, copy this [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) in the file ```/etc/salt/master```
 
-### start the salt-master
+#### start the salt-master
 
 To see the Salt processes: 
 ```
@@ -435,7 +440,7 @@ if you prefer to run the salt-master as a daemon:
 # salt-master -d
 ```
 
-### SaltStack master log
+#### SaltStack master log
 
 ```
 # more /var/log/salt/master 
@@ -444,7 +449,9 @@ if you prefer to run the salt-master as a daemon:
 # tail -f /var/log/salt/master
 ```
 
-### install SaltStack minion on ubuntu host ```minion1``` 
+### Minion
+
+#### install SaltStack minion on ubuntu host ```minion1``` 
 Check if SaltStack minion is already installed on the ubuntu host ```minion1```  
 ```
 # salt-minion --version
@@ -480,11 +487,11 @@ salt-minion 2018.3.2 (Oxygen)
 # salt --version
 ```
 
-### configure SaltStack minion 
+#### configure SaltStack minion 
 
 On the minion, copy this [minion configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/minion) in the file ```/etc/salt/minion```
 
-### start the Salt-minion
+#### start the Salt-minion
 On the minion:
 
 To see the Salt processes: 
@@ -508,7 +515,10 @@ if you prefer to run the salt-minion as a daemon:
 ```
 # salt-minion -d
 ```
-### Verify the keys on the master 
+
+### master <-> minion communication
+
+#### Verify the keys on the master 
 Once the minion is started,  list all public keys on the master. 
 ```
 # salt-key -L
@@ -519,7 +529,7 @@ Unaccepted Keys:
 Rejected Keys:
 ```
 
-### verify master <-> minion communication 
+#### verify master <-> minion communication 
 on the master 
 ```
 # salt minion1 test.ping
@@ -527,8 +537,31 @@ on the master
 ```
 # salt "minion1" cmd.run "pwd"
 ```
+### Pillars
 
-### Install requirements for SaltStack Junos proxy
+Pillars are variables (for templates, sls files ...).    
+They are defined in sls files, with a yaml data structure.  
+There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files.  
+
+#### Pillars configuration
+
+Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars.  
+Copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)  
+
+#### Pillars configuration verification
+```
+$ sudo -s
+```
+```
+# salt-run pillar.show_pillar
+```
+```
+# salt-run pillar.show_pillar vMX-1
+```
+
+### Proxies
+
+#### Install requirements for SaltStack Junos proxy
 
 Run these commands on the host that will run a Junos proxy daemon.  
 Let's do it on the master.  
@@ -542,8 +575,6 @@ sudo python -m easy_install --upgrade pyOpenSSL
 ```
 pip install junos-eznc jxmlease jsnapy
 ```
-
-### junos-eznc test
 
 Verify you can use junos-eznc on the master
 ```
@@ -560,27 +591,6 @@ Device(100.123.1.1)
 >>> dev.close()
 >>> exit()
 ```
-### Pillars configuration
-
-Pillars are variables (for templates, sls files ...).    
-They are defined in sls files, with a yaml data structure.  
-There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files.  
-Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars.  
-Copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)  
-
-### Pillars configuration verification
-```
-$ sudo -s
-```
-```
-# salt-run pillar.show_pillar
-```
-```
-# salt-run pillar.show_pillar vMX-1
-```
-
-
-
 
 **root@ubuntu:~# more /etc/hosts
 127.0.0.1       localhost
@@ -588,7 +598,7 @@ $ sudo -s
 127.0.0.1       salt
 **
 
-### Start SaltStack proxies 
+#### Start SaltStack proxies 
 
 You need one salt proxy process per device.
 to start the proxy for the device ```vMX-1``` with a debug log level, use this command:
@@ -607,6 +617,7 @@ To see the SaltStack processes, run this command:
 ```
 # ps -ef | grep salt
 ```
+
 ### SaltStack keys 
 
 By default, you need to accept the minions/proxies public public keys on the master.  

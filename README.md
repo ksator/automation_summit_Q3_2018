@@ -23,10 +23,6 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 | vMX-1    | Junos | 100.123.1.1    | jcluser | Juniper!1 |
 | vMX-2    | Junos | 100.123.1.2    | jcluser | Juniper!1 |
 
-
-
-
-
 # Use cases
 
 ##  Junos configuration automatic backup on Git
@@ -47,7 +43,6 @@ Junos automation demo using SaltStack and Gitlab:
 ![automated_junos_show_commands_collection_with_syslog_saltstack.png](resources/automated_junos_show_commands_collection_with_syslog_saltstack.png)
 
 ## Automated tickets management
-
 Junos automation demo using SaltStack and a ticketing system (Request Tracker):  
 - Junos devices send syslog messages to SaltStack.  
 - Based on syslog messages received from junos devices: 
@@ -604,6 +599,10 @@ if you prefer to run it as a daemon, use this command:
 ```
 # sudo salt-proxy -d --proxyid=vMX-1
 ```
+Start a proxy for the device vMX-2 as well
+```
+# sudo salt-proxy -d --proxyid=vMX-2
+```
 To see the SaltStack processes, run this command: 
 ```
 # ps -ef | grep salt
@@ -631,6 +630,7 @@ So the keys are automatically accepted:
 Accepted Keys:
 minion1
 vMX-1
+vMX-2
 Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
@@ -642,6 +642,9 @@ On the master:
 
 ```
 # salt 'vMX-1' test.ping
+```
+```
+# salt 'vMX-2' test.ping
 ```
 
 ### Get the pillars for a minion/proxy
@@ -773,66 +776,14 @@ To execute the [state file syslog.sls](https://github.com/ksator/automation_summ
 # salt vMX1 junos.cli "show configuration system syslog host 100.123.35.0"
 ```
 
+### Runners
+
+The runner directory is indicated in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)  
+
+On the master, add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
+
 ### Configure SaltStack for automated tickets management
-on the master
-```
-# more /srv/runners/request_tracker_saltstack_runner.py
-import rt
-import salt.runner
 
-def get_rt_pillars():
-    opts = salt.config.master_config('/etc/salt/master')
-    runner = salt.runner.RunnerClient(opts)
-    pillar = runner.cmd('pillar.show_pillar')
-    return(pillar)
-
-def connect_to_rt():
-   rt_pillars=get_rt_pillars()
-   uri = rt_pillars['rt']['uri']
-   username = rt_pillars['rt']['username']
-   password = rt_pillars['rt']['password']
-   tracker = rt.Rt(uri, username, password)
-   tracker.login()
-   return tracker
-
-def check_if_a_ticket_already_exist(subject, tracker):
-   id=0
-   for item in tracker.search(Queue='General'):
-       if (item['Subject'] == subject) and (item['Status'] in ['open', 'new']):
-           id=str(item['id']).split('/')[-1]
-   return id
-
-def create_ticket(subject, text):
-    tracker=connect_to_rt()
-    if check_if_a_ticket_already_exist(subject, tracker) == 0:
-        ticket_id = tracker.create_ticket(Queue='General', Subject=subject, Text=text)
-    else:
-        ticket_id = check_if_a_ticket_already_exist(subject, tracker)
-        update_ticket(ticket_id, text, tracker)
-    tracker.logout()
-    return ticket_id
-
-def update_ticket(ticket_id, text, tracker):
-    tracker.reply(ticket_id, text=text)
-    return ticket_id
-
-def change_ticket_status_to_resolved(ticket_id):
-    tracker=connect_to_rt()
-    tracker.edit_ticket(ticket_id, Status="Resolved")
-    tracker.logout()
-    return ticket_id
-
-def attach_files_to_ticket(subject, device_directory):
-    rt_pillars=get_rt_pillars()
-    junos_commands = rt_pillars['data_collection']
-    tracker=connect_to_rt()
-    ticket_id = check_if_a_ticket_already_exist(subject, tracker)
-    for item in junos_commands:
-        file_to_attach='/tmp/' + device_directory + '/' + item['command'] + '.txt'
-        tracker.comment(ticket_id, text='file "' + item['command'] + '.txt" attached to RT using SaltStack', files=[(file_to_attach, open(file_to_attach, 'rb'))])
-    tracker.logout()
-    return ticket_id
-```
 ```
 # more /etc/salt/master.d/reactor.conf
 reactor:

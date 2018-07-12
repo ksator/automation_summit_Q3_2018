@@ -677,9 +677,11 @@ On the master:
 
 ### SaltStack execution modules 
 
-Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules)
+Salt is a remote execution tool and configuration management system:
+- remote execution: run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands). 
+- configuration management: establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).
 
-#### Pillar module usages
+#### Pillar execution module
 
 Get the pillars for a minion/proxy
 
@@ -690,9 +692,9 @@ Get the pillars for a minion/proxy
 # salt 'vMX-1' pillar.items
 ```
 
-### Junos execution module
+#### Junos execution module
 
-#### Junos execution module documentation 
+Junos execution module documentation 
 
 ```
 # salt 'vMX-1' junos -d
@@ -700,21 +702,23 @@ Get the pillars for a minion/proxy
 ```
 # salt 'vMX-1' junos.cli -d
 ```
-#### Junos execution module examples 
+Junos execution module examples 
 ```
 # salt 'vMX-1' junos.cli "show version"
 ```
 ```
 # salt 'vMX1' junos.rpc get-software-information
 ```
+Displays the facts gathered during the connection:
+```
+# salt 'vMX-1' junos.facts
+```
 
-### grains
+#### Grains execution module
 
 Grains are information collected from minions/proxies.  
 
-#### Grains module usage
-
-Available grains can be listed by using the 'grains.ls' module:  
+Available grains can be listed:
 ```
 # salt 'vMX-1' grains.ls
 ```
@@ -726,18 +730,12 @@ Return one or more grains:
 ```
 # salt 'vMX-1' grains.item os_family zmqversion
 ```
-#### Junos facts and SaltStack grains
-
-Displays the facts gathered during the connection:
-```
-# salt 'vMX-1' junos.facts
-```
-Junos facts are stored in proxy grains
+Junos facts gathered during the connection are stored in proxy grains:  
 ```
 # salt 'vMX-1' grains.item junos_facts
 ```
 
-### flexible targeting system
+#### flexible targeting system
 
 ```
 # salt '*' test.ping
@@ -752,7 +750,7 @@ Junos facts are stored in proxy grains
 # salt -G 'junos_facts:model:vMX' junos.cli "show version"
 ```
 
-### various output formats
+#### various output formats
 ```
 # salt 'vMX-1' junos.rpc get-software-information --output=yaml
 ```
@@ -770,10 +768,10 @@ We are using an external files servers (repository ```files_server``` in the org
 
 Copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
 
-
 ### SaltStack state files
 
 Copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
+
 
 ### Junos state file demo
 

@@ -416,7 +416,7 @@ salt-master 2018.3.2 (Oxygen)
 
 on the ubuntu host ```master1```, copy this [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) in the file ```/etc/salt/master```
 
-#### start the salt-master
+#### Start the salt-master
 
 To see the Salt processes: 
 ```
@@ -451,7 +451,7 @@ if you prefer to run the salt-master as a daemon:
 
 ### Minion
 
-#### install SaltStack minion on ubuntu host ```minion1``` 
+#### Install SaltStack minion on ubuntu host ```minion1``` 
 Check if SaltStack minion is already installed on the ubuntu host ```minion1```  
 ```
 # salt-minion --version
@@ -487,11 +487,11 @@ salt-minion 2018.3.2 (Oxygen)
 # salt --version
 ```
 
-#### configure SaltStack minion 
+#### Configure SaltStack minion 
 
 On the minion, copy this [minion configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/minion) in the file ```/etc/salt/minion```
 
-#### start the Salt-minion
+#### Start the Salt-minion
 On the minion:
 
 To see the Salt processes: 
@@ -519,7 +519,25 @@ if you prefer to run the salt-minion as a daemon:
 ### master <-> minion communication
 
 #### Verify the keys on the master 
-Once the minion is started,  list all public keys on the master. 
+
+By default, you need to accept the minions/proxies public keys on the master.   
+
+On the master:  
+
+To list all public keys:
+```
+# salt-key -L
+```
+To accept a specified public key:
+```
+# salt-key -a minion1 -y
+```
+Or, to accept all pending keys:
+```
+# salt-key -A -y
+```
+We changed the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to auto accept the keys.  
+So the keys are automatically accepted: 
 ```
 # salt-key -L
 Accepted Keys:
@@ -529,7 +547,7 @@ Unaccepted Keys:
 Rejected Keys:
 ```
 
-#### verify master <-> minion communication 
+#### Verify master <-> minion communication 
 on the master 
 ```
 # salt minion1 test.ping
@@ -618,9 +636,11 @@ To see the SaltStack processes, run this command:
 # ps -ef | grep salt
 ```
 
-### SaltStack keys 
+#### Verify the keys on the master  
 
-By default, you need to accept the minions/proxies public public keys on the master.  
+By default, you need to accept the minions/proxies public keys on the master.   
+
+On the master:  
 
 To list all public keys:
 ```
@@ -647,18 +667,17 @@ Unaccepted Keys:
 Rejected Keys:
 ```
 
-### master <-> proxies communication verification
+#### Verify master <-> proxies communication
 
 On the master: 
 
 ```
-# salt 'vMX-1' test.ping
-```
-```
-# salt 'vMX-2' test.ping
+# salt 'vMX*' test.ping
 ```
 
-### Get the pillars for a minion/proxy
+### Pillar module 
+
+Get the pillars for a minion/proxy
 
 ```
 # salt 'vMX-1' pillar.ls
@@ -667,7 +686,9 @@ On the master:
 # salt 'vMX-1' pillar.items
 ```
 
-### Junos execution modules documentation 
+### Junos execution module
+
+#### Junos execution module documentation 
 
 ```
 # salt 'vMX-1' junos -d
@@ -675,7 +696,7 @@ On the master:
 ```
 # salt 'vMX-1' junos.cli -d
 ```
-### Junos execution modules examples 
+#### Junos execution module examples 
 ```
 # salt 'vMX-1' junos.cli "show version"
 ```
@@ -686,6 +707,8 @@ On the master:
 ### grains
 
 Grains are information collected from minions/proxies.  
+
+#### Grains module usage
 
 Available grains can be listed by using the 'grains.ls' module:  
 ```
@@ -699,7 +722,7 @@ Return one or more grains:
 ```
 # salt 'vMX-1' grains.item os_family zmqversion
 ```
-### Junos facts and SaltStack grains
+#### Junos facts and SaltStack grains
 
 Displays the facts gathered during the connection:
 ```
@@ -713,7 +736,7 @@ Junos facts are stored in proxy grains
 ### flexible targeting system
 
 ```
-# salt 'vMX-1' junos.cli "show version"
+# salt '*' test.ping
 ```
 ```
 salt 'vMX*' junos.cli "show version"
@@ -733,9 +756,8 @@ salt 'vMX-1' junos.rpc get-software-information --output=yaml
 salt 'vMX-1' junos.cli "show version" --output=json
 ```
 
-
 ### Install the junos syslog engine dependencies
-
+In the master
 ```
 # pip install pyparsing, twisted
 ```

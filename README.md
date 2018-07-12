@@ -16,12 +16,15 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 ## Diagram
 
 ## Management IP addresses
-| Name | Management IP address  |
-| ------------- | ------------- |
-| minion1    | 100.123.35.2    |  
-| master1    | 100.123.35.0    |  
-| vMX-1    | 100.123.1.1    |  
-| vMX-2    | 100.123.1.2    |  
+| Name | Management IP address  | Username | Password|
+| ------------- | ------------- |------------- | ------------- |
+| minion1    | 100.123.35.2    | jcluser | Juniper!1 |
+| master1    | 100.123.35.0    | jcluser | Juniper!1 |
+| vMX-1    | 100.123.1.1    | jcluser | Juniper!1 |
+| vMX-2    | 100.123.1.2    | jcluser | Juniper!1 |
+
+
+
 
 
 # Use cases
@@ -483,12 +486,8 @@ salt-minion 2018.3.2 (Oxygen)
 ```
 
 ### configure SaltStack minion 
-On the minion:
-```
-# more /etc/salt/minion
-master: 100.123.35.0
-id: minion1
-```
+
+On the minion, copy the [minion configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/minion) to ```/etc/salt/minion```
 
 ### start the Salt-minion
 On the minion:
@@ -529,8 +528,6 @@ Rejected Keys:
 on the master 
 ```
 # salt minion1 test.ping
-minion1:
-    True
 ```
 ```
 # salt "minion1" cmd.run "pwd"
@@ -728,7 +725,7 @@ so the keys are automatically accepted:
 ```
 # salt-key -L
 Accepted Keys:
-minion_1
+minion1
 vMX-1
 Denied Keys:
 Unaccepted Keys:

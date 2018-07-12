@@ -8,7 +8,7 @@ git clone:
   module.run:
     - name: git.clone
     - cwd: /tmp/local_repo
-    - url: git@100.123.35.2:automation_demo/backup_configuration.git
+    - url: git@100.123.35.2:automation_demo/configuration_backup.git
     - identity: "/root/.ssh/id_rsa"
 
 git config set email:

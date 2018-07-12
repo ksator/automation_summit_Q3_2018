@@ -624,12 +624,8 @@ Or, to accept all pending keys:
 ```
 # salt-key -A -y
 ```
-We changed the master configuration file to auto accept the keys: 
-```
-# more /etc/salt/master | grep auto_accept
-auto_accept: True
-```
-so the keys are automatically accepted: 
+We changed the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to auto accept the keys.  
+So the keys are automatically accepted: 
 ```
 # salt-key -L
 Accepted Keys:
@@ -652,51 +648,9 @@ On the master:
 
 ```
 # salt 'vMX-1' pillar.ls
-vMX1:
-    - rt
-    - syslog_host
-    - data_collection
-    - proxy
 ```
 ```
 # salt 'vMX-1' pillar.items
-vMX1:
-    ----------
-    data_collection:
-        |_
-          ----------
-          command:
-              show interfaces
-        |_
-          ----------
-          command:
-              show chassis hardware
-        |_
-          ----------
-          command:
-              show version
-    proxy:
-        ----------
-        host:
-            100.123.1.1
-        passwd:
-            Juniper!1
-        port:
-            830
-        proxytype:
-            junos
-        username:
-            jcluser
-    rt:
-        ----------
-        password:
-            password
-        uri:
-            http://100.123.35.2:9081/REST/1.0/
-        username:
-            root
-    syslog_host:
-        100.123.35.0
 ```
 
 ### Junos execution modules documentation 
@@ -731,6 +685,7 @@ Return one or more grains:
 ```
 # salt 'vMX-1' grains.item os_family zmqversion
 ```
+### Junos facts and SaltStack grains
 
 Displays the facts gathered during the connection:
 ```
@@ -744,8 +699,15 @@ Junos facts are stored in proxy grains
 ### flexible targeting system
 
 ```
+# salt 'vMX-1' junos.cli "show version"
+```
+```
 salt 'vMX*' junos.cli "show version"
+```
+```
 salt -L 'vMX-1,vMX-2' junos.cli "show version"
+```
+```
 salt -G 'junos_facts:model:vMX' junos.cli "show version"
 ```
 
@@ -757,76 +719,49 @@ salt 'vMX-1' junos.rpc get-software-information --output=yaml
 salt 'vMX-1' junos.cli "show version" --output=json
 ```
 
-### junos syslog engine dependencies
+### Install the junos syslog engine dependencies
 
 ```
 # pip install pyparsing, twisted
 ```
 
-### Junos state modules examples 
+### SaltStack state files
 
-On the master
+Copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
+
+### Junos state file demo
+
+To execute [the syslog.sls state file](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master: 
 ```
-# mkdir /srv/salt
+# salt vMX-1 state.apply collect_show_commands_example
 ```
+
+Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
 ```
-# vi /srv/salt/collect_show_commands_example.sls
+# salt vMX-1 grains.item nodename
 ```
-```
-# more /srv/salt/collect_show_commands_example.sls
-show_version:
-  junos.cli:
-    - name: show version
-    - dest: /tmp/show_version.txt
-    - format: text
-show_chassis_hardware:
-  junos.cli:
-    - name: show chassis hardware
-    - dest: /tmp/show_chassis_hardware.txt
-    - format: text
-```
-```
-# salt vMX1 state.apply collect_show_commands_example
-```
-On the host that runs the Junos proxy daemon: 
+
+On that host, run these commands:
 ```
 # ls /tmp/
+```
+```
 # more /tmp/show_chassis_hardware.txt
+```
+```
 # more /tmp/show_version.txt
 ```
 
 ### Configure syslog on Junos devices 
+
+The [state file syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls)
+
+To execute the [state file syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master:  
 ```
-# more /srv/salt/syslog.sls
-configure_syslog:
-    junos.install_config:
-        - name: salt://syslog.conf
-        - timeout: 20
-        - replace: False
-        - overwrite: False
-        - comment: "configured with SaltStack using the template syslog.conf"
+# salt ''vMX-1' pillar.item syslog_host
 ```
 ```
-# more /srv/salt/syslog.conf
-system {
-    syslog {
-        host {{ pillar["syslog_host"] }} {
-            any any;
-            match "UI_COMMIT_COMPLETED|SNMP_TRAP_LINK_*";
-            port 516;
-        }
-    }
-}
-```
-```
-# salt 'vMX-1' pillar.item syslog_host
-vMX-1:
-    ----------
-    syslog_host:
-        100.123.35.0
-```
-```
-# salt vMX-1 state.apply syslog
+# salt 'vMX*' state.apply syslog
 ```
 ```
 # salt vMX-1 junos.cli "show system commit"

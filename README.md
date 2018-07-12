@@ -786,7 +786,7 @@ Salt is a remote execution tool and configuration management system:
 - remote execution: run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands). 
 - configuration management: establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).
 
-#### Salt demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)
+#### demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)
 
 To execute the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls), run this command on the master: 
 ```
@@ -809,7 +809,7 @@ On that host, run these commands:
 # more /tmp/show_version.txt
 ```
 
-#### Salt demo using the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
+#### demo using the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
 
 To execute the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls), run this command on the master: 
 ```
@@ -823,6 +823,17 @@ On that host, run these commands:
 ```
 # ls -l /tmp/vMX-1/
 ```
+
+#### demo using the state file [collect_show_commands_and_archive_to_git](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git)
+
+To execute the state file [collect_show_commands_and_archive_to_git](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git), run this command on the master: 
+  
+
+```
+salt vMX-1 state.apply collect_data_and_archive_to_git
+```
+
+#### demo using the state file
 
 ### junos syslog engine
 
@@ -877,11 +888,11 @@ Verify the reactor operationnal state:
 # salt-run reactor.list
 ```
 #### add your reactor sls files to the master
-
+create a ```/srv/reactor/``` directory    
 ```
 mkdir /srv/reactor/
 ```
-copy [these sls reactor files](https://github.com/ksator/automation_summit_july_18/tree/master/reactors) to the directory ```/srv/reactor/```
+and copy [these sls reactor files](https://github.com/ksator/automation_summit_july_18/tree/master/reactors) to the directory ```/srv/reactor/```
 
 ### Event bus
 

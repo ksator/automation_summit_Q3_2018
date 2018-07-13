@@ -49,10 +49,12 @@ def attach_files_to_ticket(subject, device_directory):
     tracker=connect_to_rt()
     ticket_id = check_if_a_ticket_already_exist(subject, tracker)
     for item in junos_commands:
-        file_to_attach='/tmp/' + device_directory + '/' + item['command'] + '.txt'
+        file_to_attach='/var/cache/salt/master/minions/' +  device_directory + '/files/tmp/' +  device_directory + '/' +  item['command'] + '.txt'
         tracker.comment(ticket_id, text='file "' + item['command'] + '.txt" attached to RT using SaltStack', files=[(file_to_attach, open(file_to_attach, 'rb'))])
     tracker.logout()
     return ticket_id
 
     
+    
+
     

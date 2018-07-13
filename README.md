@@ -1132,7 +1132,43 @@ salt-run state.event pretty=True
 ```
 Apply a configuration change on a Junos device: 
 ```
-# salt vMX-1 junos.install_config 
+# salt vMX-1 junos.install_config 'salt://disable_interface.set' confirm=1
+
 ```
 Verify on the GUI of the Gitlab repository ```show_commands_collected```
+
+
+
+## Automated tickets management
+
+Update the reactor file:
+```
+root@ubuntu:~# more  /etc/salt/master.d/reactor.conf
+reactor:
+    - 'jnpr/syslog/*/SNMP_TRAP_LINK_*':
+        - /srv/reactor/manage_ticket.sls
+```
+Restart the salt master service each time you update the reactor file: 
+```
+# service salt-master restart
+```
+List currently configured reactors:
+```
+# salt-run reactor.list
+```
+Run this command on the master to see the syslog messages sent by junos devices:
+```
+tcpdump -i eth0 port 516 -vv
+```
+Salt provides a runner that displays events in real-time as they are received on the Salt master.
+Run this command on the master:
+```
+salt-run state.event pretty=True
+```
+Apply a configuration change on a Junos device: 
+```
+# salt vMX-1 junos.install_config 'salt://disable_interface.set' confirm=1
+
+```
+Verify on the RT GUI 
 

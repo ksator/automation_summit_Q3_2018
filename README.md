@@ -699,6 +699,7 @@ On the master:
 ### SaltStack execution modules 
 
 Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands).
+Run these commands to familiarize yourself with SaltStack
 
 #### Pillar execution module
 
@@ -713,8 +714,8 @@ Get the pillars for a minion/proxy
 
 #### Junos execution module
 
-Junos execution module provide many functions. 
-Junos execution module documentation 
+The Junos execution module provide many functions. 
+Here's the Junos execution module documentation 
 
 ```
 # salt 'vMX-1' junos -d
@@ -731,7 +732,7 @@ Junos execution module usage
 # salt 'vMX-1' junos.cli "show version"
 ```
 ```
-# salt 'vMX1' junos.rpc get-software-information
+# salt 'vMX-1' junos.rpc get-software-information
 ```
 ```
 # salt 'vMX-1' junos.facts

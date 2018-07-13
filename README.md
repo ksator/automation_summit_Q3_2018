@@ -939,7 +939,7 @@ On the minion, copy the public key:
 ```
 # more /root/.ssh/id_rsa.pub
 ```
-Access Gitlab GUI with http://100.123.35.2:9080 in a browser, and add the public key to ```User Settings``` > ```SSH Keys```.  
+Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key to ```User Settings``` > ```SSH Keys```.  
 
 Update the ssh configuration on the minion
 ```

@@ -16,8 +16,8 @@ show_commands_output_collection:
     local.state.apply:
         - tgt: "{{ d['hostname'] }}"
         - arg:
-            - collect_data_locally
-
+            - collect_data_locally_and_push_to_master.sls
+            
 attach_files_to_a_ticket:
     runner.request_tracker.attach_files_to_ticket:
         - args:

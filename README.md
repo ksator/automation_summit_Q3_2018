@@ -232,12 +232,12 @@ True
 
 ### RT GUI
 
-### Verify you can access to RT GUI
+#### Verify you can access to RT GUI
 
 Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
-### Using RT GUI, verify the ticket details you created previously with Python interactive session
+#### Using RT GUI, verify the ticket details you created previously with Python interactive session
 
 Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
 The default ```root``` user password is ```password```

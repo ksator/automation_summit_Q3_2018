@@ -177,11 +177,6 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 0945209bfe14        netsandbox/request-tracker   "/usr/sbin/apache2 -…"   26 hours ago        Up 26 hours             0.0.0.0:9081->80/tcp                                  rt
 ```
 
-### Verify you can access to RT GUI
-
-Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
-The default ```root``` user password is ```password```
-
 ### Install the ```rt``` python library on the ubuntu host ```master1```
 
 There are python libraries that provide an easy programming interface for dealing with RT:  
@@ -222,8 +217,6 @@ True
 []
 >>> tracker.create_ticket(Queue='General', Subject='abc', Text='bla bla bla')
 1
->>> tracker.edit_ticket(1, Priority=3)
-True
 >>> tracker.reply(1, text='notes you want to add to the ticket 1')
 True
 >>> tracker.search(Queue='General')
@@ -236,6 +229,21 @@ ticket/1
 True
 >>> exit()
 ```
+
+### RT GUI
+
+### Verify you can access to RT GUI
+
+Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
+The default ```root``` user password is ```password```
+
+### Verify with the GUI the ticket details you created previously with Python interactive session
+
+Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
+The default ```root``` user password is ```password```
+
+
+
 
 ## Gitlab
 
@@ -272,7 +280,7 @@ eca5b63dcf99        gitlab/gitlab-ce             "/assets/wrapper"        26 hou
 ```
 
 Wait for Gitlab container status to be ```healthy```.  
-It takes about 5 mns.  
+It takes about 2 mns.  
 ```
 $ watch -n 10 'docker ps'
 ```

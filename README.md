@@ -309,7 +309,7 @@ Generate ssh keys on ubuntu host ```master1```
 $ sudo -s
 ```
 ```
-# ssh-keygen -t rsa -C "your.email@example.com" -b 4096
+# ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
 ```
 ```
 # ls /root/.ssh/

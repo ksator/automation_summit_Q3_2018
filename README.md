@@ -699,7 +699,7 @@ On the master:
 ### SaltStack execution modules 
 
 Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands).
-Run these commands to familiarize yourself with SaltStack
+Run these commands on the master to familiarize yourself with SaltStack
 
 #### Pillar execution module
 
@@ -715,14 +715,41 @@ Get the pillars for a minion/proxy
 #### Junos execution module
 
 The Junos execution module provide many functions. 
-Here's the Junos execution module documentation 
 
+Here's the list: 
+```
+# salt vMX-1 sys.list_functions junos
+vMX-1:
+    - junos.cli
+    - junos.commit
+    - junos.commit_check
+    - junos.diff
+    - junos.facts
+    - junos.facts_refresh
+    - junos.file_copy
+    - junos.install_config
+    - junos.install_os
+    - junos.load
+    - junos.lock
+    - junos.ping
+    - junos.rollback
+    - junos.rpc
+    - junos.set_hostname
+    - junos.shutdown
+    - junos.unlock
+    - junos.zeroize
+
+```
+Here's the Junos execution module documentation 
 ```
 # salt 'vMX-1' junos -d
 ```
+Here's the doc for the cli function of the Junos execution module 
 ```
 # salt 'vMX-1' junos.cli -d
 ```
+Here's the doc for the install_config function of the Junos execution module 
+
 ```
 # salt 'vMX-1' junos.install_config -d
 ```
@@ -797,13 +824,40 @@ We are using an external files servers (repository ```files_server``` in the org
 
 #### Junos configuration templates 
 
-Copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
+Run these commands on the master to copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
+
+```
+# cd
+# ls
+automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
+```
+```
+# cp automation_summit_july_18/junos/* files_server/
+# cd files_server/
+# git add .
+# git commit -m "add junos templates"
+# git push origin master
+# cd
+```
 
 #### SaltStack state files
 
 Salt establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).  
 
-Copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
+run these commands on the master to copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
+```
+# cd
+# ls
+automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
+```
+```
+# cp automation_summit_july_18/states/* files_server/
+# cd files_server/
+# git add *
+# git commit -m "add states files"
+# git push origin master
+# cd
+```
 
 ### Junos state module
 

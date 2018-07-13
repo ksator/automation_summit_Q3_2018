@@ -438,28 +438,26 @@ salt-master 2018.3.2 (Oxygen)
 
 on the ubuntu host ```master1```, copy this [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) in the file ```/etc/salt/master```
 
+
+#### Restart the salt-master service
+
+Use this command to restart the salt-master service
+```
+# service salt-master restart
+```
+
 #### Verify the salt-master status
 
 To see the Salt processes: 
 ```
 # ps -ef | grep salt
 ```
-To check the status: 
+To check the status, you can run these commands: 
 ```
 # systemctl status salt-master.service
 ```
-You can use the ```service salt-master``` command with these options: 
 ```
-# service salt-master
-force-reload  restart       start         status        stop
-```
-To start it manually with a debug log level: 
-```
-# salt-master -l debug
-```
-if you prefer to run the salt-master as a daemon:
-```
-# salt-master -d
+# service salt-master status
 ```
 
 #### SaltStack master log
@@ -512,7 +510,14 @@ salt-minion 2018.3.2 (Oxygen)
 
 On the minion, copy this [minion configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/minion) in the file ```/etc/salt/minion```
 
-#### Start the Salt-minion
+#### Restart the salt-minion service
+
+Use this command to restart the salt-minion service
+```
+# service salt-minion restart
+```
+
+#### Verify the salt-mnion status
 On the minion:
 
 To see the Salt processes: 
@@ -523,18 +528,8 @@ To check the status:
 ```
 # systemctl status salt-minion.service
 ```
-You can use the ```service salt-minion``` command with these options: 
 ```
-# service salt-minion
-force-reload  restart       start         status        stop
-```
-To start it manually with a debug log level:
-```
-# salt-minion -l debug
-```
-if you prefer to run the salt-minion as a daemon:
-```
-# salt-minion -d
+# service salt-minion status
 ```
 
 #### Verify the keys on the master 

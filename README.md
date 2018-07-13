@@ -1074,23 +1074,65 @@ Verify using The RT GUI. Access RT GUI with ```http://100.123.35.2:9081``` in a 
 
 ## Junos configuration automatic backup on Git
 
+Update the reactor file:
 ```
 # more /etc/salt/master.d/reactor.conf
 reactor:
     - 'jnpr/syslog/*/UI_COMMIT_COMPLETED':
         - /srv/reactor/backup_configuration.sls
 ```
+Restart the salt master service each time you update the reactor file: 
 ```
 # service salt-master restart
 ```
+List currently configured reactors:
 ```
 # salt-run reactor.list
 ```
+Run this command on the master to see the syslog messages sent by junos devices:
+```
+tcpdump -i eth0 port 516 -vv
+```
+Salt provides a runner that displays events in real-time as they are received on the Salt master.
+Run this command on the master:
+```
+salt-run state.event pretty=True
+```
+Apply a configuration change on a Junos device: 
 ```
 # salt vMX-1 junos.install_config 'salt://banner.set' comment='Committed via SaltStack'
 ```
 Verify on the GUI of the Gitlab repository ```configuration_backup```
 
+## Automated Junos show commands collection
 
-
+Update the reactor file:
+```
+# more /etc/salt/master.d/reactor.conf
+reactor:
+    - 'jnpr/syslog/*/SNMP_TRAP_LINK_*':
+        - /srv/reactor/collect_show_commands.sls
+```
+Restart the salt master service each time you update the reactor file: 
+```
+# service salt-master restart
+```
+List currently configured reactors:
+```
+# salt-run reactor.list
+```
+Run this command on the master to see the syslog messages sent by junos devices:
+```
+tcpdump -i eth0 port 516 -vv
+```
+Salt provides a runner that displays events in real-time as they are received on the Salt master.
+Run this command on the master:
+```
+salt-run state.event pretty=True
+```
+Apply a configuration change on a Junos device: 
+```
+# salt vMX-1 junos.install_config 
+```
+Verify on the GUI of the Gitlab repository ```show_commands_collected```
 

@@ -926,20 +926,20 @@ This file collects show commands output from Junos devices and upload the output
 
 So the minion that run the proxy will interact with the git server. So you first need to manage ssh keys.  
 
-Run these commands on the minion that run the proxy will interact with the git server:  
+Run these commands on the minion:
 ```
 $ sudo -s
 # ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
 # ls /root/.ssh/
 id_rsa  id_rsa.pub  known_hosts
 ```
-
-Add the public key to Gitlab  
+Add the public key to Gitlab.  
 On the minion, copy the public key:
 ```
 # more /root/.ssh/id_rsa.pub
 ```
-Access Gitlab GUI with http://100.123.35.2:9080 in a browser, and add the public key to ```User Settings``` > ```SSH Keys```  
+Access Gitlab GUI with http://100.123.35.2:9080 in a browser, and add the public key to ```User Settings``` > ```SSH Keys```.  
+
 Update the ssh configuration on the minion
 ```
 $ sudo -s
@@ -969,7 +969,7 @@ Verify using the GUI of the repository ```show_commands_collected``` in the orga
 This file collects junos configuration from Junos devices and upload the output to a git server.      
 To execute this file, run this command on the master: 
 ```
-salt 'vMX*' state.apply collect_configuration_and_archive_to_git
+salt 'vMX-2' state.apply collect_configuration_and_archive_to_git
 ```
 Verify using the GUI of the repository ```configuration_backup``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
@@ -982,7 +982,7 @@ Junos_syslog engine  listens to syslog messages from Junos devices, extracts eve
 #### Install the junos syslog engine dependencies
 In the master
 ```
-# pip install pyparsing, twisted
+# pip install pyparsing twisted
 ```
 
 #### junos syslog engine configuration
@@ -997,7 +997,7 @@ You already copied both the state file [syslog.sls](https://github.com/ksator/au
 
 To execute the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master:  
 ```
-# salt ''vMX-1' pillar.item syslog_host
+# salt 'vMX-1' pillar.item syslog_host
 ```
 ```
 # salt 'vMX*' state.apply syslog
@@ -1006,10 +1006,10 @@ To execute the state file [syslog.sls](https://github.com/ksator/automation_summ
 # salt vMX-1 junos.cli "show system commit"
 ```
 ```
-# salt vMX1 junos.cli "show configuration | compare rollback 1"
+# salt vMX-1 junos.cli "show configuration | compare rollback 1"
 ```
 ```
-# salt vMX1 junos.cli "show configuration system syslog host 100.123.35.0"
+# salt vMX-1 junos.cli "show configuration system syslog host 100.123.35.0"
 ```
 
 #### Verify the salt master receives syslog messages from Junos devices

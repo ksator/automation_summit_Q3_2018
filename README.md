@@ -583,9 +583,24 @@ There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files
 #### Pillars configuration
 
 Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars.  
-Copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)  
+Run these commands on the master to copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)  
+```
+$ sudo -s
+# cd
+# git clone https://github.com/ksator/automation_summit_july_18.git
+# cp automation_summit_july_18/pillars/* variables/
+# ls variables/
+# cd variables
+# git status
+# git add .
+# git status
+# git commit -m "add pillars"
+# git push origin master
+# cd
+```
 
 #### Pillars configuration verification
+Run these commands on the master
 ```
 $ sudo -s
 ```

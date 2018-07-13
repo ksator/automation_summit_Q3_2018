@@ -638,7 +638,7 @@ Device(100.123.1.1)
 ```
 #### Configure the SaltStack proxy 
 
-on the host ```minion1```, copy []() in the file ```/etc/salt/proxy```
+on the host ```minion1```, copy the [proxy configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/proxy) in the file ```/etc/salt/proxy```  
 
 #### Start SaltStack proxies 
 

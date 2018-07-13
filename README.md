@@ -384,7 +384,7 @@ $ sudo -s
 Let's install: 
 - SaltStack master on ubuntu host ```master1```.
 - SaltStack minion on ubuntu host ```minion1```.
-- SaltStack Junos proxy on ubuntu host ```master1```.  
+- SaltStack Junos proxy on ubuntu host ```minion1```.  
 
 Then let's configure SaltStack for the various demo.   
 
@@ -517,7 +517,7 @@ Use this command to restart the salt-minion service
 # service salt-minion restart
 ```
 
-#### Verify the salt-mnion status
+#### Verify the salt-minion status
 On the minion:
 
 To see the Salt processes: 
@@ -608,22 +608,20 @@ $ sudo -s
 
 ### Proxies
 
-#### Install requirements for SaltStack Junos proxy
+#### Install requirements for SaltStack Junos proxy on the host ```minion1``` 
 
-Run these commands on the host that will run a Junos proxy daemon.  
-Let's do it on the master.  
+Run these commands on the host ```minion1``` 
 
 ```
-# apt install python-pip
-```
-```
-sudo python -m easy_install --upgrade pyOpenSSL
-```
-```
-pip install junos-eznc jxmlease jsnapy
+$ sudo -s
+# apt-get install python-pip
+# pip list
+# apt-get --auto-remove --yes remove python-openssl
+# pip install pyOpenSSL junos-eznc jxmlease jsnapy
+# pip list
 ```
 
-Verify you can use junos-eznc on the master
+Verify you can use junos-eznc on the host ```minion1``` 
 ```
 # python
 Python 2.7.12 (default, Dec  4 2017, 14:50:18)
@@ -638,27 +636,21 @@ Device(100.123.1.1)
 >>> dev.close()
 >>> exit()
 ```
+#### Configure the SaltStack proxy 
 
-**root@ubuntu:~# more /etc/hosts
-127.0.0.1       localhost
-127.0.1.1       ubuntu
-127.0.0.1       salt
-**
+on the host ```minion1```, copy []() in the file ```/etc/salt/proxy```
 
 #### Start SaltStack proxies 
 
 You need one salt proxy process per device.
-to start the proxy for the device ```vMX-1``` with a debug log level, use this command:
-```
-# sudo salt-proxy -l debug --proxyid=vMX-1
-```
-if you prefer to run it as a daemon, use this command:
+to start the proxy as a daemon for the device ```vMX-1``` and ```vMX-2```, run these commands on the host ```minion1```:
 ```
 # sudo salt-proxy -d --proxyid=vMX-1
-```
-Start a proxy for the device vMX-2 as well
-```
 # sudo salt-proxy -d --proxyid=vMX-2
+```
+you can run this command to start it with a debug log level: 
+```
+# sudo salt-proxy -l debug --proxyid=vMX-1
 ```
 To see the SaltStack processes, run this command: 
 ```

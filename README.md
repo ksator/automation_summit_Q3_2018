@@ -237,7 +237,7 @@ True
 Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
-### Verify with the GUI the ticket details you created previously with Python interactive session
+### Using RT GUI, verify the ticket details you created previously with Python interactive session
 
 Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
 The default ```root``` user password is ```password```
@@ -410,6 +410,12 @@ $ sudo -s
 ```
 Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in the file ```/etc/apt/sources.list.d/saltstack.list```
 ```
+# touch /etc/apt/sources.list.d/saltstack.list
+```
+```
+# nano /etc/apt/sources.list.d/saltstack.list
+```
+```
 # more /etc/apt/sources.list.d/saltstack.list
 deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main
 ```
@@ -484,6 +490,12 @@ $ sudo -s
 # wget -O - https://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2/SALTSTACK-GPG-KEY.pub | sudo apt-key add -
 ```
 Add ```deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main``` in the file ```/etc/apt/sources.list.d/saltstack.list```
+```
+# touch /etc/apt/sources.list.d/saltstack.list
+```
+```
+# nano /etc/apt/sources.list.d/saltstack.list
+```
 ```
 # more /etc/apt/sources.list.d/saltstack.list
 deb http://repo.saltstack.com/apt/ubuntu/16.04/amd64/archive/2018.3.2 xenial main

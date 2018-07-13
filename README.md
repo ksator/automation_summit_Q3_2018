@@ -328,8 +328,14 @@ on ubuntu host ```master1```
 $ sudo -s
 ```
 ```
+# touch /root/.ssh/config
+```
+```
 # ls /root/.ssh/
 config       id_rsa       id_rsa.pub   known_hosts
+```
+```
+# vi /root/.ssh/config
 ```
 ```
 # more /root/.ssh/config
@@ -351,10 +357,10 @@ $ sudo -s
 on ubuntu host ```master1```
 ```
 $ sudo -s
-# git clone git@:100.123.35.2:automation_demo/variables.git
-# git clone git@:100.123.35.2:automation_demo/files_server.git
-# git clone git@:100.123.35.2:automation_demo/configuration_backup.git
-# git clone git@:100.123.35.2:automation_demo/show_commands_collected.git
+# git clone git@100.123.35.2:automation_demo/variables.git
+# git clone git@100.123.35.2:automation_demo/files_server.git
+# git clone git@100.123.35.2:automation_demo/configuration_backup.git
+# git clone git@100.123.35.2:automation_demo/show_commands_collected.git
 # ls
 # cd variables
 # git remote -v

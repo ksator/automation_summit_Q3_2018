@@ -438,7 +438,7 @@ salt-master 2018.3.2 (Oxygen)
 
 on the ubuntu host ```master1```, copy this [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) in the file ```/etc/salt/master```
 
-#### Start the salt-master
+#### Verify the salt-master status
 
 To see the Salt processes: 
 ```
@@ -478,10 +478,6 @@ Check if SaltStack minion is already installed on the ubuntu host ```minion1```
 ```
 # salt-minion --version
 ```
-```
-# salt --version
-```
-
 if SaltStack minion was not already installed on the ubuntu host ```minion1```, then install it: 
 ```
 $ sudo -s
@@ -510,9 +506,6 @@ And verify if salt-minion was installed properly installation
 ```
 # salt-minion --version
 salt-minion 2018.3.2 (Oxygen)
-```
-```
-# salt --version
 ```
 
 #### Configure SaltStack minion 

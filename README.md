@@ -146,6 +146,7 @@ Docker version 18.03.1-ce, build 9ee9f40
 
 ## Request Tracker
 
+Request Tracker (RT) is an open source issue tracking system.  
 There is a Request Tracker Docker image available https://hub.docker.com/r/netsandbox/request-tracker/  
 
 ### Pull a Request Tracker Docker image on the ubuntu host ```minion1```  

@@ -1023,8 +1023,11 @@ On the master:
 #### map some events to reactor sls files
 
 To map some events to reactor sls files, on the master, copy the [reactor configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/reactor.conf) to ```/etc/salt/master.d/reactor.conf```  
-
-Restart the master:
+On the master: 
+```
+# cp automation_summit_july_18/reactor.conf /etc/salt/master.d/
+```
+Restart the salt master service:
 ```
 # service salt-master restart
 ```
@@ -1035,9 +1038,12 @@ Verify the reactor operationnal state:
 #### add your reactor sls files to the master
 create a ```/srv/reactor/``` directory    
 ```
-mkdir /srv/reactor/
+# mkdir /srv/reactor/
 ```
 and copy [these sls reactor files](https://github.com/ksator/automation_summit_july_18/tree/master/reactors) to the directory ```/srv/reactor/```
+```
+# cp automation_summit_july_18/reactors/* /srv/reactor/
+```
 
 ### Event bus
 Run this command on the master to watch the 0MQ event bus

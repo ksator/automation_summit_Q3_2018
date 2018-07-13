@@ -925,7 +925,7 @@ On that host, run these commands:
 This file collects show commands output from Junos devices and upload the output to a git server.      
 To execute this file, run this command on the master: 
 ```
-salt 'vMX*' state.apply collect_data_and_archive_to_git
+salt 'vMX*' state.apply collect_show_commands_and_archive_to_git
 ```
 Verify on the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 

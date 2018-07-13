@@ -1059,11 +1059,11 @@ Test your runner:
 ```
 # salt-run request_tracker.create_ticket subject='test subject' text='test text'
 ```
+Verify using The RT GUI. Access RT GUI with ```http://100.123.35.2:9081``` in a browser. The default ```root``` user password is ```password```  
 ```
 # salt-run request_tracker.change_ticket_status_to_resolved ticket_id=2
 ```
 
-Verify using The RT GUI. Access RT GUI with ```http://100.123.35.2:9081``` in a browser. The default ```root``` user password is ```password```
 
 
 

@@ -1170,5 +1170,5 @@ Apply a configuration change on a Junos device:
 # salt vMX-1 junos.install_config 'salt://disable_interface.set' confirm=1
 
 ```
-Verify on the RT GUI 
+Verify the ticket details on the RT GUI 
 

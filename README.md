@@ -922,12 +922,47 @@ On that host, run these commands:
 ```
 
 #### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
-This file collects show commands output from Junos devices and upload the output to a git server.      
-To execute this file, run this command on the master: 
+This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```)  
+
+So the minion that run the proxy will interact with the git server. So you first need to manage ssh keys.  
+
+Run these commands on the minion that run the proxy will interact with the git server:  
 ```
-salt 'vMX*' state.apply collect_show_commands_and_archive_to_git
+$ sudo -s
+# ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
+# ls /root/.ssh/
+id_rsa  id_rsa.pub  known_hosts
 ```
-Verify on the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
+
+Add the public key to Gitlab  
+On the minion, copy the public key:
+```
+# more /root/.ssh/id_rsa.pub
+```
+Access Gitlab GUI with http://100.123.35.2:9080 in a browser, and add the public key to ```User Settings``` > ```SSH Keys```  
+Update the ssh configuration on the minion
+```
+$ sudo -s
+# touch /root/.ssh/config
+# ls /root/.ssh/
+config       id_rsa       id_rsa.pub   known_hosts
+```
+```
+# vi /root/.ssh/config
+```
+```
+# more /root/.ssh/config
+Host 100.123.35.2
+Port 3022
+Host *
+Port 22
+```
+
+To apply the state file collect_show_commands_and_archive_to_git.sls, run this command on the master: 
+```
+salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
+```
+Verify using the GUI of the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
 
 #### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
@@ -936,7 +971,7 @@ To execute this file, run this command on the master:
 ```
 salt 'vMX*' state.apply collect_configuration_and_archive_to_git
 ```
-Verify on the repository ```configuration_backup``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
+Verify using the GUI of the repository ```configuration_backup``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
 ### junos syslog engine
 

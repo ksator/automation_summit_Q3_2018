@@ -1070,6 +1070,27 @@ Verify using The RT GUI. Access RT GUI with ```http://100.123.35.2:9081``` in a 
 # salt-run request_tracker.change_ticket_status_to_resolved ticket_id=2
 ```
 
+# Run the various demo 
+
+## Junos configuration automatic backup on Git
+
+```
+# more /etc/salt/master.d/reactor.conf
+reactor:
+    - 'jnpr/syslog/*/UI_COMMIT_COMPLETED':
+        - /srv/reactor/backup_configuration.sls
+```
+```
+# service salt-master restart
+```
+```
+# salt-run reactor.list
+```
+```
+# salt vMX-1 junos.install_config 'salt://banner.set' comment='Committed via SaltStack'
+```
+Verify on the GUI of the Gitlab repository ```configuration_backup```
+
 
 
 

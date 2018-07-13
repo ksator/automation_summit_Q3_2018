@@ -20,6 +20,7 @@ file_roots:
     base:
         - /srv/salt
 auto_accept: True
+file_recv: True
 loop_interval: 30
 nodegroups:
     vmxlab: 'L@vMX-1,vMX-2'

@@ -45,7 +45,7 @@ def change_ticket_status_to_resolved(ticket_id):
 
 def attach_files_to_ticket(subject, device_directory):
     rt_pillars=get_rt_pillars()
-    junos_commands = rt_pillars['data_collection']
+    junos_commands = rt_pillars['collect_show_commands']
     tracker=connect_to_rt()
     ticket_id = check_if_a_ticket_already_exist(subject, tracker)
     for item in junos_commands:

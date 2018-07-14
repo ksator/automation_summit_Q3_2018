@@ -699,7 +699,8 @@ On the master:
 
 ### SaltStack execution modules 
 
-Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands).
+Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands).  
+
 Run these commands on the master to familiarize yourself with SaltStack
 
 #### Pillar execution module
@@ -822,6 +823,7 @@ group configured in the [master configuration file](https://github.com/ksator/au
 Salt runs a file server to deliver files to minions and proxies.  
 The [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) indicates the location for the file servers.  
 We are using an external files servers (repository ```files_server``` in the organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
+The file server has Junos configuration templates and SaltStack state files.  
 
 #### Junos configuration templates 
 
@@ -859,8 +861,7 @@ automation_summit_july_18  configuration_backup  files_server  show_commands_col
 # git push origin master
 # cd
 ```
-
-### Junos state module
+### About Junos state module
 
 Here's the list of functions available in the junos state module:  
 ```
@@ -882,6 +883,18 @@ vMX-1:
     - junos.unlock
     - junos.zeroize
 ```
+
+### Create a branch for each device in the repositories ```configuration_backup``` and ```show_commands_collected```
+
+Run this command on the master to create a branch for each device in the repositories ```configuration_backup``` and ```show_commands_collected```  
+The state file ```create_git_branch.sls``` will be execute by each proxy. 
+```
+salt 'vMX-*' state.apply create_git_branch
+```
+Verify in the branches with Gitlab GUI.  
+
+
+### Run these demos to familiarize yourself with basics SaltStack state files
 
 #### demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
 This file collects show commands output from a Junos device.  
@@ -922,7 +935,7 @@ On that host, run these commands:
 # ls -l /tmp/vMX-2/
 ```
 
-#### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
+##### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
 This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```)  
 
 So the minion that run the proxy will interact with the git server. So you first need to manage ssh keys.  
@@ -966,7 +979,7 @@ salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
 Verify using the GUI of the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
 
-#### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
+##### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
 This file collects junos configuration from Junos devices and upload the output to a git server.      
 To execute this file, run this command on the master: 
 ```

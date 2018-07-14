@@ -178,6 +178,11 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 0945209bfe14        netsandbox/request-tracker   "/usr/sbin/apache2 -…"   26 hours ago        Up 26 hours             0.0.0.0:9081->80/tcp                                  rt
 ```
 
+### Verify you can access to RT GUI
+
+Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
+The default ```root``` user password is ```password```
+
 ### Install the ```rt``` python library on the ubuntu host ```master1```
 
 There are python libraries that provide an easy programming interface for dealing with RT:  
@@ -231,20 +236,7 @@ True
 >>> exit()
 ```
 
-### RT GUI
-
-#### Verify you can access to RT GUI
-
-Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
-The default ```root``` user password is ```password```
-
-#### Using RT GUI, verify the ticket details you created previously with Python interactive session
-
-Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
-The default ```root``` user password is ```password```
-
-
-
+### Using RT GUI, verify the ticket details you created previously with Python interactive session
 
 ## Gitlab
 
@@ -303,9 +295,12 @@ Create these new projects in the group ```automation_demo```
   - ```configuration_backup``` (Public, add Readme)
   - ```show_commands_collected``` (Public, add Readme)
 
-### Add your public key to Gitlab
+### Add your public keys to Gitlab for both the host ```master1``` and the host ```minion1```
 
-Generate ssh keys on ubuntu host ```master1```
+Both the host ```master1``` and the host ```minion1``` will inteact with the Gitlab server. 
+Run these commands on both hosts.
+
+Generate ssh keys
 ```
 $ sudo -s
 ```
@@ -317,14 +312,14 @@ $ sudo -s
 id_rsa  id_rsa.pub  known_hosts
 ```
 Add the public key to Gitlab.  
-On ubuntu host ```master1```, copy the public key:
+Copy the public key:
 ```
 # more /root/.ssh/id_rsa.pub
 ```
-Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key to ```User Settings``` > ```SSH Keys```
+Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key of both the host ```master1``` and the host ```minion1``` to ```User Settings``` > ```SSH Keys```
 
-### Update your ssh configuration on ubuntu host ```master1```
-on ubuntu host ```master1```
+### Update your ssh configuration on both the host ```master1``` and the host ```minion1```
+Run these commands on both hosts  
 ```
 $ sudo -s
 ```
@@ -346,16 +341,16 @@ Host *
 Port 22
 ```
 
-### Configure your Git client
-on ubuntu host ```master1```
+### Configure your Git client for both the host ```master1``` and the host ```minion1```
+Run these commands on both hosts.
+
 ```
 $ sudo -s
 # git config --global user.email "you@example.com"
 # git config --global user.name "Your Name"
 ```
 
-### Verify you can use Git and Gitlab
-on ubuntu host ```master1```
+### Verify you can use Git and Gitlab from both the host ```master1``` and the host ```minion1```
 ```
 $ sudo -s
 # git clone git@100.123.35.2:automation_demo/variables.git
@@ -935,51 +930,17 @@ On that host, run these commands:
 # ls -l /tmp/vMX-2/
 ```
 
-##### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
+#### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
 This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```)  
-
-So the minion that run the proxy will interact with the git server. So you first need to manage ssh keys.  
-
-Run these commands on the minion:
-```
-$ sudo -s
-# ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''
-# ls /root/.ssh/
-id_rsa  id_rsa.pub  known_hosts
-```
-Add the public key to Gitlab.  
-On the minion, copy the public key:
-```
-# more /root/.ssh/id_rsa.pub
-```
-Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key to ```User Settings``` > ```SSH Keys```.  
-
-Update the ssh configuration on the minion
-```
-$ sudo -s
-# touch /root/.ssh/config
-# ls /root/.ssh/
-config       id_rsa       id_rsa.pub   known_hosts
-```
-```
-# vi /root/.ssh/config
-```
-```
-# more /root/.ssh/config
-Host 100.123.35.2
-Port 3022
-Host *
-Port 22
-```
-
-To apply the state file collect_show_commands_and_archive_to_git.sls, run this command on the master: 
+So the minion that run the proxy will interact with the git server. 
+To apply the state file ```collect_show_commands_and_archive_to_git.sls```, run this command on the master: 
 ```
 salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
 ```
 Verify using the GUI of the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
 
 
-##### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
+#### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
 This file collects junos configuration from Junos devices and upload the output to a git server.      
 To execute this file, run this command on the master: 
 ```

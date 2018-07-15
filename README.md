@@ -4,7 +4,7 @@
 [About the lab](#about-the-lab)  
 [Use cases](#use-cases)  
 [Lab preparation instructions](#lab-preparation-instructions)  
-[Run the various demos](#run-the-various-demo)  
+[Run the various demos](#run-the-various-demos)  
 
 # About this project
 

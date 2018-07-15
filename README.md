@@ -6,7 +6,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[Diagram](#diagram)  
 &nbsp;&nbsp;&nbsp;&nbsp;[IP addresses and credentials](#ip-addresses-and-credentials)  
 [About the use cases](#about-the-use-cases)  
-&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Junos configuration automatic backup on Git](#junos-configuration-automatic-backup-on-git)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#automated-junos-show-commands-collection)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Automated tickets management](#automated-tickets-management)  
 [Lab preparation instructions](#lab-preparation-instructions)  
@@ -16,9 +16,9 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[Gitlab](#gitlab)  
 &nbsp;&nbsp;&nbsp;&nbsp;[SaltStack](#saltstack)  
 [Run the various demos](#run-the-various-demos)  
-&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)  
-&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#automated-junos-show-commands-collection)  
-&nbsp;&nbsp;&nbsp;&nbsp;[Automated tickets management](#automated-tickets-management)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Junos configuration automatic backup on Git](#junos-configuration-automatic-backup-on-git-1)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#automated-junos-show-commands-collection-1)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated tickets management](#automated-tickets-management-1)  
 
 # About this project
 

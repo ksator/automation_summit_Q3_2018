@@ -1,10 +1,27 @@
 # Documentation structure
 
-[About this project](#about-this-project)  
+[About this project](#about-this-project) 
+
 [About the lab](#about-the-lab)  
-[Use cases](#use-cases)  
+- [Building blocks](#building-blocks)  
+- [Diagram](#diagram)  
+-  [IP addresses and credentials](#ip-addresses-and-credentials)  
+
+[About the use cases](#about-the-use-cases)  
+- [Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)  
+- [Automated Junos show commands collection](#automated-junos-show-commands-collection)  
+- [Automated tickets management](#automated-tickets-management)  
+
 [Lab preparation instructions](#lab-preparation-instructions)  
+- [Docker](#docker)
+- [Request Tracker](#request-tracker)
+- [Gitlab](#gitlab)
+- [SaltStack](#saltstack)
+
 [Run the various demos](#run-the-various-demos)  
+- [Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)
+- [Automated Junos show commands collection](#automated-junos-show-commands-collection)
+- [Automated tickets management](#automated-tickets-management)
 
 # About this project
 
@@ -23,7 +40,7 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 
 ## Diagram
 
-## Management IP addresses
+## IP addresses and credentials  
 | Name | Operating system | Management IP address  | Username | Password|
 | ------------- | ------------- | ------------- |------------- | ------------- |
 | minion1    | Ubuntu | 100.123.35.2    | jcluser | Juniper!1 |
@@ -31,7 +48,7 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 | vMX-1    | Junos | 100.123.1.1    | jcluser | Juniper!1 |
 | vMX-2    | Junos | 100.123.1.2    | jcluser | Juniper!1 |
 
-# Use cases
+# About the use cases
 
 ##  Junos configuration automatic backup on Git
 
@@ -69,7 +86,6 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 - Install SaltStack minion on the ubuntu host ```minion1```.
 - Install SaltStack Junos proxy on the  ubuntu host ```minion1```.
 - Configure SaltStack for the above use cases.
-- Run the demos
 
 ## Ubuntu
 

@@ -1,6 +1,6 @@
 # Documentation structure
 
-[About this project](#about-this-project) 
+[About this project](#about-this-project)  
 [About the lab](#about-the-lab)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Building blocks](#building-blocks)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Diagram](#diagram)  

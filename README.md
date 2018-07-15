@@ -1,3 +1,11 @@
+# Documentation structure
+
+[About this project](#about-this-project)  
+[About the lab](#about-the-lab)  
+[Use cases](#use-cases)  
+[Lab preparation instructions](#lab-preparation-instructions)  
+[Run the various demos](#run-the-various-demo)  
+
 # About this project
 
 Lab guide for Juniper automation summit  
@@ -51,7 +59,7 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 ![RT.png](resources/RT.png)  
 
-# Lab instructions
+# Lab preparation instructions
 
 ## Overview 
 - Install Docker on the ubuntu host ```minion1```.
@@ -1048,7 +1056,7 @@ Verify using The RT GUI. Access RT GUI with ```http://100.123.35.2:9081``` in a 
 # salt-run request_tracker.change_ticket_status_to_resolved ticket_id=2
 ```
 
-# Run the various demo 
+# Run the various demos 
 
 ## Junos configuration automatic backup on Git
 

@@ -1,27 +1,24 @@
 # Documentation structure
 
 [About this project](#about-this-project) 
-
 [About the lab](#about-the-lab)  
-- [Building blocks](#building-blocks)  
-- [Diagram](#diagram)  
--  [IP addresses and credentials](#ip-addresses-and-credentials)  
-
+&nbsp;&nbsp;&nbsp;&nbsp;[Building blocks](#building-blocks)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Diagram](#diagram)  
+&nbsp;&nbsp;&nbsp;&nbsp;[IP addresses and credentials](#ip-addresses-and-credentials)  
 [About the use cases](#about-the-use-cases)  
-- [Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)  
-- [Automated Junos show commands collection](#automated-junos-show-commands-collection)  
-- [Automated tickets management](#automated-tickets-management)  
-
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#automated-junos-show-commands-collection)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated tickets management](#automated-tickets-management)  
 [Lab preparation instructions](#lab-preparation-instructions)  
-- [Docker](#docker)
-- [Request Tracker](#request-tracker)
-- [Gitlab](#gitlab)
-- [SaltStack](#saltstack)
-
+&nbsp;&nbsp;&nbsp;&nbsp;[Overview](#overview)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Docker](#docker)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Request Tracker](#request-tracker)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Gitlab](#gitlab)  
+&nbsp;&nbsp;&nbsp;&nbsp;[SaltStack](#saltstack)  
 [Run the various demos](#run-the-various-demos)  
-- [Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)
-- [Automated Junos show commands collection](#automated-junos-show-commands-collection)
-- [Automated tickets management](#automated-tickets-management)
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#junos-configuration-automatic-backup-on-git)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#automated-junos-show-commands-collection)  
+&nbsp;&nbsp;&nbsp;&nbsp;[Automated tickets management](#automated-tickets-management)  
 
 # About this project
 

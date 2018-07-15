@@ -54,12 +54,14 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 # Lab instructions
 
 ## Overview 
-- Docker will be installed on the ubuntu host ```minion1```.
-- Gitlab and Request Tracker will run on the ubuntu host ```minion1``` (containers).
-- SaltStack master will be installed on the ubuntu host ```master1```.
-- SaltStack minion will be installed on the ubuntu host ```minion1```.
-- SaltStack Junos proxy will be installed on the  ubuntu host ```minion1```.
-- SaltStack will be configured for the above use cases.
+- Install Docker on the ubuntu host ```minion1```.
+- Install Gitlab on the ubuntu host ```minion1``` (container).
+- Install Request Tracker on the ubuntu host ```minion1``` (container).
+- Install SaltStack master on the ubuntu host ```master1```.
+- Install SaltStack minion on the ubuntu host ```minion1```.
+- Install SaltStack Junos proxy on the  ubuntu host ```minion1```.
+- Configure SaltStack for the above use cases.
+- Run the demos
 
 ## Ubuntu
 
@@ -574,7 +576,8 @@ There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files
 #### Pillars configuration
 
 Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars.  
-Run these commands on the master to copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` (organization ```automation_demo```, Gitlab server ```100.123.35.2```)  
+Run these commands on the master to copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` 
+
 ```
 $ sudo -s
 # cd
@@ -817,12 +820,12 @@ group configured in the [master configuration file](https://github.com/ksator/au
 
 Salt runs a file server to deliver files to minions and proxies.  
 The [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) indicates the location for the file servers.  
-We are using an external files servers (repository ```files_server``` in the organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
+We are using an external files servers (repository ```files_server```).  
 The file server has Junos configuration templates and SaltStack state files.  
 
 #### Junos configuration templates 
 
-Run these commands on the master to copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab server ```100.123.35.2```).  
+Run these commands on the master to copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server```.  
 
 ```
 # cd
@@ -842,7 +845,8 @@ automation_summit_july_18  configuration_backup  files_server  show_commands_col
 
 Salt establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).  
 
-run these commands on the master to copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server``` (organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
+run these commands on the master to copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server```  
+
 ```
 # cd
 # ls
@@ -931,14 +935,13 @@ On that host, run these commands:
 ```
 
 #### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
-This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```)  
+This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected```)    
 So the minion that run the proxy will interact with the git server. 
 To apply the state file ```collect_show_commands_and_archive_to_git.sls```, run this command on the master: 
 ```
 salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
 ```
-Verify using the GUI of the repository ```show_commands_collected``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
-
+Verify using the GUI of the repository ```show_commands_collected```  
 
 #### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
 This file collects junos configuration from Junos devices and upload the output to a git server.      
@@ -946,7 +949,7 @@ To execute this file, run this command on the master:
 ```
 salt 'vMX-2' state.apply collect_configuration_and_archive_to_git
 ```
-Verify using the GUI of the repository ```configuration_backup``` in the organization ```automation_demo``` in the gitlab server ```100.123.35.2```.
+Verify using the GUI of the repository ```configuration_backup```  
 
 ### junos syslog engine
 
@@ -968,7 +971,7 @@ We added the junos syslog engine configuration in the [master configuration file
 
 The state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) uses the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf) to generate and load Junos configuration to Junos devices.  
 
-You already copied both the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) and the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf) at the root of the SaltStack file servers (repository ```files_server``` in the organization ```automation_demo``` of the Gitlab srever ```100.123.35.2```).  
+You already copied both the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) and the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf) at the root of the SaltStack file servers (repository ```files_server``` ).  
 
 To execute the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master:  
 ```

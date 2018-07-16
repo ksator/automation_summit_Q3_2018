@@ -15,6 +15,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[Request Tracker](#request-tracker)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Gitlab](#gitlab)  
 &nbsp;&nbsp;&nbsp;&nbsp;[SaltStack](#saltstack)  
+[Familiarize yourself with this setup (optional)](#familiarize-yourself-with-this-setup-optional)  
 [Run the various demos](#run-the-various-demos)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Junos configuration automatic backup on Git](#junos-configuration-automatic-backup-on-git-1)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#automated-junos-show-commands-collection-1)  
@@ -870,7 +871,7 @@ to watch the 0MQ event bus, run this command on the master
 # salt-run state.event pretty=True
 ```
 
-## familiarize yourself with this setup (optional)
+## Familiarize yourself with this setup (optional)
 
 ### SaltStack execution modules 
 

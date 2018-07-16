@@ -400,12 +400,11 @@ $ sudo -s
 
 ## SaltStack 
 
-Let's install: 
-- SaltStack master on ubuntu host ```master1```.
-- SaltStack minion on ubuntu host ```minion1```.
-- SaltStack Junos proxy on ubuntu host ```minion1```.  
-
-Then let's configure SaltStack for the various demo.   
+We will: 
+- install SaltStack master on ubuntu host ```master1```.
+- install SaltStack minion on ubuntu host ```minion1```.
+- install SaltStack Junos proxy on ubuntu host ```minion1```.  
+- configure SaltStack for the various demo
 
 ### Master
 
@@ -715,126 +714,8 @@ On the master:
 ```
 # salt 'vMX*' test.ping
 ```
-
-### SaltStack execution modules 
-
-Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands).  
-
-Run these commands on the master to familiarize yourself with SaltStack
-
-#### Pillar execution module
-
-Get the pillars for a minion/proxy
-
-```
-# salt 'vMX-1' pillar.ls
-```
-```
-# salt 'vMX-1' pillar.items
-```
-
-#### Junos execution module
-
-The Junos execution module provide many functions. 
-
-Here's the list: 
-```
-# salt vMX-1 sys.list_functions junos
-vMX-1:
-    - junos.cli
-    - junos.commit
-    - junos.commit_check
-    - junos.diff
-    - junos.facts
-    - junos.facts_refresh
-    - junos.file_copy
-    - junos.install_config
-    - junos.install_os
-    - junos.load
-    - junos.lock
-    - junos.ping
-    - junos.rollback
-    - junos.rpc
-    - junos.set_hostname
-    - junos.shutdown
-    - junos.unlock
-    - junos.zeroize
-
-```
-Here's the Junos execution module documentation 
-```
-# salt 'vMX-1' junos -d
-```
-Here's the doc for the cli function of the Junos execution module 
-```
-# salt 'vMX-1' junos.cli -d
-```
-Here's the doc for the install_config function of the Junos execution module 
-
-```
-# salt 'vMX-1' junos.install_config -d
-```
-
-Junos execution module usage 
-```
-# salt 'vMX-1' junos.cli "show version"
-```
-```
-# salt 'vMX-1' junos.rpc get-software-information
-```
-```
-# salt 'vMX-1' junos.facts
-```
-
-#### Grains execution module
-
-Grains are information collected from minions/proxies.  
-
-Available grains can be listed:
-```
-# salt 'vMX-1' grains.ls
-```
-Return all grains:
-```
-# salt 'vMX-1' grains.items
-```
-Return one or more grains:
-```
-# salt 'vMX-1' grains.item os_family zmqversion
-```
-Junos facts gathered during the connection are stored in proxy grains:  
-```
-# salt 'vMX-1' grains.item junos_facts
-```
-
-#### flexible targeting system
-
-regex
-```
-# salt '*' test.ping
-```
 ```
 # salt 'vMX*' junos.cli "show version"
-```
-list
-```
-# salt -L 'vMX-1,vMX-2' junos.cli "show version"
-```
-grain
-```
-# salt -G 'junos_facts:model:vMX' junos.cli "show version"
-```
-group configured in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)
-```
-# salt -N vmxlab test.ping
-```
-
-#### various output formats
-```
-# salt 'vMX-1' junos.rpc get-software-information --output=yaml
-```
-```
-# salt 'vMX-1' junos.cli "show version" --output=json
 ```
 
 ### SaltStack files server
@@ -881,30 +762,8 @@ automation_summit_july_18  configuration_backup  files_server  show_commands_col
 # git push origin master
 # cd
 ```
-### About Junos state module
 
-Here's the list of functions available in the junos state module:  
-```
-# salt vMX-1 sys.list_state_functions junos
-vMX-1:
-    - junos.cli
-    - junos.commit
-    - junos.commit_check
-    - junos.diff
-    - junos.file_copy
-    - junos.install_config
-    - junos.install_os
-    - junos.load
-    - junos.lock
-    - junos.rollback
-    - junos.rpc
-    - junos.set_hostname
-    - junos.shutdown
-    - junos.unlock
-    - junos.zeroize
-```
-
-### Create a branch for each device in the repositories ```configuration_backup``` and ```show_commands_collected```
+### Configure the repositories ```configuration_backup``` and ```show_commands_collected```
 
 Run this command on the master to create a branch for each device in the repositories ```configuration_backup``` and ```show_commands_collected```  
 The state file ```create_git_branch.sls``` will be execute by each proxy. 
@@ -913,64 +772,6 @@ salt 'vMX-*' state.apply create_git_branch
 ```
 Verify in the branches with Gitlab GUI.  
 
-
-### Run these demos to familiarize yourself with basics SaltStack state files
-
-#### demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
-This file collects show commands output from a Junos device.  
-To execute this file, run this command on the master: 
-```
-# salt vMX-1 state.apply collect_show_commands_example
-```
-Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
-```
-# salt vMX-1 grains.item nodename
-```
-On that host, run these commands:
-```
-# ls /tmp/
-```
-```
-# more /tmp/show_chassis_hardware.txt
-```
-```
-# more /tmp/show_version.txt
-```
-
-#### demo using the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
-This file collects show commands output from Junos devices and save the output locally (on the salt component that runs the salt proxy daemon).    
-To execute this file, run this command on the master: 
-```
-# salt 'vMX*' state.apply collect_data_locally
-```
-Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
-```
-# salt 'vMX*' grains.item nodename
-```
-On that host, run these commands:
-```
-# ls -l /tmp/vMX-1/
-```
-```
-# ls -l /tmp/vMX-2/
-```
-
-#### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
-This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected```)    
-So the minion that run the proxy will interact with the git server. 
-To apply the state file ```collect_show_commands_and_archive_to_git.sls```, run this command on the master: 
-```
-salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
-```
-Verify using the GUI of the repository ```show_commands_collected```  
-
-#### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
-This file collects junos configuration from Junos devices and upload the output to a git server.      
-To execute this file, run this command on the master: 
-```
-salt 'vMX-2' state.apply collect_configuration_and_archive_to_git
-```
-Verify using the GUI of the repository ```configuration_backup```  
 
 ### junos syslog engine
 
@@ -1068,6 +869,216 @@ Verify using The RT GUI. Access RT GUI with ```http://100.123.35.2:9081``` in a 
 ```
 # salt-run request_tracker.change_ticket_status_to_resolved ticket_id=2
 ```
+
+
+
+
+## familiarize yourself with this setup
+
+### SaltStack execution modules 
+
+Salt can run commands on various machines in parallel with a flexible targeting system (salt execution modules, in salt commands).  
+
+Run these commands on the master to familiarize yourself with SaltStack
+
+#### Junos execution module
+
+The Junos execution module provide many functions. 
+
+Here's the list: 
+```
+# salt vMX-1 sys.list_functions junos
+vMX-1:
+    - junos.cli
+    - junos.commit
+    - junos.commit_check
+    - junos.diff
+    - junos.facts
+    - junos.facts_refresh
+    - junos.file_copy
+    - junos.install_config
+    - junos.install_os
+    - junos.load
+    - junos.lock
+    - junos.ping
+    - junos.rollback
+    - junos.rpc
+    - junos.set_hostname
+    - junos.shutdown
+    - junos.unlock
+    - junos.zeroize
+
+```
+Here's the Junos execution module documentation 
+```
+# salt 'vMX-1' junos -d
+```
+Here's the doc for the cli function of the Junos execution module 
+```
+# salt 'vMX-1' junos.cli -d
+```
+Here's the doc for the install_config function of the Junos execution module 
+
+```
+# salt 'vMX-1' junos.install_config -d
+```
+
+Junos execution module usage 
+```
+# salt 'vMX-1' junos.cli "show version"
+```
+```
+# salt 'vMX-1' junos.rpc get-software-information
+```
+```
+# salt 'vMX-1' junos.facts
+```
+
+#### Pillar execution module
+
+Get the pillars for a minion/proxy
+
+```
+# salt 'vMX-1' pillar.ls
+```
+```
+# salt 'vMX-1' pillar.items
+```
+
+#### Grains execution module
+
+Grains are information collected from minions/proxies.  
+
+Available grains can be listed:
+```
+# salt 'vMX-1' grains.ls
+```
+Return all grains:
+```
+# salt 'vMX-1' grains.items
+```
+Return one or more grains:
+```
+# salt 'vMX-1' grains.item os_family zmqversion
+```
+Junos facts gathered during the connection are stored in proxy grains:  
+```
+# salt 'vMX-1' grains.item junos_facts
+```
+#### various output formats
+```
+# salt 'vMX-1' junos.rpc get-software-information --output=yaml
+```
+```
+# salt 'vMX-1' junos.cli "show version" --output=json
+```
+
+### flexible targeting system
+
+regex
+```
+# salt '*' test.ping
+```
+```
+# salt 'vMX*' junos.cli "show version"
+```
+list
+```
+# salt -L 'vMX-1,vMX-2' junos.cli "show version"
+```
+grain
+```
+# salt -G 'junos_facts:model:vMX' junos.cli "show version"
+```
+group configured in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)
+```
+# salt -N vmxlab test.ping
+```
+
+
+### About Junos state module
+
+Salt establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).  
+
+Here's the list of functions available in the junos state module:  
+```
+# salt vMX-1 sys.list_state_functions junos
+vMX-1:
+    - junos.cli
+    - junos.commit
+    - junos.commit_check
+    - junos.diff
+    - junos.file_copy
+    - junos.install_config
+    - junos.install_os
+    - junos.load
+    - junos.lock
+    - junos.rollback
+    - junos.rpc
+    - junos.set_hostname
+    - junos.shutdown
+    - junos.unlock
+    - junos.zeroize
+```
+
+### Run these demos to familiarize yourself with basics SaltStack state files
+
+#### demo using the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
+This file collects show commands output from a Junos device.  
+To execute this file, run this command on the master: 
+```
+# salt vMX-1 state.apply collect_show_commands_example
+```
+Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
+```
+# salt vMX-1 grains.item nodename
+```
+On that host, run these commands:
+```
+# ls /tmp/
+```
+```
+# more /tmp/show_chassis_hardware.txt
+```
+```
+# more /tmp/show_version.txt
+```
+
+#### demo using the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
+This file collects show commands output from Junos devices and save the output locally (on the salt component that runs the salt proxy daemon).    
+To execute this file, run this command on the master: 
+```
+# salt 'vMX*' state.apply collect_data_locally
+```
+Run this command on the master to know the name of the host that runs the Junos proxy daemon for the device ```vMX1```:
+```
+# salt 'vMX*' grains.item nodename
+```
+On that host, run these commands:
+```
+# ls -l /tmp/vMX-1/
+```
+```
+# ls -l /tmp/vMX-2/
+```
+
+#### demo using the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
+This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected```)    
+So the minion that run the proxy will interact with the git server. 
+To apply the state file ```collect_show_commands_and_archive_to_git.sls```, run this command on the master: 
+```
+salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
+```
+Verify using the GUI of the repository ```show_commands_collected```  
+
+#### demo using the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
+This file collects junos configuration from Junos devices and upload the output to a git server.      
+To execute this file, run this command on the master: 
+```
+salt 'vMX-2' state.apply collect_configuration_and_archive_to_git
+```
+Verify using the GUI of the repository ```configuration_backup```  
+
 
 # Run the various demos 
 

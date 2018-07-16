@@ -87,11 +87,7 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 
 ## Ubuntu
 
-Here's some system information from the Ubuntu hosts we will use: 
-```
-$ uname -a
-Linux ubuntu 4.4.0-87-generic #110-Ubuntu SMP Tue Jul 18 12:55:35 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
-```
+Ubuntu hosts we will use are running 16.04 release.  
 
 ## Docker
 

@@ -83,11 +83,11 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 - Install SaltStack master on the ubuntu host ```master1```.
 - Install SaltStack minion on the ubuntu host ```minion1```.
 - Install SaltStack Junos proxy on the  ubuntu host ```minion1```.
-- Configure SaltStack for the above use cases.
+- Configure the setup for the above use cases. 
 
 ## Ubuntu
 
-Ubuntu hosts we will use are running 16.04 release.  
+The ubuntu hosts are running 16.04 release.
 
 ## Docker
 
@@ -767,7 +767,7 @@ The state file ```create_git_branch.sls``` will be execute by each proxy.
 ```
 salt 'vMX-*' state.apply create_git_branch
 ```
-Verify in the branches with Gitlab GUI.  
+Verify the branches with Gitlab GUI.    
 
 
 ### junos syslog engine
@@ -850,6 +850,20 @@ On the master, create the directory ```/srv/runners/```
 # mkdir /srv/runners
 ```
 and add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
+
+```
+# cd
+# ls
+automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
+```
+```
+# cp automation_summit_july_18/request_tracker.py /srv/runners/
+# cd /srv/runners/
+# git add *
+# git commit -m "add runner files"
+# git push origin master
+# cd
+```
 
 Test your runner: 
 ```
@@ -983,9 +997,11 @@ group configured in the [master configuration file](https://github.com/ksator/au
 ```
 
 
-### About SaltStack Junos state module
+### SaltStack state module
 
 Salt establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).  
+
+#### SaltStack Junos state module
 
 Here's the list of functions available in the junos state module:  
 ```
@@ -1051,7 +1067,7 @@ On that host, run these commands:
 
 #### the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
 This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected```)    
-So the minion that run the proxy will interact with the git server. 
+So the minion that run the proxy will interact with the git server.  
 To apply the state file ```collect_show_commands_and_archive_to_git.sls```, run this command on the master: 
 ```
 salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git

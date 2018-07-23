@@ -37,6 +37,7 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 - RT (Request Tracker)
 
 ## Diagram
+![Diagram.png](resources/Diagram.png)  
 
 ## IP addresses and credentials  
 | Name | Operating system | Management IP address  | Username | Password|

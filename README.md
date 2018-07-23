@@ -858,12 +858,7 @@ and add the file [request_tracker.py](https://github.com/ksator/automation_summi
 automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
 ```
 ```
-# cp automation_summit_july_18/request_tracker.py /srv/runners/
-# cd /srv/runners/
-# git add *
-# git commit -m "add runner files"
-# git push origin master
-# cd
+# cp automation_summit_july_18/runners/request_tracker.py /srv/runners/
 ```
 
 Test your runner: 

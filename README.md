@@ -15,7 +15,7 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[Request Tracker](#request-tracker)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Gitlab](#gitlab)  
 &nbsp;&nbsp;&nbsp;&nbsp;[SaltStack](#saltstack)  
-[Familiarize yourself with this setup (optional)](#familiarize-yourself-with-this-setup-optional)  
+[Familiarize yourself with this setup](#familiarize-yourself-with-this-setup)  
 [Run the various demos](#run-the-various-demos)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Junos configuration automatic backup on Git](#junos-configuration-automatic-backup-on-git-1)  
 &nbsp;&nbsp;&nbsp;&nbsp;[Automated Junos show commands collection](#automated-junos-show-commands-collection-1)  
@@ -37,6 +37,7 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 - RT (Request Tracker)
 
 ## Diagram
+![Diagram.png](resources/Diagram.png)  
 
 ## IP addresses and credentials  
 | Name | Operating system | Management IP address  | Username | Password|
@@ -83,11 +84,11 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 - Install SaltStack master on the ubuntu host ```master1```.
 - Install SaltStack minion on the ubuntu host ```minion1```.
 - Install SaltStack Junos proxy on the  ubuntu host ```minion1```.
-- Configure SaltStack for the above use cases.
+- Configure the setup for the above use cases. 
 
 ## Ubuntu
 
-Ubuntu hosts we will use are running 16.04 release.  
+The ubuntu hosts are running 16.04 release.
 
 ## Docker
 
@@ -767,7 +768,7 @@ The state file ```create_git_branch.sls``` will be execute by each proxy.
 ```
 salt 'vMX-*' state.apply create_git_branch
 ```
-Verify in the branches with Gitlab GUI.  
+Verify the branches with Gitlab GUI.    
 
 
 ### junos syslog engine
@@ -851,6 +852,15 @@ On the master, create the directory ```/srv/runners/```
 ```
 and add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
 
+```
+# cd
+# ls
+automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
+```
+```
+# cp automation_summit_july_18/runners/request_tracker.py /srv/runners/
+```
+
 Test your runner: 
 ```
 # salt-run request_tracker.create_ticket subject='test subject' text='test text'
@@ -867,7 +877,7 @@ to watch the 0MQ event bus, run this command on the master
 # salt-run state.event pretty=True
 ```
 
-## Familiarize yourself with this setup (optional)
+## Familiarize yourself with this setup
 
 ### SaltStack execution modules 
 
@@ -983,9 +993,11 @@ group configured in the [master configuration file](https://github.com/ksator/au
 ```
 
 
-### About SaltStack Junos state module
+### SaltStack state module
 
 Salt establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).  
+
+#### SaltStack Junos state module
 
 Here's the list of functions available in the junos state module:  
 ```
@@ -1008,9 +1020,13 @@ vMX-1:
     - junos.zeroize
 ```
 
-### SaltStack state files examples
+### SaltStack state files
 
-#### the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
+Salt state modules are used in salt state sls files (kind of Ansible playbooks).  
+
+#### SaltStack state files examples  
+
+##### the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
 This file collects show commands output from a Junos device.  
 To execute this file, run this command on the master: 
 ```
@@ -1031,7 +1047,7 @@ On that host, run these commands:
 # more /tmp/show_version.txt
 ```
 
-#### the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
+##### the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
 This file collects show commands output from Junos devices and save the output locally (on the salt component that runs the salt proxy daemon).    
 To execute this file, run this command on the master: 
 ```
@@ -1049,16 +1065,16 @@ On that host, run these commands:
 # ls -l /tmp/vMX-2/
 ```
 
-#### the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
+##### the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
 This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected```)    
-So the minion that run the proxy will interact with the git server. 
+So the minion that run the proxy will interact with the git server.  
 To apply the state file ```collect_show_commands_and_archive_to_git.sls```, run this command on the master: 
 ```
 salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
 ```
 Verify using the GUI of the repository ```show_commands_collected```  
 
-#### the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
+##### the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
 This file collects junos configuration from Junos devices and upload the output to a git server.      
 To execute this file, run this command on the master: 
 ```

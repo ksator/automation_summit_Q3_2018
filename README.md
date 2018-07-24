@@ -49,7 +49,7 @@ The other componants will be installed using the below instructions.
 ## IP addresses and credentials  
 | Name | Operating system | Management IP address  | Username | Password|
 | ------------- | ------------- | ------------- |------------- | ------------- |
-| minion1    | Ubuntu | 100.123.35.2    | jcluser | Juniper!1 |
+| minion1    | Ubuntu | 100.123.35.1    | jcluser | Juniper!1 |
 | master1    | Ubuntu | 100.123.35.0    | jcluser | Juniper!1 |
 | vMX-0    | Junos | 100.123.1.0    | jcluser | Juniper!1 |
 | vMX-1    | Junos | 100.123.1.1    | jcluser | Juniper!1 |
@@ -204,7 +204,7 @@ CONTAINER ID        IMAGE                        COMMAND                  CREATE
 
 ### Verify you can access to RT GUI
 
-Access RT GUI with ```http://100.123.35.2:9081``` in a browser.  
+Access RT GUI with ```http://100.123.35.1:9081``` in a browser.  
 The default ```root``` user password is ```password```
 
 ### Install the ```rt``` python library on the ubuntu host ```master1```
@@ -238,9 +238,9 @@ Python 2.7.12 (default, Dec  4 2017, 14:50:18)
 [GCC 5.4.0 20160609] on linux2
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import rt
->>> tracker = rt.Rt('http://100.123.35.2:9081/REST/1.0/', 'root', 'password')
+>>> tracker = rt.Rt('http://100.123.35.1:9081/REST/1.0/', 'root', 'password')
 >>> tracker.url
-'http://100.123.35.2:9081/REST/1.0/'
+'http://100.123.35.1:9081/REST/1.0/'
 >>> tracker.login()
 True
 >>> tracker.search(Queue='General', Status='new')
@@ -304,7 +304,7 @@ $ watch -n 10 'docker ps'
 
 ### Verify you can access to Gitlab GUI
 
-Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser. 
+Access Gitlab GUI with ```http://100.123.35.1:9080``` in a browser. 
 Gitlab user is ```root```    
 Create a password ```password```  
 Sign in with ```root``` and ```password```  
@@ -340,7 +340,7 @@ Copy the public key:
 ```
 # more /root/.ssh/id_rsa.pub
 ```
-Access Gitlab GUI with ```http://100.123.35.2:9080``` in a browser, and add the public key of both the host ```master1``` and the host ```minion1``` to ```User Settings``` > ```SSH Keys```
+Access Gitlab GUI with ```http://100.123.35.1:9080``` in a browser, and add the public key of both the host ```master1``` and the host ```minion1``` to ```User Settings``` > ```SSH Keys```
 
 ### Update your ssh configuration on both the host ```master1``` and the host ```minion1```
 Run these commands on both hosts  
@@ -359,7 +359,7 @@ config       id_rsa       id_rsa.pub   known_hosts
 ```
 ```
 # more /root/.ssh/config
-Host 100.123.35.2
+Host 100.123.35.1
 Port 3022
 Host *
 Port 22
@@ -377,10 +377,10 @@ $ sudo -s
 ### Verify you can use Git and Gitlab from both the host ```master1``` and the host ```minion1```
 ```
 $ sudo -s
-# git clone git@100.123.35.2:automation_demo/variables.git
-# git clone git@100.123.35.2:automation_demo/files_server.git
-# git clone git@100.123.35.2:automation_demo/configuration_backup.git
-# git clone git@100.123.35.2:automation_demo/show_commands_collected.git
+# git clone git@100.123.35.1:automation_demo/variables.git
+# git clone git@100.123.35.1:automation_demo/files_server.git
+# git clone git@100.123.35.1:automation_demo/configuration_backup.git
+# git clone git@100.123.35.1:automation_demo/show_commands_collected.git
 # ls
 # cd variables
 # git remote -v
@@ -868,7 +868,7 @@ Test your runner:
 ```
 # salt-run request_tracker.create_ticket subject='test subject' text='test text'
 ```
-Verify using The RT GUI. Access RT GUI with ```http://100.123.35.2:9081``` in a browser. The default ```root``` user password is ```password```  
+Verify using The RT GUI. Access RT GUI with ```http://100.123.35.1:9081``` in a browser. The default ```root``` user password is ```password```  
 ```
 # salt-run request_tracker.change_ticket_status_to_resolved ticket_id=2
 ```

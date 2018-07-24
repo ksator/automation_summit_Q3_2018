@@ -39,6 +39,13 @@ July 2018 session - day 3 - Hands on Labs around Event Driven automation.
 ## Diagram
 ![Diagram.png](resources/Diagram.png)  
 
+## Versions 
+
+The ubuntu hosts are running 16.04 release.  
+The vMX are running 17.4R1-S2.2  
+The other componants will be installed using the below instructions.  
+
+
 ## IP addresses and credentials  
 | Name | Operating system | Management IP address  | Username | Password|
 | ------------- | ------------- | ------------- |------------- | ------------- |
@@ -85,10 +92,6 @@ Junos automation demo using SaltStack and a ticketing system (Request Tracker):
 - Install SaltStack minion on the ubuntu host ```minion1```.
 - Install SaltStack Junos proxy on the  ubuntu host ```minion1```.
 - Configure the setup for the above use cases. 
-
-## Ubuntu
-
-The ubuntu hosts are running 16.04 release.
 
 ## Docker
 

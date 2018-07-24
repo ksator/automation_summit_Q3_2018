@@ -1029,6 +1029,21 @@ Salt state modules are used in salt state sls files (kind of Ansible playbooks).
 
 #### SaltStack state files examples  
 
+##### the state file [bgp.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/bgp.sls)  
+This file render the template [bgp.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/bgp.conf) using the vMX [variables](https://github.com/ksator/automation_summit_july_18/blob/master/variables/) and load the generated configuration to the vMX. 
+```
+# salt 'vMX*' state.apply bgp
+```
+```
+# salt vMX-1 junos.cli "show system commit"
+```
+```
+# salt vMX-1 junos.cli "show configuration | compare rollback 1"
+```
+```
+# salt 'vMX*' junos.cli "show bgp neighbors"
+```
+
 ##### the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
 This file collects show commands output from a Junos device.  
 To execute this file, run this command on the master: 

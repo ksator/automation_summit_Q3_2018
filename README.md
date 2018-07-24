@@ -1041,7 +1041,7 @@ This file render the template [bgp.conf](https://github.com/ksator/automation_su
 # salt vMX-1 junos.cli "show configuration | compare rollback 1"
 ```
 ```
-# salt 'vMX*' junos.cli "show bgp neighbors"
+# salt 'vMX*' junos.cli "show bgp neighbor"
 ```
 
 ##### the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  

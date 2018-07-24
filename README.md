@@ -51,8 +51,8 @@ The other componants will be installed using the below instructions.
 | ------------- | ------------- | ------------- |------------- | ------------- |
 | minion1    | Ubuntu | 100.123.35.2    | jcluser | Juniper!1 |
 | master1    | Ubuntu | 100.123.35.0    | jcluser | Juniper!1 |
+| vMX-0    | Junos | 100.123.1.0    | jcluser | Juniper!1 |
 | vMX-1    | Junos | 100.123.1.1    | jcluser | Juniper!1 |
-| vMX-2    | Junos | 100.123.1.2    | jcluser | Juniper!1 |
 
 # About the use cases
 

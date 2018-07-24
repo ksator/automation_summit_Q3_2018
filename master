@@ -10,12 +10,12 @@ pillar_roots:
         - /srv/pillar
 ext_pillar:
     - git:
-        - master git@100.123.35.2:automation_demo/variables.git
+        - master git@100.123.35.1:automation_demo/variables.git
 fileserver_backend:
     - git
     - roots
 gitfs_remotes:
-    - ssh://git@100.123.35.2/automation_demo/files_server.git
+    - ssh://git@100.123.35.1/automation_demo/files_server.git
 file_roots:
     base:
         - /srv/salt
@@ -23,4 +23,4 @@ auto_accept: True
 file_recv: True
 loop_interval: 30
 nodegroups:
-    vmxlab: 'L@vMX-1,vMX-2'
+    vmxlab: 'L@vMX-1,vMX-0'

@@ -5,5 +5,5 @@ base:
         - collect_show_commands
     'vMX-1':
         - vMX-1-details
-    'vMX-2':
-        - vMX-2-details
+    'vMX-0':
+        - vMX-0-details

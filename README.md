@@ -663,10 +663,10 @@ on the host ```minion1```, copy the [proxy configuration file](https://github.co
 #### Start SaltStack proxies 
 
 You need one salt proxy process per device.
-to start the proxy as a daemon for the device ```vMX-1``` and ```vMX-2```, run these commands on the host ```minion1```:
+to start the proxy as a daemon for the device ```vMX-1``` and ```vMX-0```, run these commands on the host ```minion1```:
 ```
 # sudo salt-proxy -d --proxyid=vMX-1
-# sudo salt-proxy -d --proxyid=vMX-2
+# sudo salt-proxy -d --proxyid=vMX-0
 ```
 you can run this command to start it with a debug log level: 
 ```
@@ -702,7 +702,7 @@ So the keys are automatically accepted:
 Accepted Keys:
 minion1
 vMX-1
-vMX-2
+vMX-0
 Denied Keys:
 Unaccepted Keys:
 Rejected Keys:
@@ -984,7 +984,7 @@ regex
 ```
 list
 ```
-# salt -L 'vMX-1,vMX-2' junos.cli "show version"
+# salt -L 'vMX-1,vMX-0' junos.cli "show version"
 ```
 grain
 ```
@@ -1080,7 +1080,7 @@ On that host, run these commands:
 # ls -l /tmp/vMX-1/
 ```
 ```
-# ls -l /tmp/vMX-2/
+# ls -l /tmp/vMX-0/
 ```
 
 ##### the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
@@ -1096,7 +1096,7 @@ Verify using the GUI of the repository ```show_commands_collected```
 This file collects junos configuration from Junos devices and upload the output to a git server.      
 To execute this file, run this command on the master: 
 ```
-salt 'vMX-2' state.apply collect_configuration_and_archive_to_git
+salt 'vMX-0' state.apply collect_configuration_and_archive_to_git
 ```
 Verify using the GUI of the repository ```configuration_backup```  
 

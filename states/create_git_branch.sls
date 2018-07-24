@@ -10,7 +10,7 @@ git clone {{ item }}:
   module.run:
     - name: git.clone
     - cwd: /tmp/local_repo/{{ device_directory }}/{{ item }}
-    - url: git@100.123.35.2:automation_demo/{{ item }}.git
+    - url: git@100.123.35.1:automation_demo/{{ item }}.git
     - identity: "/root/.ssh/id_rsa"
 
 git config set email {{ item }}:

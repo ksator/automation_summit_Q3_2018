@@ -6,7 +6,7 @@ make sure the local repo doesnt exist:
 
 git clone:
   git.latest:
-    - name: git@100.123.35.2:automation_demo/configuration_backup.git
+    - name: git@100.123.35.1:automation_demo/configuration_backup.git
     - target: /tmp/local_repo/{{ device_directory }}
     - identity: "/root/.ssh/id_rsa"
     - branch: {{ device_directory }}

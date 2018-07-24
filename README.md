@@ -1092,14 +1092,6 @@ salt 'vMX-1' state.apply collect_show_commands_and_archive_to_git
 ```
 Verify using the GUI of the repository ```show_commands_collected```  
 
-##### the state file [collect_configuration_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_configuration_and_archive_to_git.sls)
-This file collects junos configuration from Junos devices and upload the output to a git server.      
-To execute this file, run this command on the master: 
-```
-salt 'vMX-0' state.apply collect_configuration_and_archive_to_git
-```
-Verify using the GUI of the repository ```configuration_backup```  
-
 
 # Run the various demos 
 

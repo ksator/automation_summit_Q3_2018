@@ -455,7 +455,7 @@ salt-master 2018.3.2 (Oxygen)
 ```
 #### Configure SaltStack master
 
-on the ubuntu host ```master1```, copy this [SaltStack master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) in the file ```/etc/salt/master```
+on the ubuntu host ```master1```, copy this [SaltStack master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master) in the file ```/etc/salt/master```
 
 
 #### Restart the salt-master service
@@ -527,7 +527,7 @@ salt-minion 2018.3.2 (Oxygen)
 
 #### Configure SaltStack minion 
 
-On the minion, copy this [minion configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/minion) in the file ```/etc/salt/minion```
+On the minion, copy this [minion configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/minion) in the file ```/etc/salt/minion```
 
 #### Restart the salt-minion service
 
@@ -569,7 +569,7 @@ Or, to accept all pending keys:
 ```
 # salt-key -A -y
 ```
-We changed the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to auto accept the keys.  
+We changed the [master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master) to auto accept the keys.  
 So the keys are automatically accepted: 
 ```
 # salt-key -L
@@ -596,14 +596,14 @@ There is a ```top``` file. ```top.sls``` file map minions to sls (pillars) files
 
 #### Pillars configuration
 
-Refer to the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to know the location for pillars.  
-Run these commands on the master to copy [these files](https://github.com/ksator/automation_summit_july_18/tree/master/pillars) at the root of the repository ```variables``` 
+Refer to the [master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master) to know the location for pillars.  
+Run these commands on the master to copy [these files](https://github.com/ksator/automation_summit_Q3_2018/tree/master/pillars) at the root of the repository ```variables``` 
 
 ```
 $ sudo -s
 # cd
-# git clone https://github.com/ksator/automation_summit_july_18.git
-# cp automation_summit_july_18/pillars/* variables/
+# git clone https://github.com/ksator/automation_summit_Q3_2018.git
+# cp automation_summit_Q3_2018/pillars/* variables/
 # ls variables/
 # cd variables
 # git status
@@ -658,7 +658,7 @@ Device(100.123.1.1)
 ```
 #### Configure the SaltStack proxy 
 
-on the host ```minion1```, copy the [proxy configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/proxy) in the file ```/etc/salt/proxy```  
+on the host ```minion1```, copy the [proxy configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/proxy) in the file ```/etc/salt/proxy```  
 
 #### Start SaltStack proxies 
 
@@ -695,7 +695,7 @@ Or, to accept all pending keys:
 ```
 # salt-key -A -y
 ```
-We changed the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) to auto accept the keys.  
+We changed the [master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master) to auto accept the keys.  
 So the keys are automatically accepted: 
 ```
 # salt-key -L
@@ -722,21 +722,21 @@ On the master:
 ### SaltStack files server
 
 Salt runs a file server to deliver files to minions and proxies.  
-The [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) indicates the location for the file servers.  
+The [master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master) indicates the location for the file servers.  
 We are using an external files servers (repository ```files_server```).  
 The file server has Junos configuration templates and SaltStack state files.  
 
 #### Junos configuration templates 
 
-Run these commands on the master to copy these [Junos templates](https://github.com/ksator/automation_summit_july_18/tree/master/junos) at the root of the repository ```files_server```.  
+Run these commands on the master to copy these [Junos templates](https://github.com/ksator/automation_summit_Q3_2018/tree/master/junos) at the root of the repository ```files_server```.  
 
 ```
 # cd
 # ls
-automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
+automation_summit_Q3_2018  configuration_backup  files_server  show_commands_collected  variables
 ```
 ```
-# cp automation_summit_july_18/junos/* files_server/
+# cp automation_summit_Q3_2018/junos/* files_server/
 # cd files_server/
 # git add .
 # git commit -m "add junos templates"
@@ -748,15 +748,15 @@ automation_summit_july_18  configuration_backup  files_server  show_commands_col
 
 Salt establishes a client-server model to bring infrastructure components in line with a given policy (salt state modules, in salt state sls files. kind of Ansible playbooks).  
 
-run these commands on the master to copy these [states files](https://github.com/ksator/automation_summit_july_18/tree/master/states) at the root of the repository ```files_server```  
+run these commands on the master to copy these [states files](https://github.com/ksator/automation_summit_Q3_2018/tree/master/states) at the root of the repository ```files_server```  
 
 ```
 # cd
 # ls
-automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
+automation_summit_Q3_2018  configuration_backup  files_server  show_commands_collected  variables
 ```
 ```
-# cp automation_summit_july_18/states/* files_server/
+# cp automation_summit_Q3_2018/states/* files_server/
 # cd files_server/
 # git add *
 # git commit -m "add states files"
@@ -788,13 +788,13 @@ In the master
 
 #### junos syslog engine configuration
 
-We added the junos syslog engine configuration in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master) so the junos device should send their syslog messages to the master ip address (100.123.35.0 port 516). 
+We added the junos syslog engine configuration in the [master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master) so the junos device should send their syslog messages to the master ip address (100.123.35.0 port 516). 
 
 #### Configure syslog on Junos devices 
 
-The state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls) uses the junos template [syslog.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/syslog.conf) to generate and load Junos configuration to Junos devices.  
+The state file [syslog.sls](https://github.com/ksator/automation_summit_Q3_2018/blob/master/states/syslog.sls) uses the junos template [syslog.conf](https://github.com/ksator/automation_summit_Q3_2018/blob/master/junos/syslog.conf) to generate and load Junos configuration to Junos devices.  
 
-To execute the state file [syslog.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/syslog.sls), run this command on the master:  
+To execute the state file [syslog.sls](https://github.com/ksator/automation_summit_Q3_2018/blob/master/states/syslog.sls), run this command on the master:  
 ```
 # salt 'vMX-1' pillar.item syslog_host
 ```
@@ -822,10 +822,10 @@ On the master:
 
 #### map some events to reactor sls files
 
-To map some events to reactor sls files, on the master, copy the [reactor configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/reactor.conf) to ```/etc/salt/master.d/reactor.conf```  
+To map some events to reactor sls files, on the master, copy the [reactor configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/reactor.conf) to ```/etc/salt/master.d/reactor.conf```  
 On the master: 
 ```
-# cp automation_summit_july_18/reactor.conf /etc/salt/master.d/
+# cp automation_summit_Q3_2018/reactor.conf /etc/salt/master.d/
 ```
 Restart the salt master service:
 ```
@@ -840,28 +840,28 @@ create a ```/srv/reactor/``` directory
 ```
 # mkdir /srv/reactor/
 ```
-and copy [these sls reactor files](https://github.com/ksator/automation_summit_july_18/tree/master/reactors) to the directory ```/srv/reactor/```
+and copy [these sls reactor files](https://github.com/ksator/automation_summit_Q3_2018/tree/master/reactors) to the directory ```/srv/reactor/```
 ```
-# cp automation_summit_july_18/reactors/* /srv/reactor/
+# cp automation_summit_Q3_2018/reactors/* /srv/reactor/
 ```
 
 ### Runners
 
-The runner directory is indicated in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)  
+The runner directory is indicated in the [master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master)  
 
 On the master, create the directory ```/srv/runners/```
 ```
 # mkdir /srv/runners
 ```
-and add the file [request_tracker.py](https://github.com/ksator/automation_summit_july_18/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
+and add the file [request_tracker.py](https://github.com/ksator/automation_summit_Q3_2018/blob/master/runners/request_tracker.py) to the directory ```/srv/runners/```
 
 ```
 # cd
 # ls
-automation_summit_july_18  configuration_backup  files_server  show_commands_collected  variables
+automation_summit_Q3_2018  configuration_backup  files_server  show_commands_collected  variables
 ```
 ```
-# cp automation_summit_july_18/runners/request_tracker.py /srv/runners/
+# cp automation_summit_Q3_2018/runners/request_tracker.py /srv/runners/
 ```
 
 Test your runner: 
@@ -990,7 +990,7 @@ grain
 ```
 # salt -G 'junos_facts:model:vMX' junos.cli "show version"
 ```
-group configured in the [master configuration file](https://github.com/ksator/automation_summit_july_18/blob/master/master)
+group configured in the [master configuration file](https://github.com/ksator/automation_summit_Q3_2018/blob/master/master)
 ```
 # salt -N vmxlab test.ping
 ```
@@ -1029,8 +1029,8 @@ Salt state modules are used in salt state sls files (kind of Ansible playbooks).
 
 #### SaltStack state files examples  
 
-##### the state file [bgp.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/bgp.sls)  
-This file render the template [bgp.conf](https://github.com/ksator/automation_summit_july_18/blob/master/junos/bgp.conf) using the vMX [variables](https://github.com/ksator/automation_summit_july_18/blob/master/variables/) and load the generated configuration to the vMX. 
+##### the state file [bgp.sls](https://github.com/ksator/automation_summit_Q3_2018/blob/master/states/bgp.sls)  
+This file render the template [bgp.conf](https://github.com/ksator/automation_summit_Q3_2018/blob/master/junos/bgp.conf) using the vMX [variables](https://github.com/ksator/automation_summit_Q3_2018/blob/master/variables/) and load the generated configuration to the vMX. 
 ```
 # salt 'vMX*' state.apply bgp
 ```
@@ -1044,7 +1044,7 @@ This file render the template [bgp.conf](https://github.com/ksator/automation_su
 # salt 'vMX*' junos.cli "show bgp neighbor"
 ```
 
-##### the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_example.sls)  
+##### the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_Q3_2018/blob/master/states/collect_show_commands_example.sls)  
 This file collects show commands output from a Junos device.  
 To execute this file, run this command on the master: 
 ```
@@ -1065,7 +1065,7 @@ On that host, run these commands:
 # more /tmp/show_version.txt
 ```
 
-##### the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_data_locally.sls)
+##### the state file [collect_data_locally.sls](https://github.com/ksator/automation_summit_Q3_2018/blob/master/states/collect_data_locally.sls)
 This file collects show commands output from Junos devices and save the output locally (on the salt component that runs the salt proxy daemon).    
 To execute this file, run this command on the master: 
 ```
@@ -1083,7 +1083,7 @@ On that host, run these commands:
 # ls -l /tmp/vMX-0/
 ```
 
-##### the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_july_18/blob/master/states/collect_show_commands_and_archive_to_git.sls)
+##### the state file [collect_show_commands_and_archive_to_git.sls](https://github.com/ksator/automation_summit_Q3_2018/blob/master/states/collect_show_commands_and_archive_to_git.sls)
 This file collects show commands output from Junos devices and upload the output to a git server (repository ```show_commands_collected```)    
 So the minion that run the proxy will interact with the git server.  
 To apply the state file ```collect_show_commands_and_archive_to_git.sls```, run this command on the master: 

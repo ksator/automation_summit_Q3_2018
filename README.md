@@ -1043,6 +1043,12 @@ This file render the template [bgp.conf](https://github.com/ksator/automation_su
 ```
 # salt 'vMX*' junos.cli "show bgp neighbor"
 ```
+```
+# salt vMX-1 junos.ping 192.168.0.4
+```
+```
+# salt vMX-1 junos.cli 'show route protocol bgp'
+```
 
 ##### the state file [collect_show_commands_example.sls](https://github.com/ksator/automation_summit_Q3_2018/blob/master/states/collect_show_commands_example.sls)  
 This file collects show commands output from a Junos device.  

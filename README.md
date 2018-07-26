@@ -375,6 +375,10 @@ $ sudo -s
 ```
 
 ### Verify you can use Git and Gitlab from both the host ```master1``` and the host ```minion1```
+
+#### host  ```master1```
+
+Clone all the repositories: 
 ```
 $ sudo -s
 # git clone git@100.123.35.1:automation_demo/variables.git
@@ -397,6 +401,14 @@ $ sudo -s
 # git push origin master
 # cd
 #
+```
+
+#### host ```minion1```
+Just verify you can git clone one of the repo. Example:
+```
+$ sudo -s
+# git clone git@100.123.35.1:automation_demo/variables.git
+# ls variables
 ```
 
 ## SaltStack 

@@ -46,13 +46,13 @@ The vMX are running 17.4R1-S2.2
 The other componants will be installed using the below instructions.  
 
 
-## IP addresses and credentials  
-| Name | Operating system | Management IP address  | Username | Password|
-| ------------- | ------------- | ------------- |------------- | ------------- |
-| minion1    | Ubuntu | 100.123.35.1    | jcluser | Juniper!1 |
-| master1    | Ubuntu | 100.123.35.0    | jcluser | Juniper!1 |
-| vMX-0    | Junos | 100.123.1.0    | jcluser | Juniper!1 |
-| vMX-1    | Junos | 100.123.1.1    | jcluser | Juniper!1 |
+## IP addresses 
+| Name | Operating system | Management IP address  |
+| ------------- | ------------- | ------------- |
+| minion1    | Ubuntu | 100.123.35.1    |
+| master1    | Ubuntu | 100.123.35.0    |
+| vMX-0    | Junos | 100.123.1.0    | 
+| vMX-1    | Junos | 100.123.1.1    | 
 
 # About the use cases
 

@@ -1,3 +1,8 @@
+Hands on Labs around Event Driven automation: 
+- Junos configuration automatic backup on Git
+- Automated Junos show commands collection
+- Automated tickets management   
+
 # Documentation structure
 
 [About this project](#about-this-project)  

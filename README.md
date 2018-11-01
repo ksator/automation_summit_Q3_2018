@@ -343,7 +343,7 @@ id_rsa  id_rsa.pub  known_hosts
 Add the public key to Gitlab.  
 Copy the public key:
 ```
-# more /root/.ssh/id_rsa.pub
+# cat /root/.ssh/id_rsa.pub
 ```
 Access Gitlab GUI with ```http://100.123.35.1:9080``` in a browser, and add the public key of both the host ```master1``` and the host ```minion1``` to ```User Settings``` > ```SSH Keys```
 
